@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Modeler2", "Modeler1.vcxproj", "{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyExtractor", "..\AssemblyExtractor\AssemblyExtractor.csproj", "{B7DCF22F-C5DB-412D-AE86-90296D12867A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAssemblyExtractor", "..\TestAssemblyExtractor\TestAssemblyExtractor.csproj", "{EDE63098-AF08-4008-AAE5-68DBDFEC3343}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,34 +37,8 @@ Global
 		{B7DCF22F-C5DB-412D-AE86-90296D12867A}.Release|Win32.Build.0 = Release|Any CPU
 		{B7DCF22F-C5DB-412D-AE86-90296D12867A}.Release|x64.ActiveCfg = Release|Any CPU
 		{B7DCF22F-C5DB-412D-AE86-90296D12867A}.Release|x64.Build.0 = Release|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Debug|Win32.Build.0 = Debug|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Debug|x64.Build.0 = Debug|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Release|Win32.ActiveCfg = Release|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Release|Win32.Build.0 = Release|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Release|x64.ActiveCfg = Release|Any CPU
-		{EDE63098-AF08-4008-AAE5-68DBDFEC3343}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://christophep.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\AssemblyExtractor\\AssemblyExtractor.csproj
-		SccProjectName1 = ../AssemblyExtractor
-		SccLocalPath1 = ..\\AssemblyExtractor
-		SccProjectUniqueName2 = Modeler1.vcxproj
-		SccLocalPath2 = .
-		SccProjectUniqueName3 = ..\\TestAssemblyExtractor\\TestAssemblyExtractor.csproj
-		SccProjectName3 = ../TestAssemblyExtractor
-		SccLocalPath3 = ..\\TestAssemblyExtractor
 	EndGlobalSection
 EndGlobal
