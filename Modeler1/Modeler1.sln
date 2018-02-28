@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Modeler1", "Modeler1.vcxproj", "{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccLocalPath0 = .
+		SccLocalPath1 = .
+		SccNumberOfProjects = 2
+		SccProjectUniqueName1 = Modeler1.vcxproj
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs14
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Debug|Win32.Build.0 = Debug|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Release|Win32.ActiveCfg = Release|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CAppInit" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAABAAAAAAAAAAABAAAAAAACAAAAAAA=</HashCode>
+      <FileName>AppInit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CArrowDownElement" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CArrowRightElement" Collapsed="true">
+    <Position X="19.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCalendarBar" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGAAAAAAAEAAAEAAAAAAAAAACAAAMEAAAAAAAAAAAg=</HashCode>
+      <FileName>CalendarBar.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CChildFrame" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQIAAAAAAAACAAAgAAAgAAAAEAAAAAAAAQIAAA=</HashCode>
+      <FileName>ChildFrm.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CClassToolBar" Collapsed="true">
+    <Position X="4.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CClassTreeWnd" Collapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>ClassView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CClassViewBar" Collapsed="true">
+    <Position X="6.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUDACABAgBEAAAwAhAAIgBAAACAEgAEAEgIBgEAAACI=</HashCode>
+      <FileName>ClassView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CClassViewMenuButton" Collapsed="true">
+    <Position X="4.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClassView.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDevelopmentElement" Collapsed="true">
+    <Position X="21" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CDrawingContext" Collapsed="true">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAIgFgAAARAEAAOQUAAAAAAgAAgAAARQAAgAgEQQAA=</HashCode>
+      <FileName>DrawingContext.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CElement" Collapsed="true">
+    <Position X="19.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kIABNIgEKABAggAMAAACAAQkSiAgFBwAEYQBAAABIIY=</HashCode>
+      <FileName>Element.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CElementContainer" Collapsed="true">
+    <Position X="10" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAABAAAIAAgAAAAAAABBACACEEAAAgNAAAAIAAAAA=</HashCode>
+      <FileName>ElementContainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CElementManager" Collapsed="true">
+    <Position X="11.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQQRYIIMAYhQkiiQADAAABBsALEAAAO0QgAMZAuQAaA=</HashCode>
+      <FileName>ElementManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEllipseElement" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFactory" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ElementFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFileViewBar" Collapsed="true">
+    <Position X="8.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CACgCAAAqA0AAAAJAAAAgAAAACQAAAFAgwIBAABIAAA=</HashCode>
+      <FileName>FileView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFileViewToolBar" Collapsed="true">
+    <Position X="4.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>FileView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGuid" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEACAAEAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>ElementFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CImageElement" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CInfrastructureElement" Collapsed="true">
+    <Position X="19.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CLineBrokenElement" Collapsed="true">
+    <Position X="19.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CLineElement" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMainFrame" Collapsed="true">
+    <Position X="2.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEEgCEBAgAIIAASAOACWmEAEoCCFgpBQIDAQJIBIUJA=</HashCode>
+      <FileName>MainFrm.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CModeler1App" Collapsed="true">
+    <Position X="6.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEBAAAAAAABQAAAAAQCAIARAAACAAA=</HashCode>
+      <FileName>Modeler1.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CModeler1Doc" Collapsed="true">
+    <Position X="6.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAABAAAAAAAAAAACCAAgAQgASggAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeler1Doc.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CModeler1SourceView" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAACAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeler1SourceView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CModeler1View" Collapsed="true">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQARWUAMABAAKAQGaDAgaJBwRQRAgcAghlvEjEcCwA=</HashCode>
+      <FileName>Modeler1View.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CParentheseLeftElement" Collapsed="true">
+    <Position X="21" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CParentheseRightElement" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRibbonListButton" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgABAAAAFGCAQEAgAAEEAAAhAAAAAAACEABAAAA=</HashCode>
+      <FileName>RibbonListButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CRibbonListFontButton" Collapsed="true">
+    <Position X="6.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIgABAAAAECCAQAggAAEAAAAhAAAQAAAAAABAAAA=</HashCode>
+      <FileName>RibbonListButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScintillaCtrl" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>f/3//9/+/uf7//7/7O+///v//8/3/v/v/n+3/////9s=</HashCode>
+      <FileName>Scintilla\ScintillaCtrl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScintillaDoc" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAACAABCAAAgAAAACAAAAAAAAARAAAAAAA=</HashCode>
+      <FileName>Scintilla\ScintillaDocView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScintillaFindReplaceDlg" Collapsed="true">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAQAAAAABAAAQEAAAAAAAAAEAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Scintilla\ScintillaDocView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CScintillaView" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RMGFEmANtQvGCgQRLDlDkyAUACQIKBGhCwYIyajICwA=</HashCode>
+      <FileName>Scintilla\ScintillaDocView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CShapeType" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Element.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSimpleTextElement" Collapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSourceCodeView" Collapsed="true">
+    <Position X="11.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAiAAAAAGBBAgAAAgAAAAAFAAAgAAAEAAAA=</HashCode>
+      <FileName>SourceCodeView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStarElement" Collapsed="true">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTabbedView" Collapsed="true">
+    <Position X="6.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAFAAAAQCABAgAAAgKAAAAAAAAgIAACIAQA=</HashCode>
+      <FileName>TabbedView.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTextElement" Collapsed="true">
+    <Position X="19.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTriangleElement" Collapsed="true">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DrawingElements.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAboutDlg" Collapsed="true">
+    <Position X="6.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modeler1.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="ElementType" Collapsed="true">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAgAAAAAAAAAAAAAAAAAAAEAAAAAAQAAAAQABAQA=</HashCode>
+      <FileName>Element.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SelectMode" Collapsed="true">
+    <Position X="8.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Element.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ShapeType" Collapsed="true">
+    <Position X="10" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACeAdIoQCQAgAigIUAogESAIEACAOYDMAAE7IACAwEE=</HashCode>
+      <FileName>Element.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="TrackerState" Collapsed="true">
+    <Position X="10" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAIgAAAAA=</HashCode>
+      <FileName>Element.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

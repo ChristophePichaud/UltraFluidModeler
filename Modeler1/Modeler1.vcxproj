@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}</ProjectGuid>
+    <RootNamespace>Modeler1</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <SccProjectName>SAK</SccProjectName>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccProvider>SAK</SccProvider>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>NotSet</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\dev\cpp\boost_1_63_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\dev\cpp\boost_1_63_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\dev\TFS_VSO\UltraFluid Modeler\Scintilla\bin;$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Scintilla\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ReadMe.txt" />
+    <None Include="res\BlankList.xcf" />
+    <None Include="res\buttons.bmp" />
+    <None Include="res\filelarge.bmp" />
+    <None Include="res\filesmall.bmp" />
+    <None Include="res\Firewall_small.xcf" />
+    <None Include="res\Laptop_Small.xcf" />
+    <None Include="res\main.bmp" />
+    <None Include="res\Modeler1.ico" />
+    <None Include="res\Modeler1.rc2" />
+    <None Include="res\Modeler1Doc.ico" />
+    <None Include="res\nav_large.bmp" />
+    <None Include="res\nav_large_hc.bmp" />
+    <None Include="res\Network_small.xcf" />
+    <None Include="res\output_wnd.ico" />
+    <None Include="res\output_wnd_hc.ico" />
+    <None Include="res\pages.bmp" />
+    <None Include="res\pages_hc.bmp" />
+    <None Include="res\pages_small.bmp" />
+    <None Include="res\pages_small_hc.bmp" />
+    <None Include="res\properties.bmp" />
+    <None Include="res\properties_hc.bmp" />
+    <None Include="res\properties_wnd.ico" />
+    <None Include="res\properties_wnd_hc.ico" />
+    <None Include="res\ribbon.mfcribbon-ms" />
+    <None Include="res\ServerAD_Small.xcf" />
+    <None Include="res\ServerDatabase_Small.xcf" />
+    <None Include="res\ServerWeb_Small.xcf" />
+    <None Include="res\Server_Small.xcf" />
+    <None Include="res\ShapesDev.xcf" />
+    <None Include="res\ShapesInfra.xcf" />
+    <None Include="res\Toolbar.bmp" />
+    <None Include="res\Toolbar256.bmp" />
+    <None Include="res\Workstation_Small.xcf" />
+    <None Include="res\writelarge.bmp" />
+    <None Include="res\writelarge.xcf" />
+    <None Include="res\writesmall.bmp" />
+    <None Include="res\writesmall.xcf" />
+    <None Include="res\writesmallnew.xcf" />
+    <None Include="res\writesmall_ok.xcf" />
+    <None Include="Scintilla\naughter.css" />
+    <None Include="Scintilla\Scintilla.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AppInit.h" />
+    <ClInclude Include="CalendarBar.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ClassView.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Data.h" />
+    <ClInclude Include="DrawingContext.h" />
+    <ClInclude Include="DrawingElements.h" />
+    <ClInclude Include="Element.h" />
+    <ClInclude Include="ElementContainer.h" />
+    <ClInclude Include="ElementFactory.h" />
+    <ClInclude Include="ElementManager.h" />
+    <ClInclude Include="FileView.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="Modeler1.h" />
+    <ClInclude Include="Modeler1Doc.h" />
+    <ClInclude Include="Modeler1SourceView.h" />
+    <ClInclude Include="Modeler1View.h" />
+    <ClInclude Include="OutputWnd.h" />
+    <ClInclude Include="PropertiesWnd.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="RibbonListButton.h" />
+    <ClInclude Include="Scintilla\resource.h" />
+    <ClInclude Include="Scintilla\ScintillaCtrl.h" />
+    <ClInclude Include="Scintilla\ScintillaDocView.h" />
+    <ClInclude Include="SourceCodeView.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TabbedView.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AppInit.cpp" />
+    <ClCompile Include="CalendarBar.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ClassView.cpp" />
+    <ClCompile Include="Data.cpp" />
+    <ClCompile Include="DrawingContext.cpp" />
+    <ClCompile Include="DrawingElements.cpp" />
+    <ClCompile Include="Element.cpp" />
+    <ClCompile Include="ElementContainer.cpp" />
+    <ClCompile Include="ElementFactory.cpp" />
+    <ClCompile Include="ElementManager.cpp" />
+    <ClCompile Include="FileView.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="Modeler1.cpp" />
+    <ClCompile Include="Modeler1Doc.cpp" />
+    <ClCompile Include="Modeler1SourceView.cpp" />
+    <ClCompile Include="Modeler1View.cpp" />
+    <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="PropertiesWnd.cpp" />
+    <ClCompile Include="RibbonListButton.cpp" />
+    <ClCompile Include="Scintilla\ScintillaCtrl.cpp" />
+    <ClCompile Include="Scintilla\ScintillaDocView.cpp" />
+    <ClCompile Include="SourceCodeView.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TabbedView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Modeler1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Shapes\firewall.png" />
+    <Image Include="Images\Shapes\Laptop.png" />
+    <Image Include="Images\Shapes\Laptop_grey.png" />
+    <Image Include="Images\Shapes\network.png" />
+    <Image Include="Images\Shapes\Server.png" />
+    <Image Include="Images\Shapes\ServerAD.png" />
+    <Image Include="Images\Shapes\ServerAD_grey.png" />
+    <Image Include="Images\Shapes\ServerDatabase.png" />
+    <Image Include="Images\Shapes\ServerDatabase_grey.png" />
+    <Image Include="Images\Shapes\ServerDatabase_VM.png" />
+    <Image Include="Images\Shapes\ServerWeb.png" />
+    <Image Include="Images\Shapes\ServerWeb_VM.png" />
+    <Image Include="Images\Shapes\Server_Farm.png" />
+    <Image Include="Images\Shapes\Server_grey.png" />
+    <Image Include="Images\Shapes\Server_VM.png" />
+    <Image Include="Images\Shapes\Virtualization_Server.png" />
+    <Image Include="Images\Shapes\Workstation.png" />
+    <Image Include="Images\Shapes\Workstation_grey.png" />
+    <Image Include="Images\Various\c11.png" />
+    <Image Include="Images\Various\Christophe.png" />
+    <Image Include="Images\Various\christophep.jpg" />
+    <Image Include="Images\Various\christophep1.jpg" />
+    <Image Include="Images\Various\concurrency_runtime.jpg" />
+    <Image Include="Images\Various\dotnetrangers.jpg" />
+    <Image Include="Images\Various\hellokitty1.png" />
+    <Image Include="Images\Various\hellokitty2.png" />
+    <Image Include="Images\Various\hellokitty3.png" />
+    <Image Include="Images\Various\mickey1.jpg" />
+    <Image Include="Images\Various\winny1.jpg" />
+    <Image Include="Images\Various\winny2.jpg" />
+    <Image Include="Images\Various\winny3.jpg" />
+    <Image Include="Images\Various\winny4.jpg" />
+    <Image Include="Images\Various\winny5.jpg" />
+    <Image Include="Images\Various\winny6.jpg" />
+    <Image Include="Images\Various\winny7.jpg" />
+    <Image Include="Images\Various\winny8.jpg" />
+    <Image Include="res\BlankList.png" />
+    <Image Include="res\ChartLayout.BMP" />
+    <Image Include="res\ChartLayoutLarge.BMP" />
+    <Image Include="res\classview.bmp" />
+    <Image Include="res\classview_hc.bmp" />
+    <Image Include="res\class_view.ico" />
+    <Image Include="res\class_view_hc.ico" />
+    <Image Include="res\filelarge_0.bmp" />
+    <Image Include="res\filelarge_1.bmp" />
+    <Image Include="res\filesmall_0.bmp" />
+    <Image Include="res\filesmall_ko.bmp" />
+    <Image Include="res\filevie24.bmp" />
+    <Image Include="res\fileview.bmp" />
+    <Image Include="res\file_view.ico" />
+    <Image Include="res\file_view_hc.ico" />
+    <Image Include="res\formatlarge.PNG" />
+    <Image Include="res\formatsmall.PNG" />
+    <Image Include="res\lineweight.png" />
+    <Image Include="res\menuimages.bmp" />
+    <Image Include="res\menuimages24.bmp" />
+    <Image Include="res\picture.bmp" />
+    <Image Include="res\shape1.bmp" />
+    <Image Include="res\Shape2.bmp" />
+    <Image Include="res\Shape3.bmp" />
+    <Image Include="res\Shape4.bmp" />
+    <Image Include="res\Shape5.bmp" />
+    <Image Include="res\Shape6.bmp" />
+    <Image Include="res\Shape7.bmp" />
+    <Image Include="res\ShapesDev.png" />
+    <Image Include="res\ShapesInfra.png" />
+    <Image Include="res\sort.bmp" />
+    <Image Include="res\sort24.bmp" />
+    <Image Include="res\styles.bmp" />
+    <Image Include="res\writelarge.png" />
+    <Image Include="res\writelarge0.bmp" />
+    <Image Include="res\writelarge_1.bmp" />
+    <Image Include="res\writelarge_ok.bmp" />
+    <Image Include="res\writelarge_original.bmp" />
+    <Image Include="res\WriteParagraph.bmp" />
+    <Image Include="res\writesmall.png" />
+    <Image Include="res\writesmall_ok.bmp" />
+    <Image Include="res\writesmall_ok.png" />
+    <Image Include="res\writesmall_original.bmp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="Modeler1.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
