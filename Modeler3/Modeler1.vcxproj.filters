@@ -1,0 +1,542 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Scintilla">
+      <UniqueIdentifier>{712341eb-3387-4e07-b385-d3549c020da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Images">
+      <UniqueIdentifier>{93dbc49a-2870-4e64-b9a7-6cb28180e322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Images\Shapes">
+      <UniqueIdentifier>{90a79559-a89e-4d2d-8bb0-31f2e1c9adf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Images\Various">
+      <UniqueIdentifier>{5ec838fe-b56e-40c4-8d21-44688289f03e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="res\output_wnd.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\output_wnd_hc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\properties_wnd.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\properties_wnd_hc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\properties.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\properties_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\nav_large.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\nav_large_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\pages.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\pages_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\pages_small.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\pages_small_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\buttons.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\filelarge.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\filesmall.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\main.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\writelarge.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\writesmall.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ribbon.mfcribbon-ms">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Modeler1.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Modeler1Doc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Modeler1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar256.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Scintilla\naughter.css">
+      <Filter>Scintilla</Filter>
+    </None>
+    <None Include="Scintilla\Scintilla.htm">
+      <Filter>Scintilla</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
+    <None Include="res\BlankList.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Firewall_small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Laptop_Small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Network_small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Server_Small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ServerAD_Small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ServerDatabase_Small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ServerWeb_Small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ShapesDev.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\ShapesInfra.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Workstation_Small.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\writelarge.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\writesmall.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\writesmall_ok.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\writesmallnew.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Modeler1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChildFrm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Modeler1Doc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Modeler1View.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalendarBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppInit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Element.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RibbonListButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TabbedView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Modeler1SourceView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scintilla\resource.h">
+      <Filter>Scintilla</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawingContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawingElements.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Modeler1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildFrm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modeler1Doc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modeler1View.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CalendarBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RibbonListButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TabbedView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modeler1SourceView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawingContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawingElements.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Modeler1.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Shapes\firewall.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Laptop.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Laptop_grey.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\network.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Server.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Server_Farm.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Server_grey.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Server_VM.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerAD.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerAD_grey.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerDatabase.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerDatabase_grey.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerDatabase_VM.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerWeb.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\ServerWeb_VM.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Virtualization_Server.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Workstation.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Shapes\Workstation_grey.png">
+      <Filter>Images\Shapes</Filter>
+    </Image>
+    <Image Include="Images\Various\c11.png">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\Christophe.png">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\christophep.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\christophep1.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\concurrency_runtime.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\dotnetrangers.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\hellokitty1.png">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\hellokitty2.png">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\hellokitty3.png">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\mickey1.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny1.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny2.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny3.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny4.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny5.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny6.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny7.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="Images\Various\winny8.jpg">
+      <Filter>Images\Various</Filter>
+    </Image>
+    <Image Include="res\BlankList.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ChartLayout.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ChartLayoutLarge.BMP">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\class_view.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\class_view_hc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\classview.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\classview_hc.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\file_view.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\file_view_hc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filelarge_0.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filelarge_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filesmall_0.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filesmall_ko.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\filevie24.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\fileview.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\formatlarge.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\formatsmall.PNG">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\lineweight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\menuimages.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\menuimages24.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\picture.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\shape1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Shape2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Shape3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Shape4.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Shape5.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Shape6.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Shape7.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ShapesDev.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ShapesInfra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\sort.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\sort24.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\styles.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge_ok.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge_original.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writelarge0.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\WriteParagraph.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writesmall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writesmall_ok.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writesmall_ok.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\writesmall_original.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

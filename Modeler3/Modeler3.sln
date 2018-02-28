@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Modeler2", "Modeler1.vcxproj", "{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Debug|Win32.Build.0 = Debug|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Debug|x64.ActiveCfg = Debug|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Release|Win32.ActiveCfg = Release|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Release|Win32.Build.0 = Release|Win32
+		{656F5FBE-9FAB-4C5B-8CDB-35D391D1541F}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A898DB4-0DEE-48F5-9E94-C328FE040B78}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://christophep.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Modeler1.vcxproj
+		SccLocalPath1 = .
+	EndGlobalSection
+EndGlobal
