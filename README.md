@@ -6,3 +6,5 @@ Modeler1 : drawing tool with Scintilla editor, XML suport from boost::serializat
 Modeler2 : drawing tool with Import Assembly .NET for visualizating types from an assembly. Using C++/CLR switch. Version 2017
 
 Modeler3 : drawing tool with no features discussed above. Version 2018. New features will be inserted  in this version.
+
+Look at the wiki to see a screen shot.
