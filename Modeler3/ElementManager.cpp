@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "Modeler1.h"
 #include "ElementManager.h"
 #include "Modeler1View.h"
 #include "MainFrm.h"
@@ -1013,6 +1014,14 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 		pElement->m_text = value;
 	}
 
+	if (name == prop_Text_Align)
+	{
+		if (value == _T("Left") || value == _T("Center") || value == _T("Right"))
+		{
+			pElement->m_textAlign = value;
+		}
+	}
+
 	if (name == prop_Image)
 	{
 		pElement->m_image = value;
@@ -1349,4 +1358,56 @@ void CElementManager::LoadModule(CModeler1View * pView)
 
 void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pElement, CPoint point, CModeler1View* pView)
 {
+}
+
+void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
+{
+	CFileDialog dlg(TRUE);
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	CStringW fileName = dlg.GetPathName();
+
+	CDocument* pDocument = ((CModeler1App*)AfxGetApp())->m_pDocTemplate->CreateNewDocument();
+	pDocument->m_bAutoDelete = FALSE;   // don't destroy if something goes wrong
+	pDocument->OnNewDocument();
+	// open an existing document
+	CWaitCursor wait;
+	pDocument->OnOpenDocument((LPTSTR)(LPCTSTR)fileName);
+	CModeler1Doc* pDoc = (CModeler1Doc*)pDocument;
+
+	vector<shared_ptr<CElement>> newVector;
+	for (shared_ptr<CElement> pElement : pDoc->GetManager()->GetObjects())
+	{
+		std::shared_ptr<CElement> pNewElement = CFactory::CreateElementOfType(pElement->m_type, pElement->m_shapeType);
+		pNewElement->m_name = pElement->m_name;
+		pNewElement->m_text = pElement->m_text;
+		pNewElement->m_objectId = pElement->m_objectId;
+		pNewElement->m_rect = pElement->m_rect;
+		pNewElement->m_bColorFill = pElement->m_bColorFill;
+		pNewElement->m_bColorLine = pElement->m_bColorLine;
+		pNewElement->m_bColorFill = pElement->m_bColorFill;
+		pNewElement->m_bLineWidth = pElement->m_bLineWidth;
+		pNewElement->m_bSolidColorFill = pElement->m_bSolidColorFill;
+		//pNewElement->m_caption = pElement->m_caption;
+		pNewElement->m_colorFill = pElement->m_colorFill;
+		pNewElement->m_colorLine = pElement->m_colorLine;
+		pNewElement->m_image = pElement->m_image;
+		pNewElement->m_last = pElement->m_last;
+		pNewElement->m_lineWidth = pElement->m_lineWidth;
+		pNewElement->m_pManager = this;
+		pNewElement->m_point = pElement->m_point;
+		pNewElement->m_pView = pView;
+
+		newVector.push_back(pNewElement);
+	}
+
+	//pView->GetDocument()->GetManager()->m_objects.m_objects.insert(pView->GetDocument()->GetManager()->m_objects.m_objects.end(), newVector.begin(), newVector.end());
+	// eq. MoveBack
+	for (shared_ptr<CElement> pElement : newVector)
+	{
+		pView->GetDocument()->GetManager()->m_objects.m_objects.insert(pView->GetDocument()->GetManager()->m_objects.m_objects.begin(), pElement);
+	}
+
+	Invalidate(pView);
 }

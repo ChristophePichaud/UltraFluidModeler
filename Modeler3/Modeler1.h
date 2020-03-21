@@ -38,6 +38,7 @@ public:
 	virtual int ExitInstance();
 
 // Implementation
+	CMultiDocTemplate* m_pDocTemplate;
 	UINT  m_nAppLook;
 	BOOL  m_bHiColorIcons;
 

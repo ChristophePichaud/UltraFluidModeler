@@ -131,6 +131,9 @@ public:
 	afx_msg void OnUpdateFormatZoomIn(CCmdUI* pCmdUI);
 	afx_msg void OnFormatZoomOut();
 	afx_msg void OnUpdateFormatZoomOut(CCmdUI* pCmdUI);
+	afx_msg void OnFileOpenGabarit();
+	afx_msg void OnModelingTask();
+	afx_msg void OnModelingMonth();
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

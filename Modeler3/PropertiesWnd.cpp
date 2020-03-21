@@ -229,7 +229,14 @@ void CPropertiesWnd::InitPropList()
 	pProp->Enable(FALSE);
 	pGroup3->AddSubItem(pProp);
 	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Text"), (_variant_t) _T(""), _T("Specifies the object's text")));
+	pProp = new CMFCPropertyGridProperty(_T("Text Align"), _T(""), _T("Specifies the alignment of the text"));
+	pProp->AddOption(_T("Left"));
+	pProp->AddOption(_T("Center"));
+	pProp->AddOption(_T("Right"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
 	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Font Name"), (_variant_t) _T("Calibri"), _T("Specifies the font of the text")));
+
 	pProp = new CMFCPropertyGridProperty(_T("Font Size"), (_variant_t) (long)12, _T("Specifies the font's height of the text"));
 	pProp->EnableSpinControl(TRUE, 0, 100);
 	pGroup3->AddSubItem(pProp);
@@ -311,13 +318,15 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 	UpdateProperty(prop_Name, pObj->m_name.c_str());
 	UpdateProperty(prop_ID, pObj->m_objectId.c_str());
 	UpdateProperty(prop_Caption, pObj->m_caption.c_str());
-	UpdateProperty(prop_Text, pObj->m_text.c_str());
 	UpdateProperty(prop_Image, pObj->m_image.c_str());
 	UpdateProperty(prop_Type, pObj->ToString(pObj->m_type));
 	UpdateProperty(prop_Left, pObj->m_rect.left);
 	UpdateProperty(prop_Top, pObj->m_rect.top);
 	UpdateProperty(prop_Right, pObj->m_rect.right);
 	UpdateProperty(prop_Bottom, pObj->m_rect.bottom);
+
+	UpdateProperty(prop_Text, pObj->m_text.c_str());
+	UpdateProperty(prop_Text_Align, pObj->m_textAlign.c_str());
 
 	// Font Name and Size
 	CString str;
@@ -373,6 +382,12 @@ void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewV
 					prop->Redraw();
 				}
 				else if( propName == prop_Has_Fill_Color || propName == prop_Has_Line_Color || propName == prop_Is_Fill_Solid_Color )
+				{
+					subProp->SetValue(vNewValue);
+					subProp->OnEndEdit();
+					prop->Redraw();
+				}
+				else if (propName == prop_Text_Align)
 				{
 					subProp->SetValue(vNewValue);
 					subProp->OnEndEdit();
@@ -435,6 +450,13 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 		CMFCPropertyGridColorProperty * pColorProp = (CMFCPropertyGridColorProperty *)pProp;
 		COLORREF color = pColorProp->GetColor();
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, color);
+	}
+	else if (propName == prop_Text_Align)
+	{
+		if (propValueText == _T("Left") || propValueText == _T("Center") || propValueText == _T("Right"))
+		{
+			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
+		}
 	}
 	else if( propName == prop_Font )
 	{

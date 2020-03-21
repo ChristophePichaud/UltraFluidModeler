@@ -300,6 +300,7 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorFill = false;
 		pNewElement->m_bSolidColorFill = true;
 		pNewElement->m_text = L"<type text>";
+		pNewElement->m_textAlign = L"Left";
 	}
 
 	if( type == ElementType::type_image )

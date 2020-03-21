@@ -102,6 +102,9 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_FORMAT_ZOOM_IN, OnUpdateFormatZoomIn)
 	ON_COMMAND(ID_FORMAT_ZOOM_OUT, OnFormatZoomOut)
 	ON_UPDATE_COMMAND_UI(ID_FORMAT_ZOOM_OUT, OnUpdateFormatZoomOut)
+	ON_COMMAND(ID_FILE_OPEN_GABARIT, OnFileOpenGabarit)
+	ON_COMMAND(ID_DESIGN_TASK, &CModeler1View::OnModelingTask)
+	ON_COMMAND(ID_DESIGN_MONTH, &CModeler1View::OnModelingMonth)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -728,4 +731,22 @@ void CModeler1View::OnModelingTextBoxes(UINT nID)
 			GetManager()->m_shapeType = ShapeType::text_justify;
 			break;
 	}
+}
+
+void CModeler1View::OnFileOpenGabarit()
+{
+	// TODO: Add your command handler code here
+	GetManager()->OnFileOpenGabarit(this);
+}
+
+void CModeler1View::OnModelingTask()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_comment);
+}
+
+void CModeler1View::OnModelingMonth()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_class);
 }

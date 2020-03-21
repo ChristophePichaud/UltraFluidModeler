@@ -206,6 +206,16 @@ void CElementContainer::MoveToBack(const CElementContainer& selection)
 	}
 }
 
+void CElementContainer::MoveToBack(std::shared_ptr<CElement> pElement)
+{
+	vector<std::shared_ptr<CElement>>::iterator pos = find(m_objects.begin(), m_objects.end(), pElement);
+	if (pos != m_objects.end())
+	{
+		m_objects.erase(pos);
+		m_objects.insert(m_objects.begin(), pElement);
+	}
+}
+
 void CElementContainer::MoveForward(const CElementContainer& selection)
 {
 	/*

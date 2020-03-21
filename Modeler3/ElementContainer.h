@@ -36,6 +36,7 @@ public:
 	void MoveForward(const CElementContainer& selection);
 	void MoveBackward(const CElementContainer& selection);
 	void MoveToBack(const CElementContainer& selection);
+	void MoveToBack(std::shared_ptr<CElement> pElement);
 
 // Debugging Operations
 public:

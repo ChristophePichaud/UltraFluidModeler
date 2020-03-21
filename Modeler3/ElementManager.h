@@ -14,6 +14,8 @@ public:
 
 // Attributes
 public:
+	// Gabari Drawing objects
+	CElementContainer m_objectsGabari;
 	// Drawing objects
 	CElementContainer m_objects;
 	// Selection objects
@@ -133,6 +135,7 @@ public:
 // Load Module Operations
 public:
 	void LoadModule(CModeler1View * pView);
+	void OnFileOpenGabarit(CModeler1View* pView);
 
 // Managing Object Selection
 public:

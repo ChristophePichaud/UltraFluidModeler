@@ -11,6 +11,7 @@ const std::wstring prop_Top = L"Top";
 const std::wstring prop_Right = L"Right";
 const std::wstring prop_Bottom = L"Bottom";
 const std::wstring prop_Font = L"Font";
+const std::wstring prop_Text_Align = L"Text Align";
 const std::wstring prop_Font_Name = L"Font Name";
 const std::wstring prop_Font_Size = L"Font Size";
 const std::wstring prop_Fill_Color = L"Fill Color";

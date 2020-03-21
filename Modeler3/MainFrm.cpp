@@ -333,6 +333,7 @@ void CMainFrame::InitMainButton()
 	CMFCRibbonMainPanel* pMainPanel = m_wndRibbonBar.AddMainCategory(_T("File"), IDB_RIBBON_FILESMALL, IDB_RIBBON_FILELARGE);
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_NEW, _T("&New"), 0, 0));
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_OPEN, _T("&Open..."), 1, 1));
+	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_OPEN_GABARIT, _T("&Open gabarit..."), 1, 1));
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE, _T("&Save"), 2, 2));
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE_AS, _T("Save &As..."), 3, 3));
 	pMainPanel->AddSeparator();
@@ -384,6 +385,9 @@ void CMainFrame::InitMainButton()
 	pListBtnDev->SetIconsInRow(4);
 	pListBtnDev->EnableMenuResize();
 	pPanelDesign->Add(pListBtnDev);
+
+	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_TASK, _T("Task\ntt"), 36));
+	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_MONTH, _T("Month\ntm"), 37));
 
 	// Create "Debug" panel
 	CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
