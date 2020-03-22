@@ -105,6 +105,20 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_COMMAND(ID_FILE_OPEN_GABARIT, OnFileOpenGabarit)
 	ON_COMMAND(ID_DESIGN_TASK, &CModeler1View::OnModelingTask)
 	ON_COMMAND(ID_DESIGN_MONTH, &CModeler1View::OnModelingMonth)
+	ON_COMMAND(ID_FORMAT_ALIGN_LEFT, &CModeler1View::OnFormatAlignLeft)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_ALIGN_LEFT, OnUpdateFormatAlignLeft)
+	ON_COMMAND(ID_FORMAT_ALIGN_RIGHT, &CModeler1View::OnFormatAlignRight)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_ALIGN_RIGHT, OnUpdateFormatAlignRight)
+	ON_COMMAND(ID_FORMAT_ALIGN_TOP, &CModeler1View::OnFormatAlignTop)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_ALIGN_TOP, OnUpdateFormatAlignTop)
+	ON_COMMAND(ID_FORMAT_ALIGN_BOTTOM, &CModeler1View::OnFormatAlignBottom)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_ALIGN_BOTTOM, OnUpdateFormatAlignBottom)
+	ON_COMMAND(ID_FORMAT_TEXT_ALIGN_LEFT, &CModeler1View::OnFormatTextAlignLeft)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_TEXT_ALIGN_LEFT, OnUpdateFormatTextAlignLeft)
+	ON_COMMAND(ID_FORMAT_TEXT_ALIGN_CENTER, &CModeler1View::OnFormatTextAlignCenter)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_TEXT_ALIGN_CENTER, OnUpdateFormatTextAlignCenter)
+	ON_COMMAND(ID_FORMAT_TEXT_ALIGN_RIGHT, &CModeler1View::OnFormatTextAlignRight)
+	ON_UPDATE_COMMAND_UI(ID_FORMAT_TEXT_ALIGN_RIGHT, OnUpdateFormatTextAlignRight)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -750,3 +764,74 @@ void CModeler1View::OnModelingMonth()
 	GetManager()->m_type = ElementType::type_shapes_development;
 	GetManager()->m_shapeType = CShapeType::ToShapeType(development_class);
 }
+
+void CModeler1View::OnFormatAlignLeft()
+{
+	GetManager()->AlignLeft(this);
+}
+
+void CModeler1View::OnUpdateFormatAlignLeft(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnFormatAlignRight()
+{
+	GetManager()->AlignRight(this);
+}
+
+void CModeler1View::OnUpdateFormatAlignRight(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnFormatAlignTop()
+{
+	GetManager()->AlignTop(this);
+}
+
+void CModeler1View::OnUpdateFormatAlignTop(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnFormatAlignBottom()
+{
+	GetManager()->AlignBottom(this);
+}
+
+void CModeler1View::OnUpdateFormatAlignBottom(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnFormatTextAlignLeft()
+{
+	GetManager()->AlignTextLeft(this);
+}
+
+void CModeler1View::OnUpdateFormatTextAlignLeft(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnFormatTextAlignCenter()
+{
+	GetManager()->AlignTextCenter(this);
+}
+
+void CModeler1View::OnUpdateFormatTextAlignCenter(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnFormatTextAlignRight()
+{
+	GetManager()->AlignTextRight(this);
+}
+
+void CModeler1View::OnUpdateFormatTextAlignRight(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection());
+}
+

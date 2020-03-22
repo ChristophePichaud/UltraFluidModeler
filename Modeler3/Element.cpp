@@ -90,7 +90,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, 0)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 2)
 
 int CElement::m_counter = 0;
 
@@ -104,6 +104,7 @@ CElement::CElement()
 	m_point = CPoint(0, 0);
 	m_last = m_point;
 	m_text = L"";
+	m_textAlign = L"Left";
 	m_bColorFill = true;
 	m_colorFill = RGB(154, 200, 249);
 	m_bSolidColorFill = false;
@@ -187,6 +188,18 @@ void CElement::Serialize(CArchive& ar)
 
 	if (ar.IsStoring())
 	{
+		// Get reteurn -1 by default
+		//int version = ar.GetObjectSchema();
+		//CString str;
+		//str.Format(_T("version=%d"), version);
+		//AfxMessageBox(str);
+
+		ar.SetObjectSchema(2);
+
+		// The schema v2 contains extra info: textAlign
+		CString textAlign = W2T((LPTSTR)m_textAlign.c_str());
+		ar << textAlign;
+
 		CString name = W2T((LPTSTR)m_name.c_str());
 		ar << name;
 		int type = m_type;
@@ -213,9 +226,22 @@ void CElement::Serialize(CArchive& ar)
 	}
 	else
 	{
+		int version = ar.GetObjectSchema();
+		//CString str;
+		//str.Format(_T("version=%d"), version);
+		//AfxMessageBox(str);
+
+
 		// get the document back pointer from the archive
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
+
+		if (version == 2)
+		{
+			CString textAlign;
+			ar >> textAlign;
+			this->m_textAlign = T2W((LPTSTR)(LPCTSTR)textAlign);
+		}
 
 		CString name;
 		ar >> name;

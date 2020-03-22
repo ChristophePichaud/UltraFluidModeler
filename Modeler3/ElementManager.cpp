@@ -9,7 +9,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, 0)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 2)
 
 CElementManager::CElementManager()
 {
@@ -392,6 +392,7 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			std::shared_ptr<CElement> pTextElement(new CSimpleTextElement());
 			pTextElement->m_rect = pElement->m_rect;
 			pTextElement->m_text = pElement->m_text;
+			pTextElement->m_textAlign = pElement->m_textAlign;
 			pTextElement->Draw(ctxt);
 		}
 
@@ -580,6 +581,7 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 					SelectNone();
 					Invalidate(pView, pElement);
 				}
+				
 				m_selectPoint = point;
 				m_selectMode = SelectMode::netselect;
 				pView->LogDebug(_T("selectMode == netselect"));
@@ -642,7 +644,6 @@ void CElementManager::OnLButtonDblClk(CModeler1View* pView, UINT nFlags, const C
 
 void CElementManager::DrawSelectionRect(CModeler1View *pView)
 {
-	/*
 	CClientDC dc(pView);
 	Graphics graphics(dc);
 	//graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
@@ -650,9 +651,10 @@ void CElementManager::DrawSelectionRect(CModeler1View *pView)
 	Color colorBlack(255, 0, 0, 0);
 	Pen penBlack(colorBlack);
 	CRect rect = m_selectionRect;
+	rect.NormalizeRect();
 
+	Invalidate(pView);
 	graphics.DrawRectangle(&penBlack, rect.left, rect.top, rect.Width(), rect.Height());
-	*/
 }
 
 void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoint& cpoint)
@@ -682,8 +684,24 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 		
 		CRect selectionRect(m_selectPoint.x, m_selectPoint.y, point.x, point.y);
 		m_selectionRect = selectionRect;
-		
+
+		CRect rect = m_selectionRect;
+		ViewToManager(pView, rect);
+
 		DrawSelectionRect(pView);
+
+		//std::shared_ptr<CElement> pObj = m_objects.ObjectAt(point);
+		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
+		if (v.size() != 0)
+		{
+			for (std::shared_ptr<CElement> pElement : v)
+			{
+				if (IsSelected(pElement) == false)
+				{
+					Select(pElement);
+				}
+			}
+		}
 		return;
 	}
 	
@@ -705,7 +723,6 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 				SetCursor(pElement->GetHandleCursor(nHandle));
 			}
 
-
 			if( m_selectMode == SelectMode::move )
 			{
 				//pView->LogDebug("object selection moved ->" + pElement->ToString());
@@ -724,6 +741,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 				
 				pView->GetDocument()->SetModifiedFlag();
 			}
+
 			if( m_selectMode == SelectMode::size )
 			{
 				if( m_nDragHandle != 0)
@@ -739,6 +757,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 					pView->GetDocument()->SetModifiedFlag();
 				}
 			}
+
 		}
 	}
 	else
@@ -777,6 +796,47 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 
 void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoint& cpoint)
 {
+	CPoint point = cpoint;
+	ViewToManager(pView, point);
+
+	/*
+	if (m_selectMode == SelectMode::netselect)
+	{
+		//m_selectionRect
+		POINT p;
+		p.x = point.x;
+		p.y = point.y;
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
+		{
+			std::shared_ptr<CElement> pElement = *i;
+
+			for (int y = 0; y < p.y; ++y)
+			{
+				for (int x = 0; x < p.x; ++x)
+				{
+					POINT pToCheck;
+					pToCheck.x = x;
+					pToCheck.y = y;
+
+					CRect rect = pElement->m_rect;
+					if (rect.PtInRect(pToCheck) == TRUE)
+					{
+						if (IsSelected(pElement) == false)
+						{
+							Select(pElement);
+						}
+						goto label1;
+					}
+				}
+			}
+
+		label1:
+			bool b = true;
+		}
+	}
+	*/
+
 	// Caution, it flicks !
 	//pView->LogDebug(_T("CElementManager::OnLButtonUp"));
 
@@ -788,9 +848,6 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 	}
 
 	//m_bDrawing = FALSE;
-
-	CPoint point = cpoint;
-	ViewToManager(pView, point);
 
 	std::shared_ptr<CElement> pElement = m_objects.FindElement(m_objectId);
 	if( pElement == NULL )
@@ -1410,4 +1467,142 @@ void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
 	}
 
 	Invalidate(pView);
+}
+
+void CElementManager::AlignLeft(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+	
+			int width = pObj->m_rect.Width();
+			pObj->m_rect.left = pElementBase->m_rect.left;
+			pObj->m_rect.right = pObj->m_rect.left + width;
+			pObj->m_point = pObj->m_rect.TopLeft();
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
+}
+
+void CElementManager::AlignRight(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+
+			int width = pObj->m_rect.Width();
+			pObj->m_rect.right = pElementBase->m_rect.right;
+			pObj->m_rect.left = pObj->m_rect.right - width;
+			pObj->m_point = pObj->m_rect.TopLeft();
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
+}
+
+void CElementManager::AlignTop(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+
+			int height = pObj->m_rect.Height();
+			pObj->m_rect.top = pElementBase->m_rect.top;
+			pObj->m_rect.bottom = pObj->m_rect.top + height;
+			pObj->m_point = pObj->m_rect.TopLeft();
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
+}
+
+void CElementManager::AlignBottom(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+
+			int height = pObj->m_rect.Height();
+			pObj->m_rect.bottom = pElementBase->m_rect.bottom;
+			pObj->m_rect.top = pObj->m_rect.bottom - height;
+			pObj->m_point = pObj->m_rect.TopLeft();
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
+}
+
+void CElementManager::AlignTextLeft(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+
+			pObj->m_textAlign = _T("Left");
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
+}
+
+void CElementManager::AlignTextCenter(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+
+			pObj->m_textAlign = _T("Center");
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
+}
+
+void CElementManager::AlignTextRight(CModeler1View* pView)
+{
+	if (HasSelection())
+	{
+		shared_ptr<CElement> pElementBase = m_selection.m_objects[0];
+
+		for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+		{
+			std::shared_ptr<CElement> pObj = *itSel;
+
+			pObj->m_textAlign = _T("Right");
+			InvalObj(pView, pObj);
+		}
+
+		pView->GetDocument()->SetModifiedFlag();
+	}
 }

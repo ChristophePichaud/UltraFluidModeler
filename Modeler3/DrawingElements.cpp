@@ -657,15 +657,30 @@ void CSimpleTextElement::Draw(CDrawingContext & ctxt)
 	CPoint & p2 = ctxt.GetBottomRight();
 	SolidBrush & solidBrush = ctxt.GetBrushBlack();
 	LinearGradientBrush & lgBrush = ctxt.GetGradientBrushColor();
-	CPoint pointText(rect.left + 10, rect.top + 10);
+	PointF pointText(rect.left + 10, rect.top + 10);
+	SizeF sizeF(rect.Width() - 10, rect.Height() - 10);
+	RectF rectF(pointText, sizeF);
 
 	if( m_text.empty() == false )
 	{
+		StringFormat stringFormat;
+		if (m_textAlign == _T("Left"))
+		{
+			stringFormat.SetAlignment(StringAlignmentNear);
+		}
+		if (m_textAlign == _T("Center"))
+		{
+			stringFormat.SetAlignment(StringAlignmentCenter);
+		}
+		if (m_textAlign == _T("Right"))
+		{
+			stringFormat.SetAlignment(StringAlignmentFar);
+		}
 		// Font object
 		FontFamily fontFamily(L"Calibri");
 		Gdiplus::Font font(&fontFamily, 12, FontStyleRegular, UnitPixel);
 		graphics->SetTextRenderingHint(TextRenderingHintAntiAlias);
-		graphics->DrawString(CStringW(m_text.c_str()), -1, &font, PointF(pointText.x, pointText.y), &solidBrush);
+		graphics->DrawString(CStringW(m_text.c_str()), -1, &font, rectF, &stringFormat, &solidBrush);
 	}
 
 }

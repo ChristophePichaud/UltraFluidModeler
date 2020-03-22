@@ -99,6 +99,13 @@ public:
 	void MoveForward(CModeler1View * pView);
 	void MoveBackward(CModeler1View * pView);
 	void MoveToBack(CModeler1View * pView);
+	void AlignLeft(CModeler1View* pView);
+	void AlignRight(CModeler1View* pView);
+	void AlignTop(CModeler1View* pView);
+	void AlignBottom(CModeler1View* pView);
+	void AlignTextLeft(CModeler1View* pView);
+	void AlignTextCenter(CModeler1View* pView);
+	void AlignTextRight(CModeler1View* pView);
 
 // Managing Background drawing
 public:

@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, 0)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 2)
 
 CElementContainer::CElementContainer()
 {
@@ -45,6 +45,7 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			std::shared_ptr<CElement> pNewElement = CFactory::CreateElementOfType(pElement->m_type, pElement->m_shapeType);
 			pNewElement->m_name = pElement->m_name;
 			pNewElement->m_text = pElement->m_text;
+			pNewElement->m_textAlign = pElement->m_textAlign;
 			pNewElement->m_objectId = pElement->m_objectId;
 			pNewElement->m_rect = pElement->m_rect;
 			pNewElement->m_bColorFill = pElement->m_bColorFill;
@@ -126,6 +127,20 @@ std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint & point)
 	}
 	std::shared_ptr<CElement> pNull;
 	return pNull;
+}
+
+vector<std::shared_ptr<CElement>> CElementContainer::ObjectsInRect(const CRect & rect)
+{
+	vector<std::shared_ptr<CElement>> v;
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pElement->Intersects(rect))
+		{
+			v.push_back(pElement);
+		}
+	}
+	return v;
 }
 
 std::shared_ptr<CElement> CElementContainer::GetHead()

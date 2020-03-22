@@ -134,6 +134,20 @@ public:
 	afx_msg void OnFileOpenGabarit();
 	afx_msg void OnModelingTask();
 	afx_msg void OnModelingMonth();
+	afx_msg void OnFormatAlignLeft();
+	afx_msg void OnUpdateFormatAlignLeft(CCmdUI* pCmdUI);
+	afx_msg void OnFormatAlignRight();
+	afx_msg void OnUpdateFormatAlignRight(CCmdUI* pCmdUI);
+	afx_msg void OnFormatAlignTop();
+	afx_msg void OnUpdateFormatAlignTop(CCmdUI* pCmdUI);
+	afx_msg void OnFormatAlignBottom();
+	afx_msg void OnUpdateFormatAlignBottom(CCmdUI* pCmdUI);
+	afx_msg void OnFormatTextAlignLeft();
+	afx_msg void OnUpdateFormatTextAlignLeft(CCmdUI* pCmdUI);
+	afx_msg void OnFormatTextAlignCenter();
+	afx_msg void OnUpdateFormatTextAlignCenter(CCmdUI* pCmdUI);
+	afx_msg void OnFormatTextAlignRight();
+	afx_msg void OnUpdateFormatTextAlignRight(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

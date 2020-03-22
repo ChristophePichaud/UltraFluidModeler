@@ -488,7 +488,7 @@ void CMainFrame::InitMainButton()
 	pBtnPageColor->AddColorsGroup(_T(""), m_lstAdditionalColors, TRUE);
 	pBtnPageColor->AddColorsGroup(_T("Standard Colors"), m_lstStandardColors);
 	pPanelFormat->Add(pBtnPageColor);
-
+	pPanelFormat->AddSeparator();
 	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ZOOM_IN, _T("Zoom In\ni"), -1));
 	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ZOOM_OUT, _T("Zoom Out\no"), -1));
 	CMFCRibbonComboBox *pBtnZoom = new CMFCRibbonComboBox(ID_FORMAT_ZOOM, FALSE, 50, _T("Zoom: "), -1);
@@ -501,6 +501,15 @@ void CMainFrame::InitMainButton()
 	pBtnZoom->AddItem(_T("75 %"));
 	pBtnZoom->SelectItem(0);
 	pPanelFormat->Add(pBtnZoom);
+	pPanelFormat->AddSeparator();
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_TEXT_ALIGN_LEFT, _T("Text Align Left\nal"), 28));
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_TEXT_ALIGN_CENTER, _T("Text Align Center\nac"), 29));
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_TEXT_ALIGN_RIGHT, _T("Text Align Right\nar"), 30));
+	pPanelFormat->AddSeparator();
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ALIGN_LEFT, _T("Align Left\nal"), 38));
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ALIGN_RIGHT, _T("Align Right\nar"), 39));
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ALIGN_TOP, _T("Align Top\nat"), 40));
+	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ALIGN_BOTTOM, _T("Align Bottom\nab"), 41));
 
 	// Create "Position" panel
 	CMFCRibbonPanel* pPanelPosition = pCategory->AddPanel(_T("Position\nzd"), m_PanelImages.ExtractIcon(2));
