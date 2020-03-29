@@ -393,10 +393,9 @@ void CMainFrame::InitMainButton()
 	CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelDebug->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\nc"), 2));
 
+	/*
 	CMFCRibbonButtonsGroup * apFontGroup = new CMFCRibbonButtonsGroup();
-	
 	CMFCRibbonFontComboBox::m_bDrawUsingFont = TRUE;
-	
 	m_pFontCombo = new CMFCRibbonFontComboBox(ID_FONT_FONT, TRUETYPE_FONTTYPE );
 	m_pFontCombo->SetWidth(55, TRUE); // Width in "floaty" mode
 	m_pFontCombo->SelectItem(_T("Arial"));
@@ -424,6 +423,7 @@ void CMainFrame::InitMainButton()
 	apFontGroup->AddButton(m_pFontSizeCombo);
 
 	pPanelDebug->Add(apFontGroup);
+	*/
 
 	// Create "Show/Hide" panel:
 	CMFCRibbonPanel* pPanelShow = pCategory->AddPanel(_T("Show/Hide\nzs"), m_PanelImages.ExtractIcon(4));
@@ -894,12 +894,14 @@ void CMainFrame::UpdateRibbonUI(CModeler1View * pView)
 		}
 	}
 
+	/*
 	// Update font combo boxes name and size
 	std::shared_ptr<CElement> pElement = selection.GetHead();
 	m_pFontCombo->SelectItem(pElement->m_fontName.c_str());
 	TCHAR sz[255];
 	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
 	m_pFontSizeCombo->SelectItem(sz);
+	*/
 
 	m_wndRibbonBar.RedrawWindow();
 

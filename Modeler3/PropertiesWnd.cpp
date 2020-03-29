@@ -243,6 +243,7 @@ void CPropertiesWnd::InitPropList()
 	CString strFilter = _T("Image Files(*.bmp;*.gif;*.jpg;*.png)|*.bmp;*.gif;*.jpg;*.png|All Files(*.*)|*.*||");
 	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Image"), TRUE, _T(""), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 								strFilter, _T("Specifies the object's image"), 0));
+	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Fixed"), (_variant_t)false, _T("Specifies the object's image size")));
 	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Has Fill Color"), (_variant_t) false, _T("Specifies the object's fill color style")));
 	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Is Fill Solid Color"), (_variant_t) false, _T("Specifies the object's fill solid color style")));
 	pGroup3->AddSubItem(new CMFCPropertyGridProperty(_T("Has Line Color"), (_variant_t) true, _T("Specifies the object's line color style")));
@@ -346,6 +347,8 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 	UpdateProperty(prop_Is_Fill_Solid_Color, vSolidColorFill);
 	COleVariant vColorLine((SHORT)(pObj->HasColorLine()), VT_BOOL);
 	UpdateProperty(prop_Has_Line_Color, vColorLine);
+	COleVariant vFixed((SHORT)(pObj->IsFixed()), VT_BOOL);
+	UpdateProperty(prop_Fixed, vFixed);
 }
 
 void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewValue)
@@ -376,12 +379,17 @@ void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewV
 				}
 				else if( propName == prop_Font )
 				{
+					/*
 					CMFCPropertyGridFontProperty * pFontProp = (CMFCPropertyGridFontProperty*)subProp;
 					pFontProp->SetValue(vNewValue);
 					subProp->OnEndEdit();
 					prop->Redraw();
+					*/
+					subProp->SetValue(vNewValue);
+					subProp->OnEndEdit();
+					prop->Redraw();
 				}
-				else if( propName == prop_Has_Fill_Color || propName == prop_Has_Line_Color || propName == prop_Is_Fill_Solid_Color )
+				else if(propName == prop_Fixed || propName == prop_Has_Fill_Color || propName == prop_Has_Line_Color || propName == prop_Is_Fill_Solid_Color )
 				{
 					subProp->SetValue(vNewValue);
 					subProp->OnEndEdit();
@@ -460,6 +468,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 	}
 	else if( propName == prop_Font )
 	{
+		/*
 		CMFCPropertyGridFontProperty * pFontProp = (CMFCPropertyGridFontProperty *)pProp;
 		LPLOGFONT lpFont = pFontProp->GetLogFont();
 		std::wstring fontName = T2W(lpFont->lfFaceName);
@@ -467,6 +476,8 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 		fontSize = MulDiv(fontSize, -1, 1);
 		GetManager()->UpdateFromPropertyGrid(strObjectId, prop_Font_Name, fontName);
 		GetManager()->UpdateFromPropertyGrid(strObjectId, prop_Font_Size, (long)fontSize);
+		*/
+		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
 	}
 	else if( propName == prop_Left || propName == prop_Top || propName == prop_Right || propName == prop_Bottom )
 	{
@@ -476,7 +487,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValue.lVal);
 	}
-	else if( propName == prop_Has_Fill_Color || propName == prop_Has_Line_Color || propName == prop_Is_Fill_Solid_Color )
+	else if(propName == prop_Fixed || propName == prop_Has_Fill_Color || propName == prop_Has_Line_Color || propName == prop_Is_Fill_Solid_Color )
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, (long) propValue.bVal);
 	}

@@ -90,7 +90,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 2)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 3)
 
 int CElement::m_counter = 0;
 
@@ -113,10 +113,12 @@ CElement::CElement()
 	m_bLineWidth = true;
 	m_lineWidth = 1;
 	m_image = L"";
+	m_bFixed = true;
 	m_fontName = L"Calibri";
 	m_fontSize = 12;
 
 	m_bMoving = FALSE;
+
 	m_type = ElementType::type_unknown;
 	m_shapeType = ShapeType::unknown;
 
@@ -194,7 +196,14 @@ void CElement::Serialize(CArchive& ar)
 		//str.Format(_T("version=%d"), version);
 		//AfxMessageBox(str);
 
-		ar.SetObjectSchema(2);
+		ar.SetObjectSchema(3);
+
+		// The schema v3 contains extra info: fontName, fontSize and Fixed
+		CString fontName = W2T((LPTSTR)m_fontName.c_str());
+		ar << fontName;
+		int fontSize = m_fontSize;
+		ar << fontSize;
+		ar << m_bFixed;
 
 		// The schema v2 contains extra info: textAlign
 		CString textAlign = W2T((LPTSTR)m_textAlign.c_str());
@@ -236,7 +245,18 @@ void CElement::Serialize(CArchive& ar)
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
 
-		if (version == 2)
+		if (version >= 3)
+		{
+			CString fontName;
+			ar >> fontName;
+			this->m_fontName = T2W((LPTSTR)(LPCTSTR)fontName);
+			int fontSize;
+			ar >> fontSize;
+			m_fontSize = fontSize;
+			ar >> m_bFixed;
+		}
+
+		if (version >= 2)
 		{
 			CString textAlign;
 			ar >> textAlign;

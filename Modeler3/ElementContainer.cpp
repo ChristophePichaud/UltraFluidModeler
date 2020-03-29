@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 2)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 3)
 
 CElementContainer::CElementContainer()
 {
@@ -61,6 +61,12 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			pNewElement->m_lineWidth = pElement->m_lineWidth;
 			pNewElement->m_pManager = pElementManager; // TODO
 			pNewElement->m_point = pElement->m_point;
+
+			// Schema v3
+			pNewElement->m_fontName = pElement->m_fontName;
+			pNewElement->m_fontSize = pElement->m_fontSize;
+			pNewElement->m_bFixed = pElement->m_bFixed;
+
 			POSITION pos = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();
 			m_objects.push_back(pNewElement);

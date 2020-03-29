@@ -5,6 +5,7 @@ const std::wstring prop_ID = L"ID";
 const std::wstring prop_Caption = L"Caption";
 const std::wstring prop_Text = L"Text";
 const std::wstring prop_Image = L"Image";
+const std::wstring prop_Fixed = L"Fixed";
 const std::wstring prop_Type = L"Type";
 const std::wstring prop_Left = L"Left";
 const std::wstring prop_Top = L"Top";

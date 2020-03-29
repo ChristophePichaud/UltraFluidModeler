@@ -9,7 +9,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 2)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 3)
 
 CElementManager::CElementManager()
 {
@@ -708,7 +708,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 	std::shared_ptr<CElement> pElement = m_selection.GetHead(); //m_objects.FindElement(m_objectId);
 	if( pElement == NULL )
 	{
-		pView->LogDebug(_T("FindElement return NULL; return;"));
+		//pView->LogDebug(_T("FindElement return NULL; return;"));
 		return;
 	}
 
@@ -1166,6 +1166,11 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 	if (name == prop_Font_Size)
 	{
 		pElement->m_fontSize = value;
+	}
+
+	if (name == prop_Fixed)
+	{
+		pElement->m_bFixed = value == 0 ? false : true;
 	}
 
 	InvalObj(pElement->GetView(), pElement);

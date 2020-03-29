@@ -192,6 +192,7 @@ public:
 	int m_lineWidth;
 	bool m_bLineWidth;
 	std::wstring m_image;
+	bool m_bFixed;
 	// Handling Moving stuff
 	bool m_bMoving;
 	// Connectivity
@@ -205,6 +206,7 @@ public:
 	bool HasColorFill()	const { return m_bColorFill; }
 	bool IsSolidColorFill()	const { return m_bSolidColorFill; }
 	bool HasColorLine()	const { return m_bColorLine; }
+	bool IsFixed() const{ return m_bFixed; }
 
 // Extra Pointer plumbing
 public:

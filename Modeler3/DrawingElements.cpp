@@ -544,26 +544,55 @@ void CImageElement::Draw(CDrawingContext & ctxt)
 		//graphics->DrawImage(&image, rect.left, rect.top, rect.Width(), rect.Height());
 		//graphics->DrawImage(&image, rect.left, rect.top, image.GetWidth(), image.GetHeight());
 
+		if (IsFixed())
+		{
+			// Adjust fixed image size
+			CPoint p1(rect.left, rect.top);
+			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
+			m_rect.SetRect(p1, p2);
+
+			graphics->DrawImage(&image, rect.left, rect.top, image.GetWidth(), image.GetHeight());
+		}
+		else
+		{
+			Rect destRect(rect.left, rect.top, rect.Width(), rect.Height());
+			graphics->DrawImage(&image, destRect, 0, 0, image.GetWidth(), image.GetHeight(), UnitPixel, NULL, NULL, NULL);
+		}
+
+#ifdef OLD
+
 		if( m_type == ElementType::type_shapes_infrastructure )
 		{
+			//Rect destRect(rect.left, rect.top, rect.Width(), rect.Height());
+			//graphics->DrawImage(&image, destRect, 0, 0, image.GetWidth(), image.GetHeight(), UnitPixel, NULL, NULL, NULL);
+			////graphics->DrawImage(&image, rect.left, rect.top, image.GetWidth(), image.GetHeight());
+
+			// Adjust fixed image size
+			CPoint p1(rect.left, rect.top);
+			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
+			m_rect.SetRect(p1, p2);
+
 			graphics->DrawImage(&image, rect.left, rect.top, image.GetWidth(), image.GetHeight());
 		}
 
 		if( m_type == ElementType::type_image )
 		{
-			//Rect destRect(rect.left, rect.top, rect.Width(), rect.Height());
-			//graphics->DrawImage(&image, destRect, 0, 0, image.GetWidth(), image.GetHeight(), UnitPixel, NULL, NULL, NULL);
-			graphics->DrawImage(&image, rect.left, rect.top, image.GetWidth(), image.GetHeight());
+			Rect destRect(rect.left, rect.top, rect.Width(), rect.Height());
+			graphics->DrawImage(&image, destRect, 0, 0, image.GetWidth(), image.GetHeight(), UnitPixel, NULL, NULL, NULL);
+			//graphics->DrawImage(&image, rect.left, rect.top, image.GetWidth(), image.GetHeight());
 		}
-			
+#endif
+
+#ifdef FIXED_SIZE
 		// Infrastructure shapes are fixed size
-		//if( m_type == type_shapes_infrastructure )
+		if( m_type == type_shapes_infrastructure )
 		{
 			// Adjust fixed image size
 			CPoint p1(rect.left, rect.top);
 			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
 			m_rect.SetRect(p1, p2);		
 		}
+#endif
 
 		// Useless or not to draw a rectangle around the image ???
 		if( HasColorLine() )
@@ -678,7 +707,8 @@ void CSimpleTextElement::Draw(CDrawingContext & ctxt)
 		}
 		// Font object
 		FontFamily fontFamily(L"Calibri");
-		Gdiplus::Font font(&fontFamily, 12, FontStyleRegular, UnitPixel);
+		//Gdiplus::Font font(&fontFamily, 12, FontStyleRegular, UnitPixel);	
+		Gdiplus::Font font(&fontFamily, this->m_fontSize, FontStyleRegular, UnitPixel);
 		graphics->SetTextRenderingHint(TextRenderingHintAntiAlias);
 		graphics->DrawString(CStringW(m_text.c_str()), -1, &font, rectF, &stringFormat, &solidBrush);
 	}
