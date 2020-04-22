@@ -316,6 +316,8 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 	//
 	pNewElement->m_type = type;
 	pNewElement->m_shapeType = shapeType;
+	pNewElement->m_bGrouping = false;
+
 	return pNewElement;
 }
 

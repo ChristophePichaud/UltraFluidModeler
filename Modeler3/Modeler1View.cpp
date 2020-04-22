@@ -119,6 +119,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_FORMAT_TEXT_ALIGN_CENTER, OnUpdateFormatTextAlignCenter)
 	ON_COMMAND(ID_FORMAT_TEXT_ALIGN_RIGHT, &CModeler1View::OnFormatTextAlignRight)
 	ON_UPDATE_COMMAND_UI(ID_FORMAT_TEXT_ALIGN_RIGHT, OnUpdateFormatTextAlignRight)
+	ON_COMMAND(ID_EDIT_GROUP, &CModeler1View::OnEditGroup)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_GROUP, &CModeler1View::OnUpdateEditGroup)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -833,5 +835,24 @@ void CModeler1View::OnFormatTextAlignRight()
 void CModeler1View::OnUpdateFormatTextAlignRight(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(GetManager()->HasSelection());
+}
+
+void CModeler1View::OnEditGroup()
+{
+	// TODO: Add your command handler code here
+	GetManager()->OnEditGroup(this);
+}
+
+void CModeler1View::OnUpdateEditGroup(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	if (GetManager()->m_selection.GetCount() >= 2)
+	{
+		pCmdUI->Enable(TRUE);
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
 }
 

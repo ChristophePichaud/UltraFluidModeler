@@ -22,6 +22,8 @@ public:
 	CElementContainer m_selection;
 	// Clipboard objects
 	CElementContainer m_clipboard;
+	// Grouped Objects
+	vector<shared_ptr<CElementGroup>> m_groups;
 
 	COLORREF m_paperColor;
 	// Page size in logical coordinates
@@ -152,6 +154,10 @@ public:
 	bool Deselect(std::shared_ptr<CElement> pElement);
 	void SelectNone();
 	void DrawSelectionRect(CModeler1View *pView);
+
+// Managing Grouping
+public:
+	void OnEditGroup(CModeler1View* pView);
 
 // Overridables
 public:

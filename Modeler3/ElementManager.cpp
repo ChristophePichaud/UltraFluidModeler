@@ -548,15 +548,27 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 				pView->LogDebug(_T("object found ->") + pElement->ToString());
 				if( IsSelected(pElement) == false )
 				{
-					if( nFlags & MK_SHIFT)
+					if( (nFlags & MK_SHIFT) || (nFlags & MK_CONTROL))
 					{
 					}
 					else
 						SelectNone();
 
-					pView->LogDebug(_T("object selected ->") + pElement->ToString());
-					m_objectId = pElement->m_objectId;
-					Select(pElement);
+					if (pElement->m_bGrouping == false)
+					{
+						pView->LogDebug(_T("object selected ->") + pElement->ToString());
+						m_objectId = pElement->m_objectId;
+						Select(pElement);
+					}
+					else
+					{
+						for (vector<std::shared_ptr<CElement>>::const_iterator itSel = pElement->m_pElementGroup->m_Groups.begin(); itSel != pElement->m_pElementGroup->m_Groups.end(); itSel++)
+						{
+							std::shared_ptr<CElement> pObj = *itSel;
+							Select(pObj);
+						}
+					}
+
 					pElement->m_bMoving = true;
 				}
 
@@ -698,7 +710,10 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 			{
 				if (IsSelected(pElement) == false)
 				{
-					Select(pElement);
+					if (pElement->m_bGrouping == false)
+					{
+						Select(pElement);
+					}
 				}
 			}
 		}
@@ -1610,4 +1625,21 @@ void CElementManager::AlignTextRight(CModeler1View* pView)
 
 		pView->GetDocument()->SetModifiedFlag();
 	}
+}
+
+void CElementManager::OnEditGroup(CModeler1View* pView)
+{
+	//AfxMessageBox(L"Grouping");
+
+	shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
+
+	for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+	{
+		std::shared_ptr<CElement> pObj = *itSel;
+		pObj->m_pElementGroup = speg;
+		pObj->m_bGrouping = true;
+		speg->m_Groups.push_back(pObj);
+	}
+
+	this->m_groups.push_back(speg);
 }

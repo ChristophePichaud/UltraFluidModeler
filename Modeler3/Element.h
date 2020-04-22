@@ -122,6 +122,7 @@ class CElement;
 class CModeler1View;
 class CElementManager;
 class CDrawingContext;
+class CElementGroup;
 
 class CElement : public CObject
 {
@@ -198,6 +199,9 @@ public:
 	// Connectivity
 	CElementManager * m_pManager;
 	CModeler1View * m_pView;
+	// Grouping
+	shared_ptr<CElementGroup> m_pElementGroup;
+	bool m_bGrouping;
 
 // Methods for Attributes
 public:
@@ -212,6 +216,12 @@ public:
 public:
 	CElementManager * GetManager() const { return m_pManager; }
 	CModeler1View * GetView() const	{ return m_pView; }
+};
+
+class CElementGroup
+{
+public:
+	std::vector<std::shared_ptr<CElement>> m_Groups;
 };
 
 void CallDraw(CDrawingContext & ctxt, std::shared_ptr<CElement> pElement);
