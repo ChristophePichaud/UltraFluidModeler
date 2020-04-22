@@ -121,6 +121,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_FORMAT_TEXT_ALIGN_RIGHT, OnUpdateFormatTextAlignRight)
 	ON_COMMAND(ID_EDIT_GROUP, &CModeler1View::OnEditGroup)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_GROUP, &CModeler1View::OnUpdateEditGroup)
+	ON_COMMAND(ID_EDIT_UNGROUP, &CModeler1View::OnEditUngroup)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_UNGROUP, &CModeler1View::OnUpdateEditUngroup)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -856,3 +858,17 @@ void CModeler1View::OnUpdateEditGroup(CCmdUI* pCmdUI)
 	}
 }
 
+void CModeler1View::OnEditUngroup()
+{
+	// TODO: Add your command handler code here
+	GetManager()->OnEditUngroup(this);
+}
+
+void CModeler1View::OnUpdateEditUngroup(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	if (GetManager()->HasSelection())
+	{
+		pCmdUI->Enable(GetManager()->m_selection.GetHead()->m_bGrouping == true);
+	}
+}

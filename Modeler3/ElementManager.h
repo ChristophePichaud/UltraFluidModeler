@@ -158,6 +158,7 @@ public:
 // Managing Grouping
 public:
 	void OnEditGroup(CModeler1View* pView);
+	void OnEditUngroup(CModeler1View* pView);
 
 // Overridables
 public:

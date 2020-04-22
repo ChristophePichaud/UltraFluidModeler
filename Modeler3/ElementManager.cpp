@@ -1643,3 +1643,34 @@ void CElementManager::OnEditGroup(CModeler1View* pView)
 
 	this->m_groups.push_back(speg);
 }
+
+void CElementManager::OnEditUngroup(CModeler1View* pView)
+{
+	//AfxMessageBox(L"Ungrouping");
+	shared_ptr<CElementGroup> speg = nullptr;
+
+	for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
+	{
+		std::shared_ptr<CElement> pElement = *itSel;
+		speg = pElement->m_pElementGroup;
+		break;
+	}
+
+	for (vector<std::shared_ptr<CElementGroup>>::iterator it = m_groups.begin(); it != m_groups.end(); it++)
+	{
+		shared_ptr<CElementGroup> pElementGroup = *it;
+
+		if (pElementGroup == speg)
+		{
+			for (vector<std::shared_ptr<CElement>>::const_iterator itSel = pElementGroup->m_Groups.begin(); itSel != pElementGroup->m_Groups.end(); itSel++)
+			{
+				std::shared_ptr<CElement> pObj = *itSel;
+				pObj->m_pElementGroup = nullptr;
+				pObj->m_bGrouping = false;
+
+			}
+			m_groups.erase(it);
+			break;
+		}
+	}
+}

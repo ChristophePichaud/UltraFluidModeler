@@ -150,6 +150,8 @@ public:
 	afx_msg void OnUpdateFormatTextAlignRight(CCmdUI* pCmdUI);
 	afx_msg void OnEditGroup();
 	afx_msg void OnUpdateEditGroup(CCmdUI* pCmdUI);
+	afx_msg void OnEditUngroup();
+	afx_msg void OnUpdateEditUngroup(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp
