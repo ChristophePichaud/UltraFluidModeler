@@ -507,12 +507,16 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 	//m_bDrawing = true;
 	
 	CPoint point = cpoint;
+	//m_clickPoint = point;
 	ViewToManager(pView, point);
+	m_clickPoint = point;
+	//ManagerToView(pView, m_clickPoint);
 	m_lastPoint = point;
+	m_selectPoint = point;
 
 	// Debugging
 	CString str;
-	str.Format(_T("point {%d,%d} / {%d,%d}"), cpoint.x, cpoint.y, point.x, point.y);
+	str.Format(_T("m_clickPoint {%d,%d} / point {%d,%d} / cpoint {%d,%d}"), m_clickPoint.x, m_clickPoint.y, point.x, point.y, cpoint.x, cpoint.y);
 	pView->LogDebug(str);
 
 	if( m_type == ElementType::type_select )
@@ -594,7 +598,7 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 					Invalidate(pView, pElement);
 				}
 				
-				m_selectPoint = point;
+				//m_selectPoint = point;
 				m_selectMode = SelectMode::netselect;
 				pView->LogDebug(_T("selectMode == netselect"));
 			}
@@ -614,6 +618,12 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 		{
 			pView->LogDebug(_T("object not implemented yet ! ->") + pNewElement->ToString());
 			return;
+		}
+
+		if (m_shapeType == ShapeType::selection)
+		{
+			m_bSelectionHasStarted = true;
+			pSelectionElement = pNewElement;
 		}
 		
 		pNewElement->m_point = point;
@@ -657,8 +667,8 @@ void CElementManager::OnLButtonDblClk(CModeler1View* pView, UINT nFlags, const C
 void CElementManager::DrawSelectionRect(CModeler1View *pView)
 {
 	CClientDC dc(pView);
-	Graphics graphics(dc);
-	//graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
+	Graphics graphics(dc.m_hDC);
+	graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
 
 	Color colorBlack(255, 0, 0, 0);
 	Pen penBlack(colorBlack);
@@ -683,24 +693,24 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 	//	return;
 
 	CPoint point = cpoint;
+	CPoint m_movePoint = point;
 	ViewToManager(pView, point);
+	CPoint lastPoint = point;
 
 	// Debugging
 	CString str;
 	str.Format(_T("point {%d,%d} / {%d,%d}"), cpoint.x, cpoint.y, point.x, point.y);
 	//pView->LogDebug(str);
 
-	if (m_selectMode == SelectMode::netselect)
+	// Unused code !
+	if (m_selectMode == SelectMode::netselect) //|| m_shapeType == ShapeType::selection)
+	//if (m_bSelectionHasStarted == true)
 	{
 		//pView->LogDebug("selection is under drawing");
 		
 		CRect selectionRect(m_selectPoint.x, m_selectPoint.y, point.x, point.y);
-		m_selectionRect = selectionRect;
-
-		CRect rect = m_selectionRect;
+		CRect rect = selectionRect;
 		ViewToManager(pView, rect);
-
-		DrawSelectionRect(pView);
 
 		//std::shared_ptr<CElement> pObj = m_objects.ObjectAt(point);
 		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
@@ -717,6 +727,12 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 				}
 			}
 		}
+
+		//CRect rect2(m_clickPoint.x, m_clickPoint.y, m_movePoint.x, m_movePoint.y);
+		//ManagerToView(pView, rect2);
+		//m_selectionRect = rect2;
+		//DrawSelectionRect(pView);
+
 		return;
 	}
 	
@@ -783,6 +799,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 		
 			pElement->m_last = point;
 			pElement->InvalidateObj();
+			//MoveToBack(pView);
 			// Find a connection ?
 			FindAConnectionFor(pElement, point, pView);
 			InvalObj(pView, pElement);
@@ -865,12 +882,12 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 	//m_bDrawing = FALSE;
 
 	std::shared_ptr<CElement> pElement = m_objects.FindElement(m_objectId);
-	if( pElement == NULL )
-		return;	
-	
-	if( m_type == ElementType::type_select )
+	if (pElement == NULL)
+		return;
+
+	if (m_type == ElementType::type_select)
 	{
-		if( HasSelection() &&  m_selection.GetCount() == 1)
+		if (HasSelection() && m_selection.GetCount() == 1)
 		{
 			// Nothing to do...
 			pView->LogDebug(_T("object selection finished ->") + pElement->ToString());
@@ -887,6 +904,40 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 
 		pView->LogDebug(_T("object drawing finished ->") + pElement->ToString());
 	}
+
+
+	if (m_bSelectionHasStarted == true)
+	{
+		CRect rect = pSelectionElement->m_rect;
+
+		vector<std::shared_ptr<CElement>>::iterator pos;
+		pos = find(m_objects.m_objects.begin(), m_objects.m_objects.end(), pSelectionElement);
+		if (pos != m_objects.m_objects.end())
+		{
+			m_objects.m_objects.erase(pos);
+		}
+
+		//ViewToManager(pView, rect);
+
+		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
+		if (v.size() != 0)
+		{
+			for (std::shared_ptr<CElement> pElement : v)
+			{
+				if (IsSelected(pElement) == false)
+				{
+					if (pElement->m_bGrouping == false)
+					{
+						Select(pElement);
+					}
+				}
+			}
+		}
+
+		pSelectionElement = nullptr;
+		m_bSelectionHasStarted = false;
+	}
+
 
 	pElement->m_bMoving = FALSE;
 	// Update UI

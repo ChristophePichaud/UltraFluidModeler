@@ -19,7 +19,8 @@ enum ElementType : int
 	type_shapes_infrastructure, 
 	type_text, 
 	type_shapes_development,
-	type_shapes_import
+	type_shapes_import,
+	type_selection
 };
 
 #define OffsetShapes_Simple			0
@@ -95,6 +96,7 @@ enum ShapeType : int
 	development_package_import,
 	development_connector,
 	import_class = OffsetShapes_Import,
+	selection,
 	unknown = 1000
 };
 

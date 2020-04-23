@@ -742,3 +742,28 @@ void CNotImplementedElement::Draw(CDrawingContext & ctxt)
 	graphics->SetTextRenderingHint(TextRenderingHintAntiAlias);
 	graphics->DrawString(CStringW(str), -1, &font, PointF(pointText.x, pointText.y), &solidBrush);
 }
+
+//
+// CSelectionElement class
+//
+void CSelectionElement::Draw(CDrawingContext& ctxt)
+{
+	CRect rect = m_rect;
+	Graphics* graphics = ctxt.GetGraphics();
+	Pen& colorPen = ctxt.GetPenColor();
+	SolidBrush& solidBrush = ctxt.GetBrushColor();
+	LinearGradientBrush& lgBrush = ctxt.GetGradientBrushColor();
+
+	if (HasColorFill())
+	{
+		if (IsSolidColorFill())
+			graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
+		else
+			graphics->FillRectangle(&lgBrush, rect.left, rect.top, rect.Width(), rect.Height());
+	}
+	if (HasColorLine())
+	{
+		graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
+	}
+}
+

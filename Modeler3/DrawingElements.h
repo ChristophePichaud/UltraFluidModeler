@@ -115,3 +115,10 @@ class CConnectableElement : public CElement
 {
 public:
 };
+
+class CSelectionElement : public CElement
+{
+public:
+	virtual void Draw(CDrawingContext& ctxt);
+};
+

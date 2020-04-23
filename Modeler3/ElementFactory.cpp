@@ -311,6 +311,13 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorLine = FALSE;
 	}
 	
+	if (shapeType == selection)
+	{
+		std::shared_ptr<CElement> apNewElement(new CSelectionElement());
+		pNewElement = apNewElement;
+		pNewElement->m_bColorFill = false;
+	}
+		
 	//
 	// Initialize default members for the element
 	//

@@ -52,6 +52,9 @@ public:
 	CPoint m_selectPoint;
 	// Selection Rect
 	CRect m_selectionRect;
+	CPoint m_clickPoint;
+	bool m_bSelectionHasStarted;
+	shared_ptr<CElement> pSelectionElement;
 
 // Methods for Attributes
 public:

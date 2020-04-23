@@ -123,6 +123,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_GROUP, &CModeler1View::OnUpdateEditGroup)
 	ON_COMMAND(ID_EDIT_UNGROUP, &CModeler1View::OnEditUngroup)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNGROUP, &CModeler1View::OnUpdateEditUngroup)
+	ON_COMMAND(ID_DESIGN_SELECTION, &CModeler1View::OnDesignSelection)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_SELECTION, &CModeler1View::OnUpdateDesignSelection)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -872,3 +874,18 @@ void CModeler1View::OnUpdateEditUngroup(CCmdUI* pCmdUI)
 		pCmdUI->Enable(GetManager()->m_selection.GetHead()->m_bGrouping == true);
 	}
 }
+
+void CModeler1View::OnDesignSelection()
+{
+	// TODO: Add your command handler code here
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateDesignSelection(CCmdUI* pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	pCmdUI->SetRadio(GetManager()->m_type == ElementType::type_selection);
+}
+
+
