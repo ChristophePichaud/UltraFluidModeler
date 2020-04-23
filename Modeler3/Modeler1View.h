@@ -154,6 +154,12 @@ public:
 	afx_msg void OnUpdateEditUngroup(CCmdUI* pCmdUI);
 	afx_msg void OnDesignSelection();
 	afx_msg void OnUpdateDesignSelection(CCmdUI* pCmdUI);
+	afx_msg void OnDesignClass();
+	afx_msg void OnDesignInterface();
+	afx_msg void OnDesignEnum();
+	afx_msg void OnDesignPackage();
+	afx_msg void OnDesignComment();
+	afx_msg void OnDesignComponent();
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

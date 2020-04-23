@@ -20,6 +20,7 @@ enum ElementType : int
 	type_text, 
 	type_shapes_development,
 	type_shapes_import,
+	type_shapes_planning,
 	type_selection
 };
 
@@ -29,6 +30,7 @@ enum ElementType : int
 #define OffsetShapes_Text			200
 #define OffsetShapes_Development	300
 #define OffsetShapes_Import			400
+#define OffsetShapes_Planning		500
 
 enum ShapeType : int 
 {
@@ -96,6 +98,8 @@ enum ShapeType : int
 	development_package_import,
 	development_connector,
 	import_class = OffsetShapes_Import,
+	planning_month = OffsetShapes_Planning,
+	planning_task,
 	selection,
 	unknown = 1000
 };

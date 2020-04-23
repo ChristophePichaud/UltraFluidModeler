@@ -81,6 +81,9 @@ ShapeType CShapeType::ToShapeType(int value)
 		case development_component:
 			ret = (ShapeType)value;
 			break;
+		case planning_month:
+		case planning_task:
+			ret = (ShapeType)value;
 		default: break;
 	}
 	return ret;

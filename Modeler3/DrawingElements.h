@@ -122,3 +122,9 @@ public:
 	virtual void Draw(CDrawingContext& ctxt);
 };
 
+class CPlanningElement : public CElement
+{
+public:
+	virtual void Draw(CDrawingContext& ctxt);
+};
+

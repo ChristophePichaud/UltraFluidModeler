@@ -318,6 +318,35 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorFill = false;
 	}
 		
+	if (type == ElementType::type_shapes_planning)
+	{
+		std::shared_ptr<CElement> apNewElement(new CPlanningElement());
+		pNewElement = apNewElement;
+		pNewElement->m_bColorLine = true;
+		pNewElement->m_bColorFill = true;
+		pNewElement->m_bSolidColorFill = true;
+
+		// Set colors for development shapes
+		Color colorLineClass(255, 52, 101, 164);
+		Color colorFillClass(255, 200, 210, 233);
+		Color colorLineComment(255, 202, 178, 45);
+		Color colorFillComment(255, 251, 247, 200);
+
+		switch (shapeType)
+		{
+		case planning_month:
+			pNewElement->m_text = L"Month";
+			pNewElement->m_colorFill = colorFillClass.ToCOLORREF();
+			pNewElement->m_colorLine = colorLineClass.ToCOLORREF();
+			break;
+		case planning_task:
+			pNewElement->m_text = L"Task";
+			pNewElement->m_colorFill = colorFillComment.ToCOLORREF();
+			pNewElement->m_colorLine = colorLineComment.ToCOLORREF();
+			break;
+		}
+	}
+
 	//
 	// Initialize default members for the element
 	//

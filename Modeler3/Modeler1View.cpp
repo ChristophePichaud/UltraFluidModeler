@@ -125,6 +125,12 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNGROUP, &CModeler1View::OnUpdateEditUngroup)
 	ON_COMMAND(ID_DESIGN_SELECTION, &CModeler1View::OnDesignSelection)
 	ON_UPDATE_COMMAND_UI(ID_DESIGN_SELECTION, &CModeler1View::OnUpdateDesignSelection)
+	ON_COMMAND(ID_DESIGN_CLASS, &CModeler1View::OnDesignClass)
+	ON_COMMAND(ID_DESIGN_INTERFACE, &CModeler1View::OnDesignInterface)
+	ON_COMMAND(ID_DESIGN_ENUM, &CModeler1View::OnDesignEnum)
+	ON_COMMAND(ID_DESIGN_PACKAGE, &CModeler1View::OnDesignPackage)
+	ON_COMMAND(ID_DESIGN_COMMENT, &CModeler1View::OnDesignComment)
+	ON_COMMAND(ID_DESIGN_COMPONENT, &CModeler1View::OnDesignComponent)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -761,14 +767,14 @@ void CModeler1View::OnFileOpenGabarit()
 
 void CModeler1View::OnModelingTask()
 {
-	GetManager()->m_type = ElementType::type_shapes_development;
-	GetManager()->m_shapeType = CShapeType::ToShapeType(development_comment);
+	GetManager()->m_type = ElementType::type_shapes_planning;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(planning_task);
 }
 
 void CModeler1View::OnModelingMonth()
 {
-	GetManager()->m_type = ElementType::type_shapes_development;
-	GetManager()->m_shapeType = CShapeType::ToShapeType(development_class);
+	GetManager()->m_type = ElementType::type_shapes_planning;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(planning_month);
 }
 
 void CModeler1View::OnFormatAlignLeft()
@@ -888,4 +894,39 @@ void CModeler1View::OnUpdateDesignSelection(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(GetManager()->m_type == ElementType::type_selection);
 }
 
+void CModeler1View::OnDesignClass()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_class);
+}
+
+void CModeler1View::OnDesignInterface()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_interface);
+}
+
+void CModeler1View::OnDesignEnum()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_enumeration);
+}
+
+void CModeler1View::OnDesignPackage()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_package);
+}
+
+void CModeler1View::OnDesignComment()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_comment);
+}
+
+void CModeler1View::OnDesignComponent()
+{
+	GetManager()->m_type = ElementType::type_shapes_development;
+	GetManager()->m_shapeType = CShapeType::ToShapeType(development_component);
+}
 

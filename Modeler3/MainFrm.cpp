@@ -387,8 +387,19 @@ void CMainFrame::InitMainButton()
 	pListBtnDev->EnableMenuResize();
 	pPanelDesign->Add(pListBtnDev);
 
-	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_TASK, _T("Task\ntt"), 36));
-	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_MONTH, _T("Month\ntm"), 37));
+	// Create "Planning" panel
+	CMFCRibbonPanel* pPanelPlanning = pCategory->AddPanel(_T("Planning\npa"), m_PanelImages.ExtractIcon(2));
+	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_TASK, _T("Task\ntt"), 36));
+	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_MONTH, _T("Month\ntm"), 37));
+
+	// Create "Development" panel
+	CMFCRibbonPanel* pPanelDev = pCategory->AddPanel(_T("Development\nwd"), m_PanelImages.ExtractIcon(2));
+	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_CLASS, _T("Class\ndc"), 37));
+	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_INTERFACE, _T("Interface\ndim"), 42));
+	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_ENUM, _T("Enum\nde"), 43));
+	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_PACKAGE, _T("Package\ndp"), 44));
+	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_COMMENT, _T("Comment\ndd"), 36));
+	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_COMPONENT, _T("Component\ndo"), 45));
 
 	// Create "Debug" panel
 	CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
