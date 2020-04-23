@@ -22,6 +22,7 @@ public:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnActivateView(CView* view);
 
 	BOOL IsScrollBar () const
 	{

@@ -185,6 +185,7 @@ public:
 	std::wstring m_objectId;
 	std::wstring m_caption;
 	std::wstring m_text;
+	std::wstring m_code;
 	std::wstring m_textAlign;
 	std::wstring m_fontName;
 	int m_fontSize;

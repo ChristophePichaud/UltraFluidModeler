@@ -63,7 +63,6 @@ public:
 
 // Operations
 public:
-	void SetManager(CElementManager * pManager);
 	void SetView(CModeler1View * pView);
 	void UpdatePropertiesFromObject(std::shared_ptr<CElement> pElement);
 	void InitClassView();
@@ -76,6 +75,13 @@ public:
 
 // Attributes
 public:
+	CElementManager* m_pManager;
+	void SetManager(CElementManager* pManager);
+	CElementManager* GetManager() const
+	{
+		return m_pManager;
+	}
+
 protected:
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;

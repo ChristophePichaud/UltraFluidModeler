@@ -747,6 +747,7 @@ void CMainFrame::UpdateFileViewFromObject(std::shared_ptr<CElement> pElement)
 
 void CMainFrame::SetManager(CElementManager * pManager)
 {
+	m_pManager = pManager;
 	m_wndProperties.SetManager(pManager);
 }
 

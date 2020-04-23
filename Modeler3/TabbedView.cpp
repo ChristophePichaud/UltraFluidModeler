@@ -7,6 +7,7 @@
 #include "Modeler1View.h"
 #include "Modeler1SourceView.h"
 //#include "SourceCodeView.h"
+#include "MainFrm.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -121,4 +122,32 @@ int CTabbedView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CTabbedView::OnEraseBkgnd(CDC* /*pDC*/) 
 {
 	return TRUE;
+}
+
+void CTabbedView::OnActivateView(CView* view)
+{
+	if (view->IsKindOf(RUNTIME_CLASS(CModeler1SourceView)))
+	{
+		CModeler1SourceView* pSourceView = (CModeler1SourceView*)view;
+		CEdit& ctrlEdit = pSourceView->GetEditCtrl();
+
+		CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+		CElementManager* pManager = pFrame->GetManager();
+		if (pManager->HasSelection())
+		{
+			shared_ptr<CElement> pElement = nullptr;
+			pElement = pManager->m_selection.GetHead();
+
+			pManager->m_bSavingCode = true;
+			//ctrlEdit.SetWindowText(pElement->m_text.c_str());
+			ctrlEdit.SetWindowText(pElement->m_code.c_str());
+			pManager->m_bSavingCode = false;
+		}
+		else
+		{
+			pManager->m_bSavingCode = true;
+			ctrlEdit.SetWindowText(_T("No selected element!"));
+			pManager->m_bSavingCode = false;
+		}
+	}
 }

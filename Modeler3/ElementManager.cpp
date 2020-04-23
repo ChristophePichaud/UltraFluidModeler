@@ -9,7 +9,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 3)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 4)
 
 CElementManager::CElementManager()
 {
@@ -26,6 +26,8 @@ CElementManager::CElementManager()
 	m_shapeType = ShapeType::unknown;
 	m_nDragHandle = 1;
 	m_fZoomFactor = 1.0f;
+	
+	m_bSavingCode = false;
 	
 	// Initiate the connection with the Property Window
 	ConnectToPropertyGrid();

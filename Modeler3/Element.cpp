@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 3)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 4)
 
 int CElement::m_counter = 0;
 
@@ -106,8 +106,9 @@ CElement::CElement()
 	m_rect.SetRectEmpty();
 	m_point = CPoint(0, 0);
 	m_last = m_point;
-	m_text = L"";
-	m_textAlign = L"Left";
+	m_text = _T("");
+	m_code = _T("");
+	m_textAlign = _T("Left");
 	m_bColorFill = true;
 	m_colorFill = RGB(154, 200, 249);
 	m_bSolidColorFill = false;
@@ -115,9 +116,9 @@ CElement::CElement()
 	m_colorLine = RGB(0, 0, 0);
 	m_bLineWidth = true;
 	m_lineWidth = 1;
-	m_image = L"";
+	m_image = _T("");
 	m_bFixed = true;
-	m_fontName = L"Calibri";
+	m_fontName = _T("Calibri");
 	m_fontSize = 12;
 
 	m_bMoving = FALSE;
@@ -173,6 +174,7 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_objectId = this->m_objectId;
 		pNewElement->m_caption = this->m_caption;
 		pNewElement->m_text = this->m_text;
+		pNewElement->m_code = this->m_code;
 		pNewElement->m_lineWidth = this->m_lineWidth;
 		pNewElement->m_pManager = this->m_pManager;
 		pNewElement->m_pView = this->m_pView;
@@ -199,7 +201,10 @@ void CElement::Serialize(CArchive& ar)
 		//str.Format(_T("version=%d"), version);
 		//AfxMessageBox(str);
 
-		ar.SetObjectSchema(3);
+		ar.SetObjectSchema(4);
+
+		CString code = W2T((LPTSTR)m_code.c_str());
+		ar << code;
 
 		// The schema v3 contains extra info: fontName, fontSize and Fixed
 		CString fontName = W2T((LPTSTR)m_fontName.c_str());
@@ -248,6 +253,13 @@ void CElement::Serialize(CArchive& ar)
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
 
+		if (version >= 4)
+		{
+			CString code;
+			ar >> code;
+			this->m_code = T2W((LPTSTR)(LPCTSTR)code);
+		}
+		
 		if (version >= 3)
 		{
 			CString fontName;
