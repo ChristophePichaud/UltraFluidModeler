@@ -131,6 +131,7 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_COMMAND(ID_DESIGN_PACKAGE, &CModeler1View::OnDesignPackage)
 	ON_COMMAND(ID_DESIGN_COMMENT, &CModeler1View::OnDesignComment)
 	ON_COMMAND(ID_DESIGN_COMPONENT, &CModeler1View::OnDesignComponent)
+	ON_COMMAND(ID_FILE_EXPORT_PNG, &CModeler1View::OnFileExportPNG)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -930,3 +931,7 @@ void CModeler1View::OnDesignComponent()
 	GetManager()->m_shapeType = CShapeType::ToShapeType(development_component);
 }
 
+void CModeler1View::OnFileExportPNG()
+{
+	GetManager()->OnFileExportPNG(this);
+}

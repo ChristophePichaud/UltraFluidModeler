@@ -337,6 +337,8 @@ void CMainFrame::InitMainButton()
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE, _T("&Save"), 2, 2));
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_SAVE_AS, _T("Save &As..."), 3, 3));
 	pMainPanel->AddSeparator();
+	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_EXPORT_PNG, _T("Export As &PNG..."), 0, 0));
+	pMainPanel->AddSeparator();
 	pMainPanel->Add(new CMFCRibbonButton(ID_FILE_CLOSE, _T("&Close"), 8, 8));
 	pMainPanel->AddRecentFilesList(_T("Recent Documents"));
 	pMainPanel->AddToBottom(new CMFCRibbonMainPanelButton(ID_APP_EXIT, _T("E&xit"), 27));

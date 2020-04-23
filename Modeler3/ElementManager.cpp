@@ -1766,3 +1766,91 @@ void CElementManager::OnEditUngroup(CModeler1View* pView)
 		}
 	}
 }
+
+int CElementManager::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+{
+	UINT  num = 0;          // number of image encoders
+	UINT  size = 0;         // size of the image encoder array in bytes
+
+	ImageCodecInfo* pImageCodecInfo = NULL;
+
+	GetImageEncodersSize(&num, &size);
+	if (size == 0)
+		return -1;  // Failure
+
+	pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+	if (pImageCodecInfo == NULL)
+		return -1;  // Failure
+
+	GetImageEncoders(num, size, pImageCodecInfo);
+
+	for (UINT j = 0; j < num; ++j)
+	{
+		if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
+		{
+			*pClsid = pImageCodecInfo[j].Clsid;
+			free(pImageCodecInfo);
+			return j;  // Success
+		}
+	}
+
+	free(pImageCodecInfo);
+	return -1;  // Failure
+}
+
+void CElementManager::OnFileExportPNG(CModeler1View* pView)
+{
+	CFileDialog dlg(TRUE);
+	if (dlg.DoModal() != IDOK)
+		return;
+	CStringW fileName = dlg.GetPathName();
+	wstring doc = (LPTSTR)(LPCTSTR)fileName;
+
+	Bitmap myBitmap(m_size.cx, m_size.cy, PixelFormat32bppARGB);
+	Graphics graphics(&myBitmap);
+
+	// just like that
+	//graphics.ScaleTransform(0.75f, 0.75f);
+	graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
+
+	// TODO: add draw code for native data here
+	for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		// FIXME: Update the view for Property Window
+		pElement->m_pView = pView;
+
+		// Construct the graphic context for each element
+		CDrawingContext ctxt(pElement);
+		ctxt.m_pGraphics = &graphics;
+
+		//pElement->Draw(pView, pDC);
+		pElement->Draw(ctxt);
+
+		// HACK 14072012 : no more SimpleTextElement / Just other text elements except for caption old element
+		// caption property is deprecated. be carefull. DO NOT USE m_caption any more !!!
+		// informations: 
+		//    for m_type that are simple shapes  ; it means it is not about text shapes,
+		//    the m_text property can be optional and if it exists,
+		//    it should be appended to the rendering area by creating a dedicated object. 
+		//    We call it CSimpleTextElement.
+		if (pElement->m_text.empty() == false &&
+			(pElement->m_type != ElementType::type_text)
+			)
+		{
+			//std::shared_ptr<CElement> pTextElement = make_shared<CSimpleTextElement>();
+			std::shared_ptr<CElement> pTextElement(new CSimpleTextElement());
+			pTextElement->m_rect = pElement->m_rect;
+			pTextElement->m_text = pElement->m_text;
+			pTextElement->m_textAlign = pElement->m_textAlign;
+			pTextElement->Draw(ctxt);
+		}
+
+	}
+
+	// Save bitmap (as a png)
+	CLSID pngClsid;
+	int result = GetEncoderClsid(L"image/png", &pngClsid);
+	myBitmap.Save(doc.c_str(), &pngClsid, NULL);
+}
+

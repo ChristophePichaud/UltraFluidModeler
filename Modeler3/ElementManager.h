@@ -87,6 +87,7 @@ public:
 	void UpdateFromPropertyGrid(std::wstring objectId, std::wstring name, COLORREF color);
 	void UpdateFromPropertyGrid(std::wstring objectId, std::wstring name, long value);
 	void ActivateView(CModeler1View * pView, bool bActivate, CView* pActiveView, CView* pDeactiveView);
+	int GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
 
 // Managing Font operations
 public:
@@ -177,4 +178,9 @@ public:
 	virtual void OnLButtonDblClk(CModeler1View* pView, UINT nFlags, const CPoint& cpoint);
 	virtual void OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoint& cpoint);
 	virtual void OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoint& cpoint);
+
+// File 
+public:
+	void OnFileExportPNG(CModeler1View* pView);
+
 };

@@ -13,7 +13,6 @@ IMPLEMENT_DYNCREATE(CModeler1SourceView, CEditView)
 
 CModeler1SourceView::CModeler1SourceView()
 {
-
 }
 
 CModeler1SourceView::~CModeler1SourceView()
@@ -22,6 +21,7 @@ CModeler1SourceView::~CModeler1SourceView()
 
 BEGIN_MESSAGE_MAP(CModeler1SourceView, CEditView)
 	ON_WM_CHAR()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -60,4 +60,25 @@ void CModeler1SourceView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 		pElement->m_code = T2W((LPTSTR)(LPCTSTR)text);
 
 	}
+}
+
+
+int CModeler1SourceView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CEditView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  Add your specialized creation code here
+	CEdit& ctrlEdit = this->GetEditCtrl();
+	CFont* pFont = ctrlEdit.GetFont();
+	LOGFONT LogFont;
+	pFont->GetLogFont(&LogFont);
+	CFont* NewFont = new CFont();
+	lstrcpy(LogFont.lfFaceName, _T("Calibri"));
+	LogFont.lfHeight = 16;
+	LogFont.lfWeight = FW_NORMAL;
+	NewFont->CreateFontIndirect(&LogFont);
+	ctrlEdit.SetFont(NewFont);
+
+	return 0;
 }

@@ -133,9 +133,9 @@ void CFileViewBar::UpdateFromObject(std::shared_ptr<CElement> pElement)
 	else
 		hParent = m_hOthers;
 
-	str.Format(_T("%s_%s.cpp"), pElement->m_name.c_str(), pElement->ToString(pElement->m_shapeType));
+	str.Format(_T("%s_%s.cpp"), pElement->m_text.c_str(), pElement->m_name.c_str());
 	m_wndFileView.InsertItem(str, 1, 1, hParent);
-	str.Format(_T("%s_%s.h"), pElement->m_name.c_str(), pElement->ToString(pElement->m_shapeType));
+	str.Format(_T("%s_%s.h"), pElement->m_text.c_str(), pElement->m_name.c_str());
 	m_wndFileView.InsertItem(str, 1, 1, m_hInc);
 }
 
