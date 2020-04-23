@@ -348,6 +348,8 @@ void CMainFrame::InitMainButton()
 	CMFCRibbonPanel* pPanelDesign = pCategory->AddPanel(_T("Design\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT, _T("Select\nc"), 2));
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\nc"), 2));
+	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT_ALL, _T("Select All\nc"), 2));
+	
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_RECTANGLE, _T("Rectangle\ng"), 2));
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_LINE, _T("Line\ng"), 2));
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_ELLIPSE, _T("Ellipse\ng"), 2));

@@ -161,6 +161,7 @@ public:
 	afx_msg void OnDesignComment();
 	afx_msg void OnDesignComponent();
 	afx_msg void OnFileExportPNG();
+	afx_msg void OnDesignSelectAll();
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

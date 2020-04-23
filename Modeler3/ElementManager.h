@@ -159,6 +159,7 @@ public:
 	bool Deselect(std::shared_ptr<CElement> pElement);
 	void SelectNone();
 	void DrawSelectionRect(CModeler1View *pView);
+	void OnSelectAll(CModeler1View* pView);
 
 // Managing Grouping
 public:

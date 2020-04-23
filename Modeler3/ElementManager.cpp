@@ -1854,3 +1854,14 @@ void CElementManager::OnFileExportPNG(CModeler1View* pView)
 	myBitmap.Save(doc.c_str(), &pngClsid, NULL);
 }
 
+void CElementManager::OnSelectAll(CModeler1View* pView)
+{
+	for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_objects.m_objects.begin(); itSel != m_objects.m_objects.end(); itSel++)
+	{
+		std::shared_ptr<CElement> pElement = *itSel;
+		Select(pElement);
+	}
+
+	Invalidate(pView);
+}
+
