@@ -402,8 +402,8 @@ void CMainFrame::InitMainButton()
 	pPanelDev->Add(new CMFCRibbonButton(ID_DESIGN_COMPONENT, _T("Component\ndo"), 45));
 
 	// Create "Debug" panel
-	CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
-	pPanelDebug->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\nc"), 2));
+	//CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
+	//pPanelDebug->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\nc"), 2));
 
 	/*
 	CMFCRibbonButtonsGroup * apFontGroup = new CMFCRibbonButtonsGroup();
@@ -447,6 +447,7 @@ void CMainFrame::InitMainButton()
 	CMFCRibbonPanel* pPanelAction = pCategory->AddPanel(_T("Action\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_REMOVE, _T("Remove\nc"), 12));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import .NET Module\nin"), 35));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\ndc"), 2));
 
 	// Create "Format" panel
 	CMFCRibbonPanel* pPanelFormat = pCategory->AddPanel(_T("Format and Style\nzd"), m_PanelImages.ExtractIcon(2));
@@ -504,14 +505,14 @@ void CMainFrame::InitMainButton()
 	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ZOOM_IN, _T("Zoom In\ni"), -1));
 	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_ZOOM_OUT, _T("Zoom Out\no"), -1));
 	CMFCRibbonComboBox *pBtnZoom = new CMFCRibbonComboBox(ID_FORMAT_ZOOM, FALSE, 50, _T("Zoom: "), -1);
-	pBtnZoom->AddItem(_T("100 %"));
-	pBtnZoom->AddItem(_T("150 %"));
-	pBtnZoom->AddItem(_T("200 %"));
-	pBtnZoom->AddItem(_T("400 %"));
-	pBtnZoom->AddItem(_T("25 %"));
-	pBtnZoom->AddItem(_T("50 %"));
-	pBtnZoom->AddItem(_T("75 %"));
-	pBtnZoom->SelectItem(0);
+	pBtnZoom->AddItem(_T("25%"));
+	pBtnZoom->AddItem(_T("50%"));
+	pBtnZoom->AddItem(_T("75%"));
+	pBtnZoom->AddItem(_T("100%"));
+	pBtnZoom->AddItem(_T("150%"));
+	pBtnZoom->AddItem(_T("200%"));
+	pBtnZoom->AddItem(_T("400%"));
+	pBtnZoom->SelectItem(3);
 	pPanelFormat->Add(pBtnZoom);
 	pPanelFormat->AddSeparator();
 	pPanelFormat->Add(new CMFCRibbonButton(ID_FORMAT_TEXT_ALIGN_LEFT, _T("Text Align Left\nal"), 28));

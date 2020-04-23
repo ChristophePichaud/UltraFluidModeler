@@ -1428,6 +1428,45 @@ void CElementManager::Zoom(CModeler1View * pView)
 {
 	//m_fZoomFactor += 0.10f;
 	//Invalidate(pView);
+
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CMFCRibbonBar* pRibbon = pFrame->GetRibbonBar();
+	CMFCRibbonComboBox* pFindCombobox = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_FORMAT_ZOOM));
+		// this returns the last value before the combo box edit field got the focus:
+	CString value = pFindCombobox->GetEditText();
+
+	//AfxMessageBox(value);
+
+	if (value == _T("25%"))
+	{
+		m_fZoomFactor = 0.25f;
+	}
+	if (value == _T("50%"))
+	{
+		m_fZoomFactor = 0.50f;
+	}
+	if (value == _T("75%"))
+	{
+		m_fZoomFactor = 0.75f;
+	}
+	if (value == _T("100%"))
+	{
+		m_fZoomFactor = 1.0f;
+	}
+	if (value == _T("150%"))
+	{
+		m_fZoomFactor = 1.5f;
+	}
+	if (value == _T("200%"))
+	{
+		m_fZoomFactor = 2.0f;
+	}
+	if (value == _T("400%"))
+	{
+		m_fZoomFactor = 4.0f;
+	}
+
+	Invalidate(pView);
 }
 
 void CElementManager::ZoomIn(CModeler1View * pView)
