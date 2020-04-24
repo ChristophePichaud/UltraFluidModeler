@@ -56,6 +56,7 @@ public:
 	CPoint m_clickPoint;
 	bool m_bSelectionHasStarted;
 	shared_ptr<CElement> pSelectionElement;
+	bool m_bSizingALine;
 
 // Methods for Attributes
 public:

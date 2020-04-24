@@ -28,7 +28,8 @@ CElementManager::CElementManager()
 	m_fZoomFactor = 1.0f;
 	
 	m_bSavingCode = false;
-	
+	m_bSizingALine = false;
+
 	// Initiate the connection with the Property Window
 	ConnectToPropertyGrid();
 }
@@ -370,10 +371,51 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 	//graphics.ScaleTransform(0.75f, 0.75f);
 	graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
 	
+	if (m_bSizingALine == false)
+	{
+		for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
+		{
+			std::shared_ptr<CElement> pElement = *i;
+
+			if (pElement->IsLine() == false)
+			{
+				continue;
+			}
+
+			pElement->m_rect.NormalizeRect();
+
+			shared_ptr<CElement> pElement1 = pElement->m_pConnector->m_pElement1;
+			CPoint point1;
+			if (pElement1 == nullptr)
+			{
+				point1 = pElement->m_rect.TopLeft();
+			}
+			else
+			{
+				point1 = pElement1->m_rect.CenterPoint();
+			}
+
+			shared_ptr<CElement> pElement2 = pElement->m_pConnector->m_pElement2;
+			CPoint point2;
+			if (pElement2 == nullptr)
+			{
+				point2 = pElement->m_rect.BottomRight();
+			}
+			else
+			{
+				point2 = pElement2->m_rect.CenterPoint();
+			}
+
+			CRect rect(point1, point2);
+			pElement->m_rect = rect;
+		}
+	}
+
 	// TODO: add draw code for native data here
 	for( vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin() ; i!=GetObjects().end() ; i++ )
 	{
-		std::shared_ptr<CElement> pElement = *i;		
+		std::shared_ptr<CElement> pElement = *i;	
+
 		// FIXME: Update the view for Property Window
 		pElement->m_pView = pView;
 		
@@ -914,6 +956,7 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 		m_bSelectionHasStarted = false;
 	}
 
+	m_bSizingALine = false;
 
 	pElement->m_bMoving = FALSE;
 	// Update UI
@@ -1504,6 +1547,8 @@ void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> p
 	// Find a connection ?
 	if (pCurrentElement->IsLine() == true)
 	{
+		m_bSizingALine = true;
+
 		CRect rect = pCurrentElement->m_rect;
 
 		SelectNone();
