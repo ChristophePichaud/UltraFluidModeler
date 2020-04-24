@@ -353,6 +353,13 @@ void CElementContainer::Clone(const CElementContainer& selection)
 	for( vector<std::shared_ptr<CElement>>::const_iterator itSel = selection.m_objects.begin() ; itSel!=selection.m_objects.end() ; itSel++ )
 	{
 		std::shared_ptr<CElement> pElement = *itSel;
+		
+		// Select the new element if not a selection area
+		if (pElement->m_shapeType == ShapeType::selection)
+		{
+			continue;
+		}
+			
 		std::shared_ptr<CElement> pNewElement = pElement->MakeCopy();
 		pNewElement->SetGuid();
 		pNewElement->SetName();

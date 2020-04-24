@@ -175,6 +175,7 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_caption = this->m_caption;
 		pNewElement->m_text = this->m_text;
 		pNewElement->m_code = this->m_code;
+		pNewElement->m_image = this->m_image;
 		pNewElement->m_lineWidth = this->m_lineWidth;
 		pNewElement->m_pManager = this->m_pManager;
 		pNewElement->m_pView = this->m_pView;
@@ -185,6 +186,9 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_bSolidColorFill = m_bSolidColorFill;
 		pNewElement->m_colorFill = m_colorFill;
 		pNewElement->m_colorLine = m_colorLine;
+		pNewElement->m_textAlign = m_textAlign;
+		pNewElement->m_fontName = m_fontName;
+		pNewElement->m_bFixed = m_bFixed;
 
 		return pNewElement;
 }

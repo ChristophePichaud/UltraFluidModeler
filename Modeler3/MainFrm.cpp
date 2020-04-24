@@ -345,6 +345,11 @@ void CMainFrame::InitMainButton()
 
 	CMFCRibbonCategory* pCategory = m_wndRibbonBar.AddCategory(_T("&Home"), IDB_RIBBON_WRITESMALL, IDB_RIBBON_WRITELARGE);
 	// Create "Design" panel
+	CMFCRibbonPanel* pPanelClipboard = pCategory->AddPanel(_T("Clipboard\nc"), m_PanelImages.ExtractIcon(2));
+	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_COPY, _T("Copy\nc"), 13));
+	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_CUT, _T("Cut\nc"), 12));
+	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_PASTE, _T("Paste\nc"), 11));
+
 	CMFCRibbonPanel* pPanelDesign = pCategory->AddPanel(_T("Design\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT, _T("Select\nc"), 2));
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\nc"), 2));
@@ -374,10 +379,10 @@ void CMainFrame::InitMainButton()
 	pBtnDrawText->SetMenu(IDR_DRAW_TEXT_MENU);
 	pPanelDesign->Add(pBtnDrawText);
 	// Add hidden button
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_LEFT, _T("&Bottom Border"), 28));
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_CENTER, _T("Paste Special"), 29));
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_RIGHT, _T("Paste Special"), 30));
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_JUSTIFY, _T("Paste Special"), 31));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_LEFT, _T("Left"), 28));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_CENTER, _T("Center"), 29));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_RIGHT, _T("Right"), 30));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_JUSTIFY, _T("Justify"), 31));
 
 	CRibbonListButton *pListBtnInfra = new CRibbonListButton(ID_DESIGN_SHAPESINFRA, _T("Infrastructure\nti"), 20, -1, FALSE);
 	pListBtnInfra->AddGroup(_T("Built-In"), IDB_SHAPES_INFRA, 64, m_arInfraShapes);

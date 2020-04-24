@@ -133,6 +133,12 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_COMMAND(ID_DESIGN_COMPONENT, &CModeler1View::OnDesignComponent)
 	ON_COMMAND(ID_FILE_EXPORT_PNG, &CModeler1View::OnFileExportPNG)
 	ON_COMMAND(ID_DESIGN_SELECT_ALL, &CModeler1View::OnDesignSelectAll)
+	ON_COMMAND(ID_CLIPBOARD_CUT, &CModeler1View::OnEditCut)
+	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_CUT, &CModeler1View::OnUpdateEditCut)
+	ON_COMMAND(ID_CLIPBOARD_COPY, &CModeler1View::OnEditCopy)
+	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_COPY, &CModeler1View::OnUpdateEditCopy)
+	ON_COMMAND(ID_CLIPBOARD_PASTE, &CModeler1View::OnEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_PASTE, &CModeler1View::OnUpdateEditPaste)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -941,3 +947,4 @@ void CModeler1View::OnDesignSelectAll()
 {
 	GetManager()->OnSelectAll(this);
 }
+

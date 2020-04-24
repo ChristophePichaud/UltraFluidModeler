@@ -150,9 +150,10 @@ void CElementManager::OnEditPaste(CModeler1View * pView)
 		std::shared_ptr<CElement> pElement = *itSel;
 		Select(pElement);
 	}
+
 	m_selectMode = SelectMode::move;
 
-	m_clipboard.RemoveAll();
+	//m_clipboard.RemoveAll();
 
 	Invalidate(pView);
 }
@@ -1551,6 +1552,8 @@ void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
 		std::shared_ptr<CElement> pNewElement = CFactory::CreateElementOfType(pElement->m_type, pElement->m_shapeType);
 		pNewElement->m_name = pElement->m_name;
 		pNewElement->m_text = pElement->m_text;
+		pNewElement->m_code = pElement->m_code;
+		pNewElement->m_image = pElement->m_image;
 		pNewElement->m_objectId = pElement->m_objectId;
 		pNewElement->m_rect = pElement->m_rect;
 		pNewElement->m_bColorFill = pElement->m_bColorFill;
@@ -1564,6 +1567,8 @@ void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
 		pNewElement->m_image = pElement->m_image;
 		pNewElement->m_last = pElement->m_last;
 		pNewElement->m_lineWidth = pElement->m_lineWidth;
+		pNewElement->m_textAlign = pElement->m_textAlign;
+		pNewElement->m_fontName = pElement->m_fontName;
 		pNewElement->m_pManager = this;
 		pNewElement->m_point = pElement->m_point;
 		pNewElement->m_pView = pView;
