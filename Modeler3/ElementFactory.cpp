@@ -300,7 +300,20 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorFill = false;
 		pNewElement->m_bSolidColorFill = true;
 		pNewElement->m_text = L"<type text>";
-		pNewElement->m_textAlign = L"Left";
+		//pNewElement->m_textAlign = L"Left";
+
+		if (shapeType == ShapeType::text_left)
+		{
+			pNewElement->m_textAlign = L"Left";
+		}
+		if (shapeType == ShapeType::text_center)
+		{
+			pNewElement->m_textAlign = L"Center";
+		}
+		if (shapeType == ShapeType::text_right)
+		{
+			pNewElement->m_textAlign = L"Right";
+		}
 	}
 
 	if( type == ElementType::type_image )

@@ -400,6 +400,7 @@ void CMainFrame::InitMainButton()
 	CMFCRibbonPanel* pPanelPlanning = pCategory->AddPanel(_T("Planning\npa"), m_PanelImages.ExtractIcon(2));
 	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_TASK, _T("Task\ntt"), 36));
 	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_MONTH, _T("Month\ntm"), 37));
+	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_TEXT, _T("Text\ndt"), 46));
 
 	// Create "Development" panel
 	CMFCRibbonPanel* pPanelDev = pCategory->AddPanel(_T("Development\nwd"), m_PanelImages.ExtractIcon(2));

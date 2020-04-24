@@ -163,6 +163,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_FONT_TEXTHIGHLIGHT, &CModeler1View::OnUpdateFontTextHighlight)
 	ON_COMMAND(ID_FONT_COLOR, &CModeler1View::OnFontColor)
 	ON_UPDATE_COMMAND_UI(ID_FONT_COLOR, &CModeler1View::OnUpdateFontColor)
+	ON_COMMAND(ID_DESIGN_TEXT, &CModeler1View::OnDesignText)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_TEXT, &CModeler1View::OnUpdateDesignText)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -761,7 +763,7 @@ void CModeler1View::OnModelingTextBox()
 	// TODO: Add your command handler code here
 	GetManager()->m_type = ElementType::type_text;
 	GetManager()->m_shapeType = ShapeType::text;
-	AfxMessageBox(_T("OnModelingTextBox"));
+	//AfxMessageBox(_T("OnModelingTextBox"));
 }
 
 void CModeler1View::OnUpdateModelingTextBox(CCmdUI *pCmdUI)
@@ -1092,3 +1094,12 @@ void CModeler1View::OnUpdateFontColor(CCmdUI* pCmdUI)
 	pCmdUI->Enable(GetManager()->HasSelection() == true);
 }
 
+void CModeler1View::OnDesignText()
+{
+	GetManager()->m_type = ElementType::type_text;
+	GetManager()->m_shapeType = ShapeType::text;
+}
+
+void CModeler1View::OnUpdateDesignText(CCmdUI* pCmdUI)
+{
+}

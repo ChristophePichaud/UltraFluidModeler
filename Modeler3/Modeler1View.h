@@ -186,6 +186,8 @@ public:
 	afx_msg void OnUpdateFontChangeCase(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFontTextHighlight(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFontColor(CCmdUI* pCmdUI);
+	afx_msg void OnDesignText();
+	afx_msg void OnUpdateDesignText(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp
