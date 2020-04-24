@@ -162,6 +162,30 @@ public:
 	afx_msg void OnDesignComponent();
 	afx_msg void OnFileExportPNG();
 	afx_msg void OnDesignSelectAll();
+	afx_msg void OnFontGrowFont();
+	afx_msg void OnFontShrink();
+	afx_msg void OnFontClearFormat();
+	afx_msg void OnFontBold();
+	afx_msg void OnFontItalic();
+	afx_msg void OnFontUnderline();
+	afx_msg void OnFontStrikeThrough();
+	afx_msg void OnFontSubscript();
+	afx_msg void OnFontSuperscript();
+	afx_msg void OnFontChangeCase();
+	afx_msg void OnFontTextHighlight();
+	afx_msg void OnFontColor();
+	afx_msg void OnUpdateFontGrowFont(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontShrink(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontClearFormat(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontBold(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontItalic(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontUnderline(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontStrikeThrough(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontSubscript(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontSuperscript(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontChangeCase(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontTextHighlight(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateFontColor(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

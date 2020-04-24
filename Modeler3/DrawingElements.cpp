@@ -654,7 +654,18 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 		//Gdiplus::Font font(&fontFamily, 12, FontStyleRegular, UnitPixel);
 		CStringW fontName(m_fontName.c_str());
 		FontFamily fontFamily(fontName);
-		Gdiplus::Font font(&fontFamily, this->m_fontSize, FontStyleRegular, UnitPixel);
+		FontStyle style = FontStyle::FontStyleRegular;
+		if (m_bBold == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleBold);
+		}
+		if (m_bItalic == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleItalic);
+		}
+		//Gdiplus::Font font(&fontFamily, this->m_fontSize, FontStyleRegular, UnitPixel);
+		Gdiplus::Font font(&fontFamily, this->m_fontSize, style, UnitPixel);
+
 		// StringFormat object
 		StringFormat stringFormat;
 		if( m_shapeType == ShapeType::text_left )

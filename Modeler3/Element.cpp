@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 4)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 5)
 
 int CElement::m_counter = 0;
 
@@ -120,6 +120,8 @@ CElement::CElement()
 	m_bFixed = true;
 	m_fontName = _T("Calibri");
 	m_fontSize = 12;
+	m_bBold = false;
+	m_bItalic = false;
 
 	m_bMoving = FALSE;
 
@@ -189,6 +191,8 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_textAlign = m_textAlign;
 		pNewElement->m_fontName = m_fontName;
 		pNewElement->m_bFixed = m_bFixed;
+		pNewElement->m_bBold = m_bBold;
+		pNewElement->m_bItalic = m_bItalic;
 
 		return pNewElement;
 }
@@ -205,8 +209,13 @@ void CElement::Serialize(CArchive& ar)
 		//str.Format(_T("version=%d"), version);
 		//AfxMessageBox(str);
 
-		ar.SetObjectSchema(4);
+		ar.SetObjectSchema(5);
 
+		// The schema v5 contains extra info: bold, italic
+		ar << m_bBold;
+		ar << m_bItalic;
+
+		// The schema v4 contains extra info: code
 		CString code = W2T((LPTSTR)m_code.c_str());
 		ar << code;
 
@@ -257,6 +266,12 @@ void CElement::Serialize(CArchive& ar)
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
 
+		if (version >= 5)
+		{
+			ar >> m_bItalic;
+			ar >> m_bBold;
+		}
+			
 		if (version >= 4)
 		{
 			CString code;

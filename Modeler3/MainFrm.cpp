@@ -414,12 +414,13 @@ void CMainFrame::InitMainButton()
 	//CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
 	//pPanelDebug->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\nc"), 2));
 
-	/*
+	// Create "Font" panel
+	CMFCRibbonPanel* pPanelFont = pCategory->AddPanel(_T("Font\nzd"), m_PanelImages.ExtractIcon(2));
 	CMFCRibbonButtonsGroup * apFontGroup = new CMFCRibbonButtonsGroup();
 	CMFCRibbonFontComboBox::m_bDrawUsingFont = TRUE;
 	m_pFontCombo = new CMFCRibbonFontComboBox(ID_FONT_FONT, TRUETYPE_FONTTYPE );
 	m_pFontCombo->SetWidth(55, TRUE); // Width in "floaty" mode
-	m_pFontCombo->SelectItem(_T("Arial"));
+	m_pFontCombo->SelectItem(_T("Calibri"));
 	apFontGroup->AddButton(m_pFontCombo);
 
 	m_pFontSizeCombo = new CMFCRibbonComboBox(ID_FONT_FONTSIZE, FALSE, 39);
@@ -440,11 +441,34 @@ void CMainFrame::InitMainButton()
 	m_pFontSizeCombo->AddItem(_T("48"));
 	m_pFontSizeCombo->AddItem(_T("72"));
 	m_pFontSizeCombo->SetWidth(20, TRUE); // Width in "floaty" mode
-	m_pFontSizeCombo->SelectItem(3);
+	m_pFontSizeCombo->SelectItem(7);
 	apFontGroup->AddButton(m_pFontSizeCombo);
+	pPanelFont->Add(apFontGroup);
 
-	pPanelDebug->Add(apFontGroup);
-	*/
+	// Add toolbar(all toolbar buttons will be automatically
+	// converted to ribbon elements:
+	pPanelFont->AddToolBar(IDR_FONT);
+
+	// Replace ID_FONT_COLOR and ID_FONT_TEXTHIGHLIGHT elements
+	// by color pickers:
+	CMFCRibbonColorButton* pFontColorBtn = new CMFCRibbonColorButton();
+	pFontColorBtn->EnableAutomaticButton(_T("&Automatic"), RGB(0, 0, 0));
+	pFontColorBtn->EnableOtherButton(_T("&More Colors..."), _T("More Colors"));
+	pFontColorBtn->SetColumns(10);
+	pFontColorBtn->SetColor(RGB(255, 0, 0));
+	pFontColorBtn->SetColorBoxSize(CSize(17, 17));
+	pFontColorBtn->AddColorsGroup(_T("Theme Colors"), m_lstMainColors);
+	pFontColorBtn->AddColorsGroup(_T(""), m_lstAdditionalColors, TRUE /* Contiguous Columns*/);
+	pFontColorBtn->AddColorsGroup(_T("Standard Colors"), m_lstStandardColors);
+	pPanelFont->ReplaceByID(ID_FONT_COLOR, pFontColorBtn);
+
+	CMFCRibbonColorButton* pFontColorHighlightBtn = new CMFCRibbonColorButton();
+	pFontColorHighlightBtn->SetColor(RGB(255, 255, 255));
+	pFontColorHighlightBtn->EnableAutomaticButton(_T("&No Color"), RGB(240, 240, 240), TRUE, NULL, FALSE /* Bottom */, TRUE /* Draw border */);
+	pPanelFont->ReplaceByID(ID_FONT_TEXTHIGHLIGHT, pFontColorHighlightBtn);
+
+	pFontColorHighlightBtn->SetColorBoxSize(CSize(26, 26));
+	pFontColorHighlightBtn->AddSubItem(new CMFCRibbonButton(ID_STOP_HIGHLIGHTING, _T("&Stop Highlighting")));
 
 	// Create "Show/Hide" panel:
 	CMFCRibbonPanel* pPanelShow = pCategory->AddPanel(_T("Show/Hide\nzs"), m_PanelImages.ExtractIcon(4));
@@ -917,14 +941,12 @@ void CMainFrame::UpdateRibbonUI(CModeler1View * pView)
 		}
 	}
 
-	/*
 	// Update font combo boxes name and size
 	std::shared_ptr<CElement> pElement = selection.GetHead();
 	m_pFontCombo->SelectItem(pElement->m_fontName.c_str());
 	TCHAR sz[255];
 	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
 	m_pFontSizeCombo->SelectItem(sz);
-	*/
 
 	m_wndRibbonBar.RedrawWindow();
 

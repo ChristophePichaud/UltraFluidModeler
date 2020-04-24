@@ -278,6 +278,7 @@
     <Image Include="res\sort.bmp" />
     <Image Include="res\sort24.bmp" />
     <Image Include="res\styles.bmp" />
+    <Image Include="res\WriteFont.bmp" />
     <Image Include="res\writelarge.png" />
     <Image Include="res\writelarge0.bmp" />
     <Image Include="res\writelarge_1.bmp" />

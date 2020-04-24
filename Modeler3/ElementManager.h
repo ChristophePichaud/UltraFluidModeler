@@ -184,4 +184,8 @@ public:
 public:
 	void OnFileExportPNG(CModeler1View* pView);
 
+// Font
+public:
+	void OnFontBold(CModeler1View* pView);
+	void OnFontItalic(CModeler1View* pView);
 };

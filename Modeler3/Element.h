@@ -189,6 +189,8 @@ public:
 	std::wstring m_textAlign;
 	std::wstring m_fontName;
 	int m_fontSize;
+	bool m_bBold;
+	bool m_bItalic;
 	CRect m_rect;
 	CPoint m_point;
 	CPoint m_last;

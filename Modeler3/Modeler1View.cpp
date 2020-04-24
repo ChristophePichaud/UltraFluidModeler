@@ -139,6 +139,30 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_COPY, &CModeler1View::OnUpdateEditCopy)
 	ON_COMMAND(ID_CLIPBOARD_PASTE, &CModeler1View::OnEditPaste)
 	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_PASTE, &CModeler1View::OnUpdateEditPaste)
+	ON_COMMAND(ID_FONT_GROWFONT, &CModeler1View::OnFontGrowFont)
+	ON_UPDATE_COMMAND_UI(ID_FONT_GROWFONT, &CModeler1View::OnUpdateFontGrowFont)
+	ON_COMMAND(ID_FONT_SHRINK, &CModeler1View::OnFontShrink)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SHRINK, &CModeler1View::OnUpdateFontShrink)
+	ON_COMMAND(ID_FONT_CLEARFORMAT, &CModeler1View::OnFontClearFormat)
+	ON_UPDATE_COMMAND_UI(ID_FONT_CLEARFORMAT, &CModeler1View::OnUpdateFontClearFormat)
+	ON_COMMAND(ID_FONT_BOLD, &CModeler1View::OnFontBold)
+	ON_UPDATE_COMMAND_UI(ID_FONT_BOLD, &CModeler1View::OnUpdateFontBold)
+	ON_COMMAND(ID_FONT_ITALIC, &CModeler1View::OnFontItalic)
+	ON_UPDATE_COMMAND_UI(ID_FONT_ITALIC, &CModeler1View::OnUpdateFontItalic)
+	ON_COMMAND(ID_FONT_UNDERLINE, &CModeler1View::OnFontUnderline)
+	ON_UPDATE_COMMAND_UI(ID_FONT_UNDERLINE, &CModeler1View::OnUpdateFontUnderline)
+	ON_COMMAND(ID_FONT_STRIKETHROUGH, &CModeler1View::OnFontStrikeThrough)
+	ON_UPDATE_COMMAND_UI(ID_FONT_STRIKETHROUGH, &CModeler1View::OnUpdateFontStrikeThrough)
+	ON_COMMAND(ID_FONT_SUBSCRIPT, &CModeler1View::OnFontSubscript)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SUBSCRIPT, &CModeler1View::OnUpdateFontSubscript)
+	ON_COMMAND(ID_FONT_SUPERSCRIPT, &CModeler1View::OnFontSuperscript)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SUPERSCRIPT, &CModeler1View::OnUpdateFontSuperscript)
+	ON_COMMAND(ID_FONT_CHANGECASE, &CModeler1View::OnFontChangeCase)
+	ON_UPDATE_COMMAND_UI(ID_FONT_CHANGECASE, &CModeler1View::OnUpdateFontChangeCase)
+	ON_COMMAND(ID_FONT_TEXTHIGHLIGHT, &CModeler1View::OnFontTextHighlight)
+	ON_UPDATE_COMMAND_UI(ID_FONT_TEXTHIGHLIGHT, &CModeler1View::OnUpdateFontTextHighlight)
+	ON_COMMAND(ID_FONT_COLOR, &CModeler1View::OnFontColor)
+	ON_UPDATE_COMMAND_UI(ID_FONT_COLOR, &CModeler1View::OnUpdateFontColor)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -946,5 +970,125 @@ void CModeler1View::OnFileExportPNG()
 void CModeler1View::OnDesignSelectAll()
 {
 	GetManager()->OnSelectAll(this);
+}
+
+void CModeler1View::OnFontGrowFont()
+{
+
+}
+
+void CModeler1View::OnFontShrink()
+{
+
+}
+
+void CModeler1View::OnFontClearFormat()
+{
+
+}
+
+void CModeler1View::OnFontBold()
+{
+	GetManager()->OnFontBold(this);
+}
+
+void CModeler1View::OnFontItalic()
+{
+	GetManager()->OnFontItalic(this);
+}
+
+void CModeler1View::OnFontUnderline()
+{
+
+}
+
+void CModeler1View::OnFontStrikeThrough()
+{
+
+}
+
+void CModeler1View::OnFontSubscript()
+{
+
+}
+
+void CModeler1View::OnFontSuperscript()
+{
+
+}
+
+void CModeler1View::OnFontChangeCase()
+{
+
+}
+
+void CModeler1View::OnFontTextHighlight()
+{
+
+}
+
+void CModeler1View::OnFontColor()
+{
+
+}
+
+void CModeler1View::OnUpdateFontGrowFont(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontShrink(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontClearFormat(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontBold(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontItalic(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontUnderline(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontStrikeThrough(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontSubscript(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontSuperscript(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontChangeCase(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontTextHighlight(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontColor(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
 }
 

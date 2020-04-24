@@ -9,7 +9,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 4)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 5)
 
 CElementManager::CElementManager()
 {
@@ -102,6 +102,8 @@ void CElementManager::OnFont(CModeler1View * pView)
 	std::shared_ptr<CElement> pElement = m_selection.GetHead();
 	pElement->m_fontName = T2W((LPTSTR)(LPCTSTR)fontName);
 
+	UpdatePropertyGrid(pView, pElement);
+
 	// Redraw the element
 	InvalObj(pView, pElement);
 }
@@ -121,6 +123,8 @@ void CElementManager::OnFontSize(CModeler1View * pView)
 
 	std::shared_ptr<CElement> pElement = m_selection.GetHead();
 	pElement->m_fontSize = iFontSize;
+
+	UpdatePropertyGrid(pView, pElement);
 
 	// Redraw the element
 	InvalObj(pView, pElement);
@@ -1870,3 +1874,38 @@ void CElementManager::OnSelectAll(CModeler1View* pView)
 	Invalidate(pView);
 }
 
+void CElementManager::OnFontBold(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bBold == true)
+	{
+		pElement->m_bBold = false;
+	}
+	else
+	{
+		pElement->m_bBold = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontItalic(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bItalic == true)
+	{
+		pElement->m_bItalic = false;
+	}
+	else
+	{
+		pElement->m_bItalic = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
