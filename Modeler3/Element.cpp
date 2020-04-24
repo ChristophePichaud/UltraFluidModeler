@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 5)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 6)
 
 int CElement::m_counter = 0;
 
@@ -124,6 +124,7 @@ CElement::CElement()
 	m_bItalic = false;
 	m_bUnderline = false;
 	m_bStrikeThrough = false;
+	m_colorText = RGB(0, 0, 0);
 
 	m_bMoving = FALSE;
 
@@ -213,7 +214,10 @@ void CElement::Serialize(CArchive& ar)
 		//str.Format(_T("version=%d"), version);
 		//AfxMessageBox(str);
 
-		ar.SetObjectSchema(5);
+		ar.SetObjectSchema(6);
+
+		// The schema v6 contains extra info: colortext
+		ar << m_colorText;
 
 		// The schema v5 contains extra info: bold, italic, underline, StrikeThrough
 		ar << m_bBold;
@@ -271,6 +275,11 @@ void CElement::Serialize(CArchive& ar)
 		// get the document back pointer from the archive
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
+
+		if (version >= 6)
+		{
+			ar >> m_colorText;
+		}
 
 		if (version >= 5)
 		{

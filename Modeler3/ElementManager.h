@@ -192,4 +192,8 @@ public:
 	void OnFontStrikeThrough(CModeler1View* pView);
 	void OnFontGrowFont(CModeler1View* pView);
 	void OnFontShrink(CModeler1View* pView);
+	void OnFontClearFormat(CModeler1View* pView);
+	void OnFontColor(CModeler1View* pView);
+	void OnFontTextHighlight(CModeler1View* pView);
+	
 };

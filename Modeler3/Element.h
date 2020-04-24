@@ -196,6 +196,7 @@ public:
 	CRect m_rect;
 	CPoint m_point;
 	CPoint m_last;
+	COLORREF m_colorText;
 	COLORREF m_colorFill;
 	bool m_bColorFill;
 	COLORREF m_colorLine;

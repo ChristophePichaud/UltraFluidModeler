@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 5)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 6)
 
 CElementContainer::CElementContainer()
 {
@@ -75,6 +75,9 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			pNewElement->m_bItalic = pElement->m_bItalic;
 			pNewElement->m_bUnderline = pElement->m_bUnderline;
 			pNewElement->m_bStrikeThrough = pElement->m_bStrikeThrough;
+
+			// Schema v6
+			pNewElement->m_colorText = pElement->m_colorText;
 
 			POSITION pos = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();

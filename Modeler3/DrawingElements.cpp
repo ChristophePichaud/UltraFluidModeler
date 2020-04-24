@@ -677,21 +677,24 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 
 		// StringFormat object
 		StringFormat stringFormat;
-		if( m_shapeType == ShapeType::text_left )
+		if (m_textAlign == _T("Left"))
 		{
 			stringFormat.SetAlignment(StringAlignmentNear);
 		}
-		if( m_shapeType == ShapeType::text_center )
+		if (m_textAlign == _T("Center"))
 		{
 			stringFormat.SetAlignment(StringAlignmentCenter);
 		}
-		if( m_shapeType == ShapeType::text_right )
+		if (m_textAlign == _T("Right"))
 		{
 			stringFormat.SetAlignment(StringAlignmentFar);
 		}
 		//stringFormat.SetLineAlignment(StringAlignmentCenter);
 		// Brush object
-		SolidBrush solidBrush(Color(255, 0, 0, 0));
+		//SolidBrush solidBrush(Color(255, 0, 0, 0));
+		Color color;
+		color.SetFromCOLORREF(m_colorText);
+		SolidBrush solidBrush(color);
 		graphics->SetTextRenderingHint(TextRenderingHintAntiAlias);
 		graphics->DrawString(CStringW(m_text.c_str()), -1, &font, rectF, &stringFormat, &solidBrush);
 	}

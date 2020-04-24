@@ -984,7 +984,7 @@ void CModeler1View::OnFontShrink()
 
 void CModeler1View::OnFontClearFormat()
 {
-	//GetManager()->OnFontClearFormat(this);
+	GetManager()->OnFontClearFormat(this);
 }
 
 void CModeler1View::OnFontBold()
@@ -1024,12 +1024,12 @@ void CModeler1View::OnFontChangeCase()
 
 void CModeler1View::OnFontTextHighlight()
 {
-
+	GetManager()->OnFontTextHighlight(this);
 }
 
 void CModeler1View::OnFontColor()
 {
-
+	GetManager()->OnFontColor(this);
 }
 
 void CModeler1View::OnUpdateFontGrowFont(CCmdUI* pCmdUI)

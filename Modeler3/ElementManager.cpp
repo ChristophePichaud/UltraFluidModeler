@@ -9,7 +9,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 5)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 6)
 
 CElementManager::CElementManager()
 {
@@ -1688,6 +1688,8 @@ void CElementManager::AlignTextLeft(CModeler1View* pView)
 			InvalObj(pView, pObj);
 		}
 
+		UpdatePropertyGrid(pView, pElementBase);
+
 		pView->GetDocument()->SetModifiedFlag();
 	}
 }
@@ -1706,6 +1708,8 @@ void CElementManager::AlignTextCenter(CModeler1View* pView)
 			InvalObj(pView, pObj);
 		}
 
+		UpdatePropertyGrid(pView, pElementBase);
+
 		pView->GetDocument()->SetModifiedFlag();
 	}
 }
@@ -1723,6 +1727,8 @@ void CElementManager::AlignTextRight(CModeler1View* pView)
 			pObj->m_textAlign = _T("Right");
 			InvalObj(pView, pObj);
 		}
+
+		UpdatePropertyGrid(pView, pElementBase);
 
 		pView->GetDocument()->SetModifiedFlag();
 	}
@@ -2012,3 +2018,65 @@ void CElementManager::OnFontShrink(CModeler1View* pView)
 	InvalObj(pView, pElement);
 }
 
+void CElementManager::OnFontClearFormat(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_fontName = _T("Calibri");
+	pElement->m_fontSize = 12;
+	pElement->m_bBold = false;
+	pElement->m_bItalic = false;
+	pElement->m_bUnderline = false;
+	pElement->m_bStrikeThrough = false;
+	pElement->m_colorText = RGB(0, 0, 0);
+	pElement->m_colorFill = RGB(255, 255, 255);
+	pElement->m_bColorFill = true;
+	pElement->m_bColorLine = false;
+	pElement->m_bSolidColorFill = true;
+
+	UpdatePropertyGrid(pView, pElement);
+	UpdateRibbonUI(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontColor(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	COLORREF color = ((CMainFrame*)AfxGetMainWnd())->GetColorFromColorButton(ID_FONT_COLOR);
+
+	if (color == (COLORREF)-1)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_colorText = color;
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontTextHighlight(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	COLORREF color = ((CMainFrame*)AfxGetMainWnd())->GetColorFromColorButton(ID_FONT_TEXTHIGHLIGHT);
+
+	if (color == (COLORREF)-1)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_colorFill = color;
+	pElement->m_bColorFill = true;
+	pElement->m_bColorLine = false;
+	pElement->m_bSolidColorFill = true;
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
