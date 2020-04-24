@@ -24,6 +24,8 @@ public:
 	std::shared_ptr<CElement> FindElement(std::wstring objectId);
 	bool FindElement(std::wstring objectId, vector<std::shared_ptr<CElement>>::iterator & it);
 	std::shared_ptr<CElement> ObjectAt(const CPoint & point);	
+	std::shared_ptr<CElement> ObjectAt(const CPoint& point, std::shared_ptr<CElement> pObj);
+	std::shared_ptr<CElement> ObjectExceptLinesAt(const CPoint& point, std::shared_ptr<CElement> pObj);
 	vector<std::shared_ptr<CElement>> ObjectsInRect(const CRect& rect);
 	void Remove(const CElementContainer& selection);
 	void Copy(const CElementContainer& selection);

@@ -540,7 +540,11 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 			if (m_nDragHandle != 0)
 			{
 				m_selectMode = SelectMode::size;
-				pView->LogDebug(_T("selectMode == sized"));
+				
+				CString str;
+				str.Format(_T("m_nDragHandle=%d - selectMode == sized"), m_nDragHandle);
+				pView->LogDebug(str);
+				//pView->LogDebug(_T("selectMode == sized"));
 			}
 		}
 
@@ -652,6 +656,8 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 		m_selectMode = SelectMode::size;
 		pView->LogDebug(_T("selectMode == size"));
 
+		FindAConnectionFor(true, pNewElement, point, pView);
+
 		pView->GetDocument()->SetModifiedFlag();
 
 		// Update ClassView & FileView
@@ -709,40 +715,6 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 	str.Format(_T("point {%d,%d} / {%d,%d}"), cpoint.x, cpoint.y, point.x, point.y);
 	//pView->LogDebug(str);
 
-	// Unused code !
-	if (m_selectMode == SelectMode::netselect) //|| m_shapeType == ShapeType::selection)
-	//if (m_bSelectionHasStarted == true)
-	{
-		//pView->LogDebug("selection is under drawing");
-		
-		CRect selectionRect(m_selectPoint.x, m_selectPoint.y, point.x, point.y);
-		CRect rect = selectionRect;
-		ViewToManager(pView, rect);
-
-		//std::shared_ptr<CElement> pObj = m_objects.ObjectAt(point);
-		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
-		if (v.size() != 0)
-		{
-			for (std::shared_ptr<CElement> pElement : v)
-			{
-				if (IsSelected(pElement) == false)
-				{
-					if (pElement->m_bGrouping == false)
-					{
-						Select(pElement);
-					}
-				}
-			}
-		}
-
-		//CRect rect2(m_clickPoint.x, m_clickPoint.y, m_movePoint.x, m_movePoint.y);
-		//ManagerToView(pView, rect2);
-		//m_selectionRect = rect2;
-		//DrawSelectionRect(pView);
-
-		return;
-	}
-	
 	std::shared_ptr<CElement> pElement = m_selection.GetHead(); //m_objects.FindElement(m_objectId);
 	if( pElement == NULL )
 	{
@@ -788,8 +760,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 
 					std::shared_ptr<CElement> pObj = m_selection.GetHead();
 					pObj->MoveHandleTo(m_nDragHandle, point, pView);
-					// Find a connection ?
-					FindAConnectionFor(pObj, point, pView);
+					FindAConnectionFor(false, pElement, point, pView);
 					InvalObj(pView, pObj);
 
 					pView->GetDocument()->SetModifiedFlag();
@@ -806,9 +777,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 		
 			pElement->m_last = point;
 			pElement->InvalidateObj();
-			//MoveToBack(pView);
-			// Find a connection ?
-			FindAConnectionFor(pElement, point, pView);
+			FindAConnectionFor(false, pElement, point, pView);
 			InvalObj(pView, pElement);
 
 			pView->GetDocument()->SetModifiedFlag();
@@ -1530,8 +1499,48 @@ void CElementManager::LoadModule(CModeler1View * pView)
 {
 }
 
-void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pElement, CPoint point, CModeler1View* pView)
+void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pCurrentElement, CPoint point, CModeler1View* pView)
 {
+	// Find a connection ?
+	if (pCurrentElement->IsLine() == true)
+	{
+		CRect rect = pCurrentElement->m_rect;
+
+		SelectNone();
+		Select(pCurrentElement);
+		std::shared_ptr<CElement> pElement = m_objects.ObjectExceptLinesAt(point, pCurrentElement);
+		if (pElement != NULL)
+		{
+			CClientDC dc(pView);
+			Graphics graphics(dc.m_hDC);
+			graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
+			SolidBrush solidBrush(Color::Yellow);
+			CRect rect = pElement->m_rect;
+			graphics.FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
+
+			// Register the connector
+			if (start == true || m_nDragHandle == 1)
+			{
+				pCurrentElement->m_pConnector->m_pElement1 = pElement;
+			}
+			else
+			{
+				pCurrentElement->m_pConnector->m_pElement2 = pElement;
+			}
+		}
+		else
+		{
+			// Register no connector
+			if (start == true || m_nDragHandle == 1)
+			{
+				pCurrentElement->m_pConnector->m_pElement1 = nullptr;
+			}
+			else
+			{
+				pCurrentElement->m_pConnector->m_pElement2 = nullptr;
+			}
+		}
+	}
 }
 
 void CElementManager::OnFileOpenGabarit(CModeler1View* pView)

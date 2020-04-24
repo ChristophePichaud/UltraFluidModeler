@@ -7,7 +7,7 @@ enum SelectMode : int
 	none,
 	netselect,
 	move,
-	size
+	size,
 };
 
 enum ElementType : int
@@ -21,7 +21,8 @@ enum ElementType : int
 	type_shapes_development,
 	type_shapes_import,
 	type_shapes_planning,
-	type_selection
+	type_selection,
+	type_connection
 };
 
 #define OffsetShapes_Simple			0
@@ -101,6 +102,7 @@ enum ShapeType : int
 	planning_month = OffsetShapes_Planning,
 	planning_task,
 	selection,
+	connection,
 	unknown = 1000
 };
 
@@ -129,6 +131,7 @@ class CModeler1View;
 class CElementManager;
 class CDrawingContext;
 class CElementGroup;
+class CConnector;
 
 class CElement : public CObject
 {
@@ -156,6 +159,7 @@ public:
 	CString ToString();
 	CString ToString(ElementType type);
 	CString ToString(ShapeType type);
+	CString ToString(shared_ptr<CConnector> pConnector);
 	//static bool IsDrawable(ElementType type);
 	bool Intersects(const CRect& rect);
 	void InvalidateObj(void);
@@ -170,6 +174,7 @@ public:
 	void DrawTracker(CDrawingContext & ctxt, TrackerState state);
 	HCURSOR GetHandleCursor(int nHandle);
 	void MoveHandleTo(int nHandle, CPoint point, CModeler1View* pView);	
+	void DrawTracker(CPoint cnx, CDrawingContext& ctxt, CModeler1View* pView);
 
 // Managing Object Format
 public:
@@ -214,6 +219,7 @@ public:
 	// Grouping
 	shared_ptr<CElementGroup> m_pElementGroup;
 	bool m_bGrouping;
+	shared_ptr<CConnector> m_pConnector;
 
 // Methods for Attributes
 public:
@@ -228,6 +234,13 @@ public:
 public:
 	CElementManager * GetManager() const { return m_pManager; }
 	CModeler1View * GetView() const	{ return m_pView; }
+};
+
+class CConnector
+{
+public:
+	std::shared_ptr<CElement> m_pElement1;
+	std::shared_ptr<CElement> m_pElement2;
 };
 
 class CElementGroup

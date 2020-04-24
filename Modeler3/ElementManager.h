@@ -120,7 +120,7 @@ public:
 
 // Managing UI object connections
 public:
-	void FindAConnectionFor(std::shared_ptr<CElement> pElement, CPoint point, CModeler1View* pView);
+	void FindAConnectionFor(bool start, std::shared_ptr<CElement> pCurrentElement, CPoint point, CModeler1View* pView);
 
 // Managing UI dependencies (Ribbon UI, Property Grid, ClassView)
 public:

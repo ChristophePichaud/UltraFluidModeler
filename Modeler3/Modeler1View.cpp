@@ -165,6 +165,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_FONT_COLOR, &CModeler1View::OnUpdateFontColor)
 	ON_COMMAND(ID_DESIGN_TEXT, &CModeler1View::OnDesignText)
 	ON_UPDATE_COMMAND_UI(ID_DESIGN_TEXT, &CModeler1View::OnUpdateDesignText)
+	ON_COMMAND(ID_DESIGN_CONNECT, &CModeler1View::OnDesignConnect)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_CONNECT, &CModeler1View::OnUpdateDesignConnect)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -1101,5 +1103,15 @@ void CModeler1View::OnDesignText()
 }
 
 void CModeler1View::OnUpdateDesignText(CCmdUI* pCmdUI)
+{
+}
+
+void CModeler1View::OnDesignConnect()
+{
+	//GetManager()->m_type = ElementType::type_connection;
+	//GetManager()->m_shapeType = ShapeType::connection;
+}
+
+void CModeler1View::OnUpdateDesignConnect(CCmdUI* pCmdUI)
 {
 }

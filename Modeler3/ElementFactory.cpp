@@ -324,13 +324,20 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorLine = FALSE;
 	}
 	
-	if (shapeType == selection)
+	if (shapeType == ShapeType::selection)
 	{
 		std::shared_ptr<CElement> apNewElement(new CSelectionElement());
 		pNewElement = apNewElement;
 		pNewElement->m_bColorFill = false;
 	}
 		
+	/*if (shapeType == ShapeType::connection)
+	{
+		std::shared_ptr<CElement> apNewElement(new CLineElement());
+		pNewElement = apNewElement;
+		pNewElement->m_bColorFill = false;
+	}*/
+
 	if (type == ElementType::type_shapes_planning)
 	{
 		std::shared_ptr<CElement> apNewElement(new CPlanningElement());

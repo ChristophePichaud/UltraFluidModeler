@@ -146,6 +146,53 @@ std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint & point)
 	return pNull;
 }
 
+std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint& point, std::shared_ptr<CElement> pObj)
+{
+	CRect rect(point, CSize(1, 1));
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pObj == pElement)
+		{
+			// the object that is draing is slected... we dont want this object
+			continue;
+		}
+
+		if (pElement->Intersects(rect))
+		{
+			return pElement;
+		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+
+std::shared_ptr<CElement> CElementContainer::ObjectExceptLinesAt(const CPoint& point, std::shared_ptr<CElement> pObj)
+{
+	CRect rect(point, CSize(1, 1));
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pObj == pElement)
+		{
+			// the object that is draing is slected... we dont want this object
+			continue;
+		}
+
+		if (pElement->IsLine() == true)
+		{
+			continue;
+		}
+
+		if (pElement->Intersects(rect))
+		{
+			return pElement;
+		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+
 vector<std::shared_ptr<CElement>> CElementContainer::ObjectsInRect(const CRect & rect)
 {
 	vector<std::shared_ptr<CElement>> v;

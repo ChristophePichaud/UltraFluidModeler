@@ -126,6 +126,8 @@ CElement::CElement()
 	m_bStrikeThrough = false;
 	m_colorText = RGB(0, 0, 0);
 
+	m_pConnector = make_shared<CConnector>();
+
 	m_bMoving = FALSE;
 
 	m_type = ElementType::type_unknown;
@@ -353,12 +355,26 @@ void CElement::Serialize(CArchive& ar)
 CString CElement::ToString()
 {
 	CString str;
-	str.Format(_T("Element name=<%s> id={%s} type=<%s> shape=<%s> rect={%d,%d,%d,%d} caption=<%s> text=<%s> image=<%s> colorFill={%03d%03d%03d} colorLine={%03d%03d%03d}"), 
+	str.Format(_T("Element name=<%s> id={%s} type=<%s> shape=<%s> rect={%d,%d,%d,%d} caption=<%s> text=<%s> connector=<%s> image=<%s> colorFill={%03d%03d%03d} colorLine={%03d%03d%03d}"), 
 		m_name.c_str(), m_objectId.c_str(), ToString(m_type), ToString(m_shapeType),
 		m_rect.left, m_rect.top, m_rect.right, m_rect.bottom,
-		m_caption.c_str(), m_text.c_str(), m_image.c_str(),
+		m_caption.c_str(), m_text.c_str(), 
+		ToString(m_pConnector), 
+		m_image.c_str(),
 		GetRValue(m_colorFill), GetGValue(m_colorFill), GetBValue(m_colorFill),
 		GetRValue(m_colorLine), GetGValue(m_colorLine), GetBValue(m_colorLine));
+	return str;
+}
+
+CString CElement::ToString(shared_ptr<CConnector> pConnector)
+{
+	CString str = _T("");
+
+	shared_ptr<CElement> pElement1 = pConnector->m_pElement1;
+	shared_ptr<CElement> pElement2 = pConnector->m_pElement2;
+
+	str.Format(_T("c1:%s c2:%s"), pElement1 == nullptr ? _T("NULL") : pElement1->m_name.c_str(), 
+								  pElement2 == nullptr ? _T("NULL") : pElement2->m_name.c_str());
 	return str;
 }
 
@@ -934,6 +950,14 @@ void CElement::DrawTracker(CDrawingContext & ctxt, TrackerState state)
 		}
 		break;
 	}
+}
+
+void CElement::DrawTracker(CPoint cnx, CDrawingContext& ctxt,  CModeler1View* pView)
+{
+	//Color colorBlack(255, 0, 0, 0);
+	SolidBrush solidBrush(Color::Yellow);
+	CRect rect = m_rect;
+	ctxt.GetGraphics()->FillRectangle(&solidBrush, cnx.x - 5, cnx.y - 5, 10, 10);
 }
 
 std::wstring CElement::GetImageFilePath()
