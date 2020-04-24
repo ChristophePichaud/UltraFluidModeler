@@ -198,6 +198,9 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_bItalic = m_bItalic;
 		pNewElement->m_bUnderline = m_bUnderline;
 		pNewElement->m_bStrikeThrough = m_bStrikeThrough;
+		pNewElement->m_code = m_code;
+		pNewElement->m_fontSize = m_fontSize;
+		pNewElement->m_colorText = m_colorText;
 
 		return pNewElement;
 }

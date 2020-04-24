@@ -962,6 +962,34 @@ void CMainFrame::UpdateRibbonUI(CModeler1View * pView)
 	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
 	m_pFontSizeCombo->SelectItem(sz);
 
+
+	{
+		Color color = pElement->m_colorText;
+		CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
+		m_wndRibbonBar.GetElementsByID(ID_FONT_COLOR, arButtons);
+		if (arButtons.GetSize() > 0)
+		{
+			for (int i = 0; i < arButtons.GetSize(); i++)
+			{
+				CMFCRibbonColorButton* pButton = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, arButtons[i]);
+				pButton->SetColor(color.GetValue());
+			}
+		}
+	}
+
+	{
+		Color color = pElement->m_colorFill;
+		CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
+		m_wndRibbonBar.GetElementsByID(ID_FONT_TEXTHIGHLIGHT, arButtons);
+		if (arButtons.GetSize() > 0)
+		{
+			for (int i = 0; i < arButtons.GetSize(); i++)
+			{
+				CMFCRibbonColorButton* pButton = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, arButtons[i]);
+				pButton->SetColor(color.GetValue());
+			}
+		}
+	}
 	m_wndRibbonBar.RedrawWindow();
 
 }
