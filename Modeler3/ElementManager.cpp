@@ -1909,3 +1909,106 @@ void CElementManager::OnFontItalic(CModeler1View* pView)
 	// Redraw the element
 	InvalObj(pView, pElement);
 }
+
+void CElementManager::OnFontUnderline(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bUnderline == true)
+	{
+		pElement->m_bUnderline = false;
+	}
+	else
+	{
+		pElement->m_bUnderline = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontStrikeThrough(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bStrikeThrough == true)
+	{
+		pElement->m_bStrikeThrough = false;
+	}
+	else
+	{
+		pElement->m_bStrikeThrough = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontGrowFont(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	CMFCRibbonComboBox* pFontCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_FONT_FONTSIZE));
+	if (pFontCombo == NULL)
+	{
+		return;
+	}
+
+	CString fontSize = pFontCombo->GetEditText();
+	int iFontSize = _ttoi(fontSize);
+
+	iFontSize += 2;
+
+	if (iFontSize > 60)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_fontSize = iFontSize;
+
+	TCHAR sz[255];
+	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
+	pFontCombo->SelectItem(sz);
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontShrink(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	CMFCRibbonComboBox* pFontCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_FONT_FONTSIZE));
+	if (pFontCombo == NULL)
+	{
+		return;
+	}
+
+	CString fontSize = pFontCombo->GetEditText();
+	int iFontSize = _ttoi(fontSize);
+
+	iFontSize -= 2;
+
+	if (iFontSize < 8)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_fontSize = iFontSize;
+
+	TCHAR sz[255];
+	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
+	pFontCombo->SelectItem(sz);
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+

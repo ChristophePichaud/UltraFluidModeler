@@ -188,4 +188,8 @@ public:
 public:
 	void OnFontBold(CModeler1View* pView);
 	void OnFontItalic(CModeler1View* pView);
+	void OnFontUnderline(CModeler1View* pView);
+	void OnFontStrikeThrough(CModeler1View* pView);
+	void OnFontGrowFont(CModeler1View* pView);
+	void OnFontShrink(CModeler1View* pView);
 };

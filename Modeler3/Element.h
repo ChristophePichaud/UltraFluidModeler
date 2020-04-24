@@ -191,6 +191,8 @@ public:
 	int m_fontSize;
 	bool m_bBold;
 	bool m_bItalic;
+	bool m_bUnderline;
+	bool m_bStrikeThrough;
 	CRect m_rect;
 	CPoint m_point;
 	CPoint m_last;

@@ -663,6 +663,15 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 		{
 			style = (FontStyle)(style | FontStyle::FontStyleItalic);
 		}
+		if (m_bUnderline == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleUnderline);
+		}
+		if (m_bStrikeThrough == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleStrikeout);
+		}
+
 		//Gdiplus::Font font(&fontFamily, this->m_fontSize, FontStyleRegular, UnitPixel);
 		Gdiplus::Font font(&fontFamily, this->m_fontSize, style, UnitPixel);
 

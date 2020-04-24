@@ -437,9 +437,22 @@ void CMainFrame::InitMainButton()
 	m_pFontSizeCombo->AddItem(_T("24"));
 	m_pFontSizeCombo->AddItem(_T("26"));
 	m_pFontSizeCombo->AddItem(_T("28"));
+	m_pFontSizeCombo->AddItem(_T("30"));
+	m_pFontSizeCombo->AddItem(_T("32"));
+	m_pFontSizeCombo->AddItem(_T("34"));
 	m_pFontSizeCombo->AddItem(_T("36"));
+	m_pFontSizeCombo->AddItem(_T("38"));
+	m_pFontSizeCombo->AddItem(_T("40"));
+	m_pFontSizeCombo->AddItem(_T("42"));
+	m_pFontSizeCombo->AddItem(_T("44"));
+	m_pFontSizeCombo->AddItem(_T("46"));
 	m_pFontSizeCombo->AddItem(_T("48"));
-	m_pFontSizeCombo->AddItem(_T("72"));
+	m_pFontSizeCombo->AddItem(_T("50"));
+	m_pFontSizeCombo->AddItem(_T("52"));
+	m_pFontSizeCombo->AddItem(_T("54"));
+	m_pFontSizeCombo->AddItem(_T("56"));
+	m_pFontSizeCombo->AddItem(_T("58"));
+	m_pFontSizeCombo->AddItem(_T("60"));
 	m_pFontSizeCombo->SetWidth(20, TRUE); // Width in "floaty" mode
 	m_pFontSizeCombo->SelectItem(7);
 	apFontGroup->AddButton(m_pFontSizeCombo);

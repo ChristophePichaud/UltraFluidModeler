@@ -70,12 +70,17 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			// Schema v4
 			pNewElement->m_code = pElement->m_code;
 
+			// Schema v5
+			pNewElement->m_bBold = pElement->m_bBold;
+			pNewElement->m_bItalic = pElement->m_bItalic;
+			pNewElement->m_bUnderline = pElement->m_bUnderline;
+			pNewElement->m_bStrikeThrough = pElement->m_bStrikeThrough;
+
 			POSITION pos = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();
 			m_objects.push_back(pNewElement);
 		}
 	}
-
 }
 
 std::shared_ptr<CElement> CElementContainer::FindElement(ElementType type)

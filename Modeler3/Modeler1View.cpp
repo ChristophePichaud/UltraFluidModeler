@@ -974,17 +974,17 @@ void CModeler1View::OnDesignSelectAll()
 
 void CModeler1View::OnFontGrowFont()
 {
-
+	GetManager()->OnFontGrowFont(this);
 }
 
 void CModeler1View::OnFontShrink()
 {
-
+	GetManager()->OnFontShrink(this);
 }
 
 void CModeler1View::OnFontClearFormat()
 {
-
+	//GetManager()->OnFontClearFormat(this);
 }
 
 void CModeler1View::OnFontBold()
@@ -999,12 +999,12 @@ void CModeler1View::OnFontItalic()
 
 void CModeler1View::OnFontUnderline()
 {
-
+	GetManager()->OnFontUnderline(this);
 }
 
 void CModeler1View::OnFontStrikeThrough()
 {
-
+	GetManager()->OnFontStrikeThrough(this);
 }
 
 void CModeler1View::OnFontSubscript()

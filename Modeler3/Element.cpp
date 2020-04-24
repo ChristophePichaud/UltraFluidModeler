@@ -122,6 +122,8 @@ CElement::CElement()
 	m_fontSize = 12;
 	m_bBold = false;
 	m_bItalic = false;
+	m_bUnderline = false;
+	m_bStrikeThrough = false;
 
 	m_bMoving = FALSE;
 
@@ -193,6 +195,8 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_bFixed = m_bFixed;
 		pNewElement->m_bBold = m_bBold;
 		pNewElement->m_bItalic = m_bItalic;
+		pNewElement->m_bUnderline = m_bUnderline;
+		pNewElement->m_bStrikeThrough = m_bStrikeThrough;
 
 		return pNewElement;
 }
@@ -211,9 +215,11 @@ void CElement::Serialize(CArchive& ar)
 
 		ar.SetObjectSchema(5);
 
-		// The schema v5 contains extra info: bold, italic
+		// The schema v5 contains extra info: bold, italic, underline, StrikeThrough
 		ar << m_bBold;
 		ar << m_bItalic;
+		ar << m_bUnderline;
+		ar << m_bStrikeThrough;
 
 		// The schema v4 contains extra info: code
 		CString code = W2T((LPTSTR)m_code.c_str());
@@ -268,8 +274,10 @@ void CElement::Serialize(CArchive& ar)
 
 		if (version >= 5)
 		{
-			ar >> m_bItalic;
 			ar >> m_bBold;
+			ar >> m_bItalic;
+			ar >> m_bUnderline;
+			ar >> m_bStrikeThrough;
 		}
 			
 		if (version >= 4)
