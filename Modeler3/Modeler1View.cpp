@@ -1021,7 +1021,7 @@ void CModeler1View::OnFontSuperscript()
 
 void CModeler1View::OnFontChangeCase()
 {
-
+	GetManager()->OnFontChangeCase(this);
 }
 
 void CModeler1View::OnFontTextHighlight()
@@ -1071,12 +1071,12 @@ void CModeler1View::OnUpdateFontStrikeThrough(CCmdUI* pCmdUI)
 
 void CModeler1View::OnUpdateFontSubscript(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(GetManager()->HasSelection() == true);
+	pCmdUI->Enable(false);
 }
 
 void CModeler1View::OnUpdateFontSuperscript(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(GetManager()->HasSelection() == true);
+	pCmdUI->Enable(false);
 }
 
 void CModeler1View::OnUpdateFontChangeCase(CCmdUI* pCmdUI)

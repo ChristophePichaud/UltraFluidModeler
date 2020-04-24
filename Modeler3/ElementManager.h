@@ -195,5 +195,5 @@ public:
 	void OnFontClearFormat(CModeler1View* pView);
 	void OnFontColor(CModeler1View* pView);
 	void OnFontTextHighlight(CModeler1View* pView);
-	
+	void OnFontChangeCase(CModeler1View* pView);
 };

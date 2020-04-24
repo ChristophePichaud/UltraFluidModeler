@@ -2080,3 +2080,29 @@ void CElementManager::OnFontTextHighlight(CModeler1View* pView)
 	// Redraw the element
 	InvalObj(pView, pElement);
 }
+
+void CElementManager::OnFontChangeCase(CModeler1View* pView)
+{
+	static int count = 0;
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	wstring text = pElement->m_text;
+
+	++count;
+
+	if (count % 2 == 0)
+	{
+		transform(text.begin(), text.end(), text.begin(), tolower);
+	}
+	else
+	{
+		transform(text.begin(), text.end(), text.begin(), toupper);
+	}
+
+	pElement->m_text = text;
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
