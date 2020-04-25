@@ -3,6 +3,8 @@
 #include "Element.h"
 #include "ElementFactory.h"
 
+class CCodeFile;
+
 class CElementManager : public CObject
 {
 private:
@@ -153,6 +155,8 @@ public:
 public:
 	void LoadModule(CModeler1View * pView);
 	void OnFileOpenGabarit(CModeler1View* pView);
+	CString SearchDrive(const CString& strFile, const CString& strFilePath, const bool& bRecursive, const bool& bStopWhenFound);
+	std::vector<std::shared_ptr<CCodeFile>> _files;
 
 // Managing Object Selection
 public:
@@ -201,4 +205,15 @@ public:
 	void OnFontColor(CModeler1View* pView);
 	void OnFontTextHighlight(CModeler1View* pView);
 	void OnFontChangeCase(CModeler1View* pView);
+};
+
+class CCodeFile
+{
+public:
+	CCodeFile() {}
+	virtual ~CCodeFile() {}
+
+public:
+	std::wstring _name;
+	std::wstring _path;
 };

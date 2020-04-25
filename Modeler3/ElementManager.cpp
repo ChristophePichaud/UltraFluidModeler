@@ -1605,8 +1605,105 @@ void CalcAutoPointRect(int count, std::shared_ptr<CElement> pNewElement)
 	}
 }
 
+CString CElementManager::SearchDrive(const CString& strFile, const CString& strFilePath, const bool& bRecursive, const bool& bStopWhenFound)
+{
+	USES_CONVERSION;
+
+	CWnd* pWnd = AfxGetMainWnd();
+	CMainFrame* pMainFrame = (CMainFrame*)pWnd;
+
+	CString strFoundFilePath;
+	WIN32_FIND_DATA file;
+
+	CString strPathToSearch = strFilePath;
+	strPathToSearch += _T("\\");
+
+	HANDLE hFile = FindFirstFile((strPathToSearch + "*"), &file);
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			CString strTheNameOfTheFile = file.cFileName;
+
+			// It could be a directory we are looking at
+			// if so look into that dir
+			if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			{
+				if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != "..") && (bRecursive))
+				{
+					strFoundFilePath = SearchDrive(strFile, strPathToSearch + strTheNameOfTheFile, bRecursive, bStopWhenFound);
+
+					if (!strFoundFilePath.IsEmpty() && bStopWhenFound)
+						break;
+				}
+			}
+			else
+			{
+				//if (strTheNameOfTheFile == strFile)
+				{
+					strFoundFilePath = strPathToSearch + strTheNameOfTheFile; //strFile;
+
+					// ADD TO COLLECTION TYPE
+					std::shared_ptr<CCodeFile> cf = std::make_shared<CCodeFile>();
+					cf->_name = T2W((LPTSTR)(LPCTSTR)strTheNameOfTheFile); //strFile;
+					cf->_path = T2W((LPTSTR)(LPCTSTR)strFoundFilePath);
+					_files.push_back(cf);
+
+					if (bStopWhenFound)
+						break;
+				}
+			}
+		} while (FindNextFile(hFile, &file));
+
+		FindClose(hFile);
+	}
+
+	return strFoundFilePath;
+}
+
+wstring GetFileContent(shared_ptr<CCodeFile> codeFile)
+{
+	ifstream file(codeFile->_path);
+	string str;
+	string file_contents;
+	while (std::getline(file, str)) 
+	{
+		file_contents += str + string("\r\n");
+	}
+	wstring ws(file_contents.begin(), file_contents.end());
+	return ws;
+}
+
+
 void CElementManager::LoadModule(CModeler1View * pView)
 {
+	CFolderPickerDialog dlg;
+	if (dlg.DoModal() == IDCANCEL)
+		return;
+
+	CString strPath = dlg.GetFolderPath();
+	_files.clear();
+	SearchDrive(_T("*.*"), strPath, false, false);
+
+	int count = 0;
+	for (shared_ptr<CCodeFile> file : _files)
+	{
+		std::shared_ptr<CElement> pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_class);
+		CalcAutoPointRect(count, pNewElement);
+		pNewElement->m_pManager = this;
+		pNewElement->m_pView = pView;
+		pNewElement->m_text = file->_name;
+		// Read file content
+		pNewElement->m_code = GetFileContent(file);
+
+		// Add an object
+		m_objects.AddTail(pNewElement);
+		pView->LogDebug(_T("object created ->") + pNewElement->ToString());
+
+		++count;
+	}
+
+	Invalidate(pView);
 }
 
 void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pCurrentElement, CPoint point, CModeler1View* pView)
