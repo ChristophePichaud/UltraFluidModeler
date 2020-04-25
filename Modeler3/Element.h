@@ -2,6 +2,14 @@
 
 #include "Constants.h"
 
+enum SelectType : int
+{
+	intuitive,
+	all,
+	only_lines,
+	only_items
+};
+
 enum SelectMode : int
 {
 	none,

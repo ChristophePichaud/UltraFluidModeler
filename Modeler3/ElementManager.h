@@ -47,6 +47,7 @@ public:
 	// Current selected shape type from Ribbon
 	ShapeType m_shapeType;
 	bool m_bSavingCode;
+	SelectType m_selectType;
 
 public:
 	// Selection 1st point

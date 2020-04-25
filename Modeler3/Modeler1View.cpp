@@ -167,6 +167,14 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_DESIGN_TEXT, &CModeler1View::OnUpdateDesignText)
 	ON_COMMAND(ID_DESIGN_CONNECT, &CModeler1View::OnDesignConnect)
 	ON_UPDATE_COMMAND_UI(ID_DESIGN_CONNECT, &CModeler1View::OnUpdateDesignConnect)
+	ON_COMMAND(ID_SELECT_ALL, &CModeler1View::OnSelectAll)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ALL, &CModeler1View::OnUpdateSelectAll)
+	ON_COMMAND(ID_SELECT_ONLY_LINES, &CModeler1View::OnSelectOnlyLines)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_LINES, &CModeler1View::OnUpdateSelectOnlyLines)
+	ON_COMMAND(ID_SELECT_ONLY_ITEMS, &CModeler1View::OnSelectOnlyItems)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_ITEMS, &CModeler1View::OnUpdateSelectOnlyItems)
+	ON_COMMAND(ID_SELECT_INTUITIVE, &CModeler1View::OnSelectIntuitive)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_INTUITIVE, &CModeler1View::OnUpdateSelectIntuitive)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -1108,10 +1116,59 @@ void CModeler1View::OnUpdateDesignText(CCmdUI* pCmdUI)
 
 void CModeler1View::OnDesignConnect()
 {
-	//GetManager()->m_type = ElementType::type_connection;
-	//GetManager()->m_shapeType = ShapeType::connection;
+	GetManager()->m_type = ElementType::type_shapes_simple;
+	GetManager()->m_shapeType = ShapeType::line_right;
 }
 
 void CModeler1View::OnUpdateDesignConnect(CCmdUI* pCmdUI)
 {
 }
+
+void CModeler1View::OnSelectAll()
+{
+	GetManager()->m_selectType = SelectType::all;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectAll(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::all);
+}
+
+void CModeler1View::OnSelectOnlyLines()
+{
+	GetManager()->m_selectType = SelectType::only_lines;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectOnlyLines(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::only_lines);
+}
+
+void CModeler1View::OnSelectOnlyItems()
+{
+	GetManager()->m_selectType = SelectType::only_items;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectOnlyItems(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::only_items);
+}
+
+void CModeler1View::OnSelectIntuitive()
+{
+	GetManager()->m_selectType = SelectType::intuitive;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectIntuitive(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::intuitive);
+}
+

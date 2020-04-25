@@ -190,6 +190,14 @@ public:
 	afx_msg void OnUpdateDesignText(CCmdUI* pCmdUI);
 	afx_msg void OnDesignConnect();
 	afx_msg void OnUpdateDesignConnect(CCmdUI* pCmdUI);
+	afx_msg void OnSelectAll();
+	afx_msg void OnUpdateSelectAll(CCmdUI* pCmdUI);
+	afx_msg void OnSelectOnlyLines();
+	afx_msg void OnUpdateSelectOnlyLines(CCmdUI* pCmdUI);
+	afx_msg void OnSelectOnlyItems();
+	afx_msg void OnUpdateSelectOnlyItems(CCmdUI* pCmdUI);
+	afx_msg void OnSelectIntuitive();
+	afx_msg void OnUpdateSelectIntuitive(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

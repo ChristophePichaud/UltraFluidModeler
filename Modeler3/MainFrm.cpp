@@ -351,10 +351,15 @@ void CMainFrame::InitMainButton()
 	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_PASTE, _T("Paste\nc"), 11));
 
 	CMFCRibbonPanel* pPanelDesign = pCategory->AddPanel(_T("Design\nzd"), m_PanelImages.ExtractIcon(2));
+
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT, _T("Select\nc"), 2));
-	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\nc"), 2));
+	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\nc"), 2));
+
+	CMFCRibbonButton* pBtnSelection = new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\ns"), 2);
+	pBtnSelection->SetMenu(IDR_SELECT_MENU);
+	pPanelDesign->Add(pBtnSelection);
+
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT_ALL, _T("Select All\nc"), 2));
-	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_CONNECT, _T("Connect\nc"), 2));
 
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_RECTANGLE, _T("Rectangle\ng"), 2));
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_LINE, _T("Line\ng"), 2));
@@ -396,6 +401,8 @@ void CMainFrame::InitMainButton()
 	pListBtnDev->SetIconsInRow(4);
 	pListBtnDev->EnableMenuResize();
 	pPanelDesign->Add(pListBtnDev);
+
+	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_CONNECT, _T("Connect\nc"), 47));
 
 	// Create "Planning" panel
 	CMFCRibbonPanel* pPanelPlanning = pCategory->AddPanel(_T("Planning\npa"), m_PanelImages.ExtractIcon(2));

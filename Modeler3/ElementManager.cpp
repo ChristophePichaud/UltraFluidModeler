@@ -30,6 +30,8 @@ CElementManager::CElementManager()
 	m_bSavingCode = false;
 	m_bSizingALine = false;
 
+	m_selectType = SelectType::intuitive;
+
 	// Initiate the connection with the Property Window
 	ConnectToPropertyGrid();
 }
@@ -386,7 +388,7 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 				continue;
 			}
 
-			pElement->m_rect.NormalizeRect();
+			//pElement->m_rect.NormalizeRect();
 
 			shared_ptr<CElement> pElement1 = pElement->m_pConnector->m_pElement1;
 			CPoint point1;
@@ -624,7 +626,7 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 		if( m_selectMode == SelectMode::none )
 		{
 			// See if the click was on an object
-			std::shared_ptr<CElement> pElement = m_objects.ObjectAt(point);
+			std::shared_ptr<CElement> pElement = m_objects.ObjectAt(point, m_selectType);
 			if( pElement != NULL )
 			{
 				//if( HasSelection() )
@@ -968,7 +970,7 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 
 		//ViewToManager(pView, rect);
 
-		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
+		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRectEx(rect, m_selectType); // version Ex : do not select lines with full connector
 		if (v.size() != 0)
 		{
 			for (std::shared_ptr<CElement> pElement : v)
