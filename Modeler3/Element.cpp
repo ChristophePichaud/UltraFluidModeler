@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 7)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 8)
 
 int CElement::m_counter = 0;
 
@@ -131,6 +131,7 @@ CElement::CElement()
 	m_pConnector->m_pElement2 = nullptr;
 	m_connectorName1 = _T("");
 	m_connectorName2 = _T("");
+	m_document = _T("");
 
 	m_bMoving = FALSE;
 
@@ -167,9 +168,6 @@ void CElement::SetGuid()
 void CElement::SetName()
 {
 	USES_CONVERSION;
-
-	// Inc counter of created objects
-	CFactory::g_counter++;
 
 	// element name
 	CTime dt = CTime::GetCurrentTime();
@@ -208,6 +206,7 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_code = m_code;
 		pNewElement->m_fontSize = m_fontSize;
 		pNewElement->m_colorText = m_colorText;
+		pNewElement->m_document = m_document;
 
 		return pNewElement;
 }
@@ -233,8 +232,13 @@ void CElement::Serialize(CArchive& ar)
 		//
 		// Set version of file format
 		//
-		ar.SetObjectSchema(7);
+		ar.SetObjectSchema(8);
 
+		// The schema v8 contains extra info: document
+		CString doc = W2T((LPTSTR)m_document.c_str());
+		ar << doc;
+
+		// The schema v7 contains extra info: connector1 & 2
 		CString cn1 = CElement::ToString(m_pConnector->m_pElement1);
 		ar << cn1;
 		CString cn2 = CElement::ToString(m_pConnector->m_pElement2);
@@ -299,6 +303,14 @@ void CElement::Serialize(CArchive& ar)
 		// get the document back pointer from the archive
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
+
+		if (version >= 8)
+		{
+			CString doc;
+			ar >> doc;
+			this->m_document = T2W((LPTSTR)(LPCTSTR)doc);
+		}
+
 
 		if (version >= 7)
 		{

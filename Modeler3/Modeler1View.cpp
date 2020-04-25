@@ -175,6 +175,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_ITEMS, &CModeler1View::OnUpdateSelectOnlyItems)
 	ON_COMMAND(ID_SELECT_INTUITIVE, &CModeler1View::OnSelectIntuitive)
 	ON_UPDATE_COMMAND_UI(ID_SELECT_INTUITIVE, &CModeler1View::OnUpdateSelectIntuitive)
+	ON_COMMAND(ID_EDIT_OPEN, &CModeler1View::OnEditOpen)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN, &CModeler1View::OnUpdateEditOpen)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -1172,3 +1174,30 @@ void CModeler1View::OnUpdateSelectIntuitive(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::intuitive);
 }
 
+void CModeler1View::OnEditOpen()
+{
+	shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+	//AfxMessageBox(pElement->m_document.c_str());
+	AfxGetApp()->OpenDocumentFile(pElement->m_document.c_str());
+}
+
+void CModeler1View::OnUpdateEditOpen(CCmdUI* pCmdUI)
+{
+	if (GetManager()->HasSelection())
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		int size = pElement->m_document.size();
+		if (size != 0)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}

@@ -258,6 +258,10 @@ void CPropertiesWnd::InitPropList()
 	pLineColorProp->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_WINDOW)); // Window Bakcground Color
 	pGroup3->AddSubItem(pLineColorProp);
 
+	CString strFilter2 = _T("Diagram|*.sch;*.dia;*.dgm|All Files(*.*)|*.*||");
+	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Document"), TRUE, _T(""), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		strFilter2, _T("Specifies the file's document"), 0));
+
 	m_wndPropList.AddProperty(pGroup3);
 
 	/*
@@ -349,6 +353,8 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 	UpdateProperty(prop_Has_Line_Color, vColorLine);
 	COleVariant vFixed((SHORT)(pObj->IsFixed()), VT_BOOL);
 	UpdateProperty(prop_Fixed, vFixed);
+
+	UpdateProperty(prop_Document, pObj->m_document.c_str());
 }
 
 void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewValue)

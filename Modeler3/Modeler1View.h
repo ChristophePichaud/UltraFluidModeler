@@ -198,6 +198,8 @@ public:
 	afx_msg void OnUpdateSelectOnlyItems(CCmdUI* pCmdUI);
 	afx_msg void OnSelectIntuitive();
 	afx_msg void OnUpdateSelectIntuitive(CCmdUI* pCmdUI);
+	afx_msg void OnEditOpen();
+	afx_msg void OnUpdateEditOpen(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

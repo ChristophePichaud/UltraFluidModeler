@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 7)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 8)
 
 CElementContainer::CElementContainer()
 {
@@ -87,6 +87,10 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 				pNewElement->m_pConnector->m_pElement1 = FindElementByName(pElement->m_connectorName1);
 				pNewElement->m_pConnector->m_pElement2 = FindElementByName(pElement->m_connectorName2);
 			}
+
+			// Schema v8
+			pNewElement->m_document = pElement->m_document;
+
 
 			POSITION pos = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();

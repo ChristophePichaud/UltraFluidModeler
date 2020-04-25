@@ -19,6 +19,9 @@ int CFactory::g_counter = 0;
 
 std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeType shapeType)
 {
+	// Inc counter of created objects
+	CFactory::g_counter++;
+
 	//std::shared_ptr<CElement> pNewElement = new CElement();
 	std::shared_ptr<CElement> pNewElement;
 	//pNewElement = make_shared<CElement>();

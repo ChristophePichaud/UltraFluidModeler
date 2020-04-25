@@ -231,6 +231,7 @@ public:
 	shared_ptr<CConnector> m_pConnector;
 	std::wstring m_connectorName1;
 	std::wstring m_connectorName2;
+	std::wstring m_document;
 
 // Methods for Attributes
 public:

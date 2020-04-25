@@ -9,7 +9,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 7)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 8)
 
 CElementManager::CElementManager()
 {
@@ -697,13 +697,13 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 	else
 	{
 
-
-		if (CFactory::g_counter > 10)
+#ifdef VERSION_COMMUNITY
+		if (CFactory::g_counter > MAX_SHAPES)
 		{
 			AfxMessageBox(_T("Maximum number or shapes reached !\nFor more, please buy the Architect Edition."));
 			return;
 		}
-
+#endif
 
 		pView->LogDebug(_T("selection cleared"));
 		SelectNone();
@@ -1209,6 +1209,11 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 	if (name == prop_Image)
 	{
 		pElement->m_image = value;
+	}
+
+	if (name == prop_Document)
+	{
+		pElement->m_document = value;
 	}
 
 	if (name == prop_Font_Name)
