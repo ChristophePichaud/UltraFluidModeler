@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 8)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 9)
 
 CElementContainer::CElementContainer()
 {
@@ -21,6 +21,8 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 {
 	if( ar.IsStoring() == TRUE )
 	{
+		ar.SetObjectSchema(9);
+
 		CTypedPtrList<CObList, CElement *> objects;
 		for( vector<std::shared_ptr<CElement>>::iterator i = m_objects.begin() ; i!=m_objects.end() ; i++ )
 		{
@@ -96,6 +98,10 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();
 			m_objects.push_back(pNewElement);
 		}
+
+		// Build groups
+		pElementManager->BuildGroups();
+
 	}
 }
 

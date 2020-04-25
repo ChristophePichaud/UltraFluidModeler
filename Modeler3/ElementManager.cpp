@@ -5,11 +5,13 @@
 #include "MainFrm.h"
 #include "DrawingContext.h"
 #include "DrawingElements.h"
+#include <sstream>
+
 //
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 8)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 9)
 
 CElementManager::CElementManager()
 {
@@ -31,6 +33,7 @@ CElementManager::CElementManager()
 	m_bSizingALine = false;
 
 	m_selectType = SelectType::intuitive;
+	m_elementGroup = _T("ElementGroup");
 
 	// Initiate the connection with the Property Window
 	ConnectToPropertyGrid();
@@ -51,12 +54,29 @@ void CElementManager::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
+		//
+		// Set version of file format
+		//
+		ar.SetObjectSchema(9);
+
+		//CString elementGroup = W2T((LPTSTR)m_elementGroup.c_str());
+		//ar << elementGroup;
+
 		ar << m_size;
 		ar << m_paperColor;
 		ar << m_lastPoint;
 	}
 	else
 	{
+		int version = ar.GetObjectSchema();
+
+		if (version >= 9)
+		{
+			//CString elementGroup;
+			//ar >> elementGroup;
+			//this->m_elementGroup = T2W((LPTSTR)(LPCTSTR)elementGroup);
+		}
+
 		ar >> m_size;
 		ar >> m_paperColor;
 		ar >> m_lastPoint;
@@ -1837,18 +1857,23 @@ void CElementManager::AlignTextRight(CModeler1View* pView)
 
 void CElementManager::OnEditGroup(CModeler1View* pView)
 {
+	static int count = 0;
 	//AfxMessageBox(L"Grouping");
 
-	shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
+	++count;
 
+	wstringstream ss;
+	ss << _T("Group_") << count;
+
+	shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
 	for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
 	{
-		std::shared_ptr<CElement> pObj = *itSel;
-		pObj->m_pElementGroup = speg;
-		pObj->m_bGrouping = true;
-		speg->m_Groups.push_back(pObj);
+		std::shared_ptr<CElement> pElement = *itSel;
+		pElement->m_pElementGroup = speg;
+		pElement->m_bGrouping = true;
+		speg->m_name = ss.str();
+		speg->m_Groups.push_back(pElement);
 	}
-
 	this->m_groups.push_back(speg);
 }
 
@@ -1881,6 +1906,70 @@ void CElementManager::OnEditUngroup(CModeler1View* pView)
 			break;
 		}
 	}
+}
+
+std::vector<std::wstring> CElementManager::Split(const std::wstring& s, wchar_t delim)
+{
+	std::wstringstream ss(s);
+	std::wstring item;
+	std::vector<std::wstring> elems;
+	while (std::getline(ss, item, delim))
+	{
+		elems.push_back(item);
+		// elems.push_back(std::move(item)); // if C++11 (based on comment from @mchiasson)
+	}
+	return elems;
+}
+
+void CElementManager::BuildGroups()
+{
+	wstring n = CElement::m_elementGroupNames;
+	wstring elts = CElement::m_elementGroupElements;
+	vector<wstring> vnames = CElementManager::Split(n, _T('|'));
+	vector<wstring> vlistes = CElementManager::Split(elts, _T('|'));
+
+	//for (int i = 0; i < vnames.size(); ++i)
+	//{
+	//	wstring aName = vnames[i];
+	//	if (aName.size() == 0)
+	//	{
+	//		continue;
+	//	}
+	//}
+
+	for (int j = 0; j < vlistes.size(); ++j)
+	{
+
+		wstring aName = vnames[j];
+		wstring aList = vlistes[j];
+		if (aList.size() <= 2)
+		{
+			continue;
+		}
+
+		shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
+
+		vector<wstring> velements = CElementManager::Split(aList, _T(';'));
+		for (int x = 0; x < velements.size(); ++x)
+		{
+			wstring element = velements[x];
+			if (element.size() <= 2)
+			{
+				continue;
+			}
+
+			std::shared_ptr<CElement> pElement = this->m_objects.FindElementByName(element);
+			if (pElement != nullptr)
+			{
+				pElement->m_pElementGroup = speg;
+				pElement->m_bGrouping = true;
+				speg->m_Groups.push_back(pElement);
+			}
+		}
+
+		this->m_groups.push_back(speg);
+	}
+
 }
 
 int CElementManager::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)

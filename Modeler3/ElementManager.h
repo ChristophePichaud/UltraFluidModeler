@@ -24,6 +24,7 @@ public:
 	CElementContainer m_clipboard;
 	// Grouped Objects
 	vector<shared_ptr<CElementGroup>> m_groups;
+	std::wstring m_elementGroup;
 
 	COLORREF m_paperColor;
 	// Page size in logical coordinates
@@ -167,6 +168,8 @@ public:
 public:
 	void OnEditGroup(CModeler1View* pView);
 	void OnEditUngroup(CModeler1View* pView);
+	std::vector<std::wstring> Split(const std::wstring& s, wchar_t delim);
+	void BuildGroups();
 
 // Overridables
 public:

@@ -190,7 +190,7 @@ public:
 	virtual bool CanChangeFillColor() const;
 	virtual bool CanChangeLineColor() const;
 	virtual bool CanChangeLineWidth() const;
-	
+
 // Attributes
 public:
 	std::wstring m_name;
@@ -232,6 +232,8 @@ public:
 	std::wstring m_connectorName1;
 	std::wstring m_connectorName2;
 	std::wstring m_document;
+	static std::wstring m_elementGroupNames;
+	static std::wstring m_elementGroupElements;
 
 // Methods for Attributes
 public:
@@ -258,6 +260,7 @@ public:
 class CElementGroup
 {
 public:
+	std::wstring m_name;
 	std::vector<std::shared_ptr<CElement>> m_Groups;
 };
 

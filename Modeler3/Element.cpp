@@ -93,9 +93,11 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 8)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 9)
 
 int CElement::m_counter = 0;
+std::wstring CElement::m_elementGroupNames = _T("");
+std::wstring CElement::m_elementGroupElements = _T("");
 
 CElement::CElement()
 {
@@ -232,7 +234,29 @@ void CElement::Serialize(CArchive& ar)
 		//
 		// Set version of file format
 		//
-		ar.SetObjectSchema(8);
+		ar.SetObjectSchema(9);
+
+		// The schema v9 contains extra info: names, elements
+		CString n;
+		CString elts;
+		for (shared_ptr<CElementGroup> pElementGroup : this->m_pManager->m_groups)
+		{
+			//elts += CString(_T("|"));
+			n += /*CString(_T("|")) +*/ CString(pElementGroup->m_name.c_str()) + CString(_T("|"));
+			for (shared_ptr<CElement> pElement : pElementGroup->m_Groups)
+			{
+				elts += CString(pElement->m_name.c_str()) + CString(_T(";"));
+			}
+			elts += CString(_T("|"));
+		}
+		CElement::m_elementGroupNames = n;
+		CElement::m_elementGroupElements = elts;
+		
+		CString names = W2T((LPTSTR)CElement::m_elementGroupNames.c_str());
+		ar << names;
+		CString elements = W2T((LPTSTR)CElement::m_elementGroupElements.c_str());
+		ar << elements;
+
 
 		// The schema v8 contains extra info: document
 		CString doc = W2T((LPTSTR)m_document.c_str());
@@ -304,13 +328,22 @@ void CElement::Serialize(CArchive& ar)
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
 
+		if (version >= 9)
+		{
+			CString names;
+			ar >> names;
+			CElement::m_elementGroupNames = T2W((LPTSTR)(LPCTSTR)names);
+			CString elements;
+			ar >> elements;
+			CElement::m_elementGroupElements = T2W((LPTSTR)(LPCTSTR)elements);
+		}
+
 		if (version >= 8)
 		{
 			CString doc;
 			ar >> doc;
 			this->m_document = T2W((LPTSTR)(LPCTSTR)doc);
 		}
-
 
 		if (version >= 7)
 		{
