@@ -103,9 +103,11 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 			case notimpl_multi_line:
 			default:
 			{
-				std::shared_ptr<CElement> apNewElement(new CNotImplementedElement());
-				// Not implemented yet !
-				pNewElement->m_type = ElementType::type_unknown;
+				//std::shared_ptr<CElement> apNewElement(new CNotImplementedElement());
+				//// Not implemented yet !
+				//pNewElement->m_type = ElementType::type_unknown;
+				//pNewElement = apNewElement;
+				std::shared_ptr<CElement> apNewElement(new CRectangleElement());
 				pNewElement = apNewElement;
 				break;
 			}

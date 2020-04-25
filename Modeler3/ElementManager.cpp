@@ -371,6 +371,10 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 	//graphics.ScaleTransform(0.75f, 0.75f);
 	graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
 	
+	// Iterate on Line elements
+	// if connector1 exists, its draghandle 1 is connector1.centeroint else nothing (its inner value)
+	// if connector2 exists, its draghandle 2 is connector2.centeroint else nothing (its inner value)
+	// Then the m_rect value is m_rect = CRrect(point1, point2);
 	if (m_bSizingALine == false)
 	{
 		for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
@@ -437,11 +441,38 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			(pElement->m_type != ElementType::type_text)
 			)
 		{
-			//std::shared_ptr<CElement> pTextElement = make_shared<CSimpleTextElement>();
-			std::shared_ptr<CElement> pTextElement(new CSimpleTextElement());
-			pTextElement->m_rect = pElement->m_rect;
+			//std::shared_ptr<CElement> pTextElement(new CSimpleTextElement());
+			//pTextElement->m_rect = pElement->m_rect;
+			//pTextElement->m_text = pElement->m_text;
+			//pTextElement->m_textAlign = pElement->m_textAlign;
+			//pTextElement->Draw(ctxt);
+			std::shared_ptr<CElement> pTextElement(new CTextElement());
+			//pTextElement->m_name = pElement->m_name;
+			//pTextElement->m_objectId = pElement->m_objectId;
+			pTextElement->m_caption = pElement->m_caption;
 			pTextElement->m_text = pElement->m_text;
+			pTextElement->m_code = pElement->m_code;
+			pTextElement->m_image = pElement->m_image;
+			pTextElement->m_lineWidth = pElement->m_lineWidth;
+			pTextElement->m_pManager = pElement->m_pManager;
+			pTextElement->m_pView = pElement->m_pView;
+			pTextElement->m_rect = pElement->m_rect;
+			pTextElement->m_bColorFill = pElement->m_bColorFill;
+			pTextElement->m_bColorLine = pElement->m_bColorLine;
+			pTextElement->m_bLineWidth = pElement->m_bLineWidth;
+			pTextElement->m_bSolidColorFill = pElement->m_bSolidColorFill;
+			pTextElement->m_colorFill = pElement->m_colorFill;
+			pTextElement->m_colorLine = pElement->m_colorLine;
 			pTextElement->m_textAlign = pElement->m_textAlign;
+			pTextElement->m_fontName = pElement->m_fontName;
+			pTextElement->m_bFixed = pElement->m_bFixed;
+			pTextElement->m_bBold = pElement->m_bBold;
+			pTextElement->m_bItalic = pElement->m_bItalic;
+			pTextElement->m_bUnderline = pElement->m_bUnderline;
+			pTextElement->m_bStrikeThrough = pElement->m_bStrikeThrough;
+			//pTextElement->m_code = pElement->m_code;
+			pTextElement->m_fontSize = pElement->m_fontSize;
+			pTextElement->m_colorText = pElement->m_colorText;
 			pTextElement->Draw(ctxt);
 		}
 

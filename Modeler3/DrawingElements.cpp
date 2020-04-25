@@ -629,14 +629,17 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 	SolidBrush & solidBrush = ctxt.GetBrushColor();
 	LinearGradientBrush & lgBrush = ctxt.GetGradientBrushColor();
 	// RectF object for Text
-	PointF pointF(p1.x, p1.y);
-	SizeF sizeF(rect.Width(), rect.Height());
-	RectF rectF(pointF, sizeF);
+	//PointF pointF(p1.x, p1.y);
+	//SizeF sizeF(rect.Width(), rect.Height());
+	//RectF rectF(pointF, sizeF);
+	PointF pointText(rect.left + 10, rect.top + 10);
+	SizeF sizeF(rect.Width() - 10, rect.Height() - 10);
+	RectF rectF(pointText, sizeF);
 
 	//if( m_shapeType == ShapeType::text )
 	{
 		// Useless or not do fill a rectangle around the texte ???
-		if( HasColorFill() )
+		/*if( HasColorFill() )
 		{
 			if( IsSolidColorFill() )
 				graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
@@ -647,7 +650,7 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 		if( HasColorLine() )
 		{
 			graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
-		}
+		}*/
 
 		// Font object
 		//FontFamily fontFamily(L"Calibri");
