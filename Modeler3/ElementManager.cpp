@@ -696,6 +696,15 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 	// Create a Drawable Object...
 	else
 	{
+
+
+		if (CFactory::g_counter > 10)
+		{
+			AfxMessageBox(_T("Maximum number or shapes reached !\nFor more, please buy the Architect Edition."));
+			return;
+		}
+
+
 		pView->LogDebug(_T("selection cleared"));
 		SelectNone();
 

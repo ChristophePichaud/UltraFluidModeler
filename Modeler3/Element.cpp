@@ -170,6 +170,7 @@ void CElement::SetName()
 
 	// Inc counter of created objects
 	CFactory::g_counter++;
+
 	// element name
 	CTime dt = CTime::GetCurrentTime();
 	CString name; 
