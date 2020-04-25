@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 6)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 7)
 
 CElementContainer::CElementContainer()
 {
@@ -79,6 +79,15 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			// Schema v6
 			pNewElement->m_colorText = pElement->m_colorText;
 
+			// Schema v7
+			pNewElement->m_connectorName1 = pElement->m_connectorName1;
+			pNewElement->m_connectorName2 = pElement->m_connectorName2;
+			if (pElement->IsLine())
+			{
+				pNewElement->m_pConnector->m_pElement1 = FindElementByName(pElement->m_connectorName1);
+				pNewElement->m_pConnector->m_pElement2 = FindElementByName(pElement->m_connectorName2);
+			}
+
 			POSITION pos = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();
 			m_objects.push_back(pNewElement);
@@ -108,6 +117,21 @@ std::shared_ptr<CElement> CElementContainer::FindElement(std::wstring objectId)
 	{
 		std::shared_ptr<CElement> pElement = *i;
 		if( pElement->m_objectId == objectId )
+		{
+			return pElement;
+		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+
+std::shared_ptr<CElement> CElementContainer::FindElementByName(std::wstring name)
+{
+	// find last element of a given type
+	for (vector<std::shared_ptr<CElement>>::iterator i = m_objects.begin(); i != m_objects.end(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pElement->m_name == name)
 		{
 			return pElement;
 		}

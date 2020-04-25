@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 6)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 7)
 
 int CElement::m_counter = 0;
 
@@ -127,6 +127,10 @@ CElement::CElement()
 	m_colorText = RGB(0, 0, 0);
 
 	m_pConnector = make_shared<CConnector>();
+	m_pConnector->m_pElement1 = nullptr;
+	m_pConnector->m_pElement2 = nullptr;
+	m_connectorName1 = _T("");
+	m_connectorName2 = _T("");
 
 	m_bMoving = FALSE;
 
@@ -207,6 +211,12 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		return pNewElement;
 }
 
+CString CElement::ToString(shared_ptr<CElement> pElement)
+{
+	CString str = pElement == nullptr ? _T("") : W2T((LPTSTR)pElement->m_name.c_str());
+	return str;
+}
+
 void CElement::Serialize(CArchive& ar)
 {
 	USES_CONVERSION;
@@ -219,7 +229,15 @@ void CElement::Serialize(CArchive& ar)
 		//str.Format(_T("version=%d"), version);
 		//AfxMessageBox(str);
 
-		ar.SetObjectSchema(6);
+		//
+		// Set version of file format
+		//
+		ar.SetObjectSchema(7);
+
+		CString cn1 = CElement::ToString(m_pConnector->m_pElement1);
+		ar << cn1;
+		CString cn2 = CElement::ToString(m_pConnector->m_pElement2);
+		ar << cn2;
 
 		// The schema v6 contains extra info: colortext
 		ar << m_colorText;
@@ -280,6 +298,16 @@ void CElement::Serialize(CArchive& ar)
 		// get the document back pointer from the archive
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
+
+		if (version >= 7)
+		{
+			CString cn1;
+			ar >> cn1;
+			this->m_connectorName1 = T2W((LPTSTR)(LPCTSTR)cn1);
+			CString cn2;
+			ar >> cn2;
+			this->m_connectorName2 = T2W((LPTSTR)(LPCTSTR)cn2);
+		}
 
 		if (version >= 6)
 		{

@@ -156,6 +156,7 @@ public:
 
 // Operations
 public:
+	static CString ToString(shared_ptr<CElement> pElement);
 	CString ToString();
 	CString ToString(ElementType type);
 	CString ToString(ShapeType type);
@@ -220,6 +221,8 @@ public:
 	shared_ptr<CElementGroup> m_pElementGroup;
 	bool m_bGrouping;
 	shared_ptr<CConnector> m_pConnector;
+	std::wstring m_connectorName1;
+	std::wstring m_connectorName2;
 
 // Methods for Attributes
 public:

@@ -22,6 +22,7 @@ public:
 public:
 	std::shared_ptr<CElement> FindElement(ElementType type);
 	std::shared_ptr<CElement> FindElement(std::wstring objectId);
+	std::shared_ptr<CElement> FindElementByName(std::wstring name);
 	bool FindElement(std::wstring objectId, vector<std::shared_ptr<CElement>>::iterator & it);
 	std::shared_ptr<CElement> ObjectAt(const CPoint & point);	
 	std::shared_ptr<CElement> ObjectAt(const CPoint& point, std::shared_ptr<CElement> pObj);
