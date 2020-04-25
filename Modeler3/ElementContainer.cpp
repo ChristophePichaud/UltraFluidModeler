@@ -131,6 +131,7 @@ bool CElementContainer::FindElement(std::wstring objectId, vector<std::shared_pt
 	return false;
 }
 
+#ifdef ORIGINAL_CODE
 std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint & point)
 {
 	CRect rect(point, CSize(1, 1));
@@ -141,6 +142,70 @@ std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint & point)
 		{
 			return pElement;
 		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+#endif
+
+std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint& point)
+{
+	CRect rect(point, CSize(1, 1));
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+
+		// If Intersects, we have a candidate but...
+		if (pElement->Intersects(rect))
+		{
+			std::shared_ptr<CElement> pElementCandidate = pElement;
+
+			// If Intersects, we have a candidate if not a line...
+			// except if the line connector intersects, then it's the line connector element !
+			for (vector<std::shared_ptr<CElement>>::iterator i2 = m_objects.begin(); i2 != m_objects.end(); i2++)
+			{
+				std::shared_ptr<CElement> pElementLine = *i2;
+				if (pElementLine->IsLine() == false)
+				{
+					continue;
+				}
+
+				shared_ptr<CElement> pElement1 = pElementLine->m_pConnector->m_pElement1;
+				shared_ptr<CElement> pElement2 = pElementLine->m_pConnector->m_pElement2;
+
+				if (pElement1 == pElementCandidate)
+				{
+					return pElement1;
+				}
+				
+				if (pElement1 != nullptr)
+				{
+					if (pElement1->Intersects(rect))
+					{
+						pElementCandidate = pElement1;
+						break;
+					}
+				}
+
+				if (pElement2 == pElementCandidate)
+				{
+					return pElement2;
+				}
+
+				if (pElement2 != nullptr)
+				{
+					if (pElement2->Intersects(rect))
+					{
+						pElementCandidate = pElement2;
+						break;
+					}
+				}
+			}
+
+			return pElementCandidate;
+		}
+	next_value:
+		int nop = 0;
 	}
 	std::shared_ptr<CElement> pNull;
 	return pNull;
