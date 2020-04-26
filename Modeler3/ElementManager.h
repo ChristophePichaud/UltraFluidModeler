@@ -158,6 +158,7 @@ public:
 	CString SearchDrive(const CString& strFile, const CString& strFilePath, const bool& bRecursive, const bool& bStopWhenFound);
 	std::vector<std::shared_ptr<CCodeFile>> _files;
 	void LoadFolders(CModeler1View* pView);
+	void OpenFolder(CModeler1View* pView);
 
 // Managing Object Selection
 public:

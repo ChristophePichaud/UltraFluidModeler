@@ -1772,6 +1772,52 @@ void CElementManager::LoadFolders(CModeler1View* pView)
 	Invalidate(pView);
 }
 
+void CElementManager::OpenFolder(CModeler1View* pView)
+{
+	shared_ptr<CElement> pElement = m_selection.GetHead();
+
+	CString strPath = pElement->m_document.c_str();;
+	_files.clear();
+	SearchDrive(_T("*.*"), strPath, false, false);
+
+	m_objects.RemoveAll();
+	Invalidate(pView);
+
+	int count = 0;
+	for (shared_ptr<CCodeFile> file : _files)
+	{
+		std::shared_ptr<CElement> pNewElement = nullptr;
+		if (file->_type == FileType::file)
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_class);
+			pNewElement->m_documentType = DocumentType::document_file;
+			pNewElement->m_documentTypeText = _T("File");
+		}
+		else
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_interface);
+			pNewElement->m_documentType = DocumentType::document_folder;
+			pNewElement->m_documentTypeText = _T("Folder");
+		}
+
+		CalcAutoPointRect(count, pNewElement);
+		pNewElement->m_pManager = this;
+		pNewElement->m_pView = pView;
+		pNewElement->m_text = file->_name;
+		// Read file content
+		//pNewElement->m_code = GetFileContent(file);
+		pNewElement->m_document = file->_path;
+
+		// Add an object
+		m_objects.AddTail(pNewElement);
+		pView->LogDebug(_T("object created ->") + pNewElement->ToString());
+
+		++count;
+	}
+
+	Invalidate(pView);
+}
+
 void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pCurrentElement, CPoint point, CModeler1View* pView)
 {
 	// Find a connection ?
