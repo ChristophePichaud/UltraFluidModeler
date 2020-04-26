@@ -73,7 +73,7 @@ using namespace std;
 
 #include <afx.h>
 
-#define VERSION_COMMUNITY   TRUE
+//#define VERSION_COMMUNITY
 #define MAX_SHAPES          20
 
 #ifdef _UNICODE

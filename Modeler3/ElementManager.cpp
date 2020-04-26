@@ -1584,13 +1584,13 @@ void CalcAutoPointRect2(int count, std::shared_ptr<CElement> pNewElement)
 void CalcAutoPointRect(int count, std::shared_ptr<CElement> pNewElement)
 {
 	int c = 0;
-	for (int x = 0; x < 20; x++)
+	for (int y = 0; y < 30; y++)
 	{
-		for (int y = 0; y < 20; y++)
+		for (int x = 0; x < 8; x++)
 		{
 			if (count%400 == c)
 			{
-				pNewElement->m_point.x = 200 * x;
+				pNewElement->m_point.x = 175 * x;
 				pNewElement->m_point.y = 50 * y;
 
 				pNewElement->m_rect.left = pNewElement->m_point.x;
