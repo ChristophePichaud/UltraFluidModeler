@@ -363,7 +363,7 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 	UpdateProperty(prop_Fixed, vFixed);
 
 	UpdateProperty(prop_Document, pObj->m_document.c_str());
-	UpdateProperty(prop_Document_Type, pObj->m_documentTypeText.c_str());
+	UpdateProperty(prop_Document_Type, pObj->ToString(pObj->m_documentType));
 }
 
 void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewValue)
@@ -506,6 +506,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, (long) propValue.bVal);
 	}
+	/*
 	else if (propName == prop_Document_Type)
 	{
 		if (propValueText == _T("None") || propValueText == _T("File") || propValueText == _T("Folder") || propValueText == _T("Diagram"))
@@ -513,6 +514,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
 		}
 	}
+	*/
 	else
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);

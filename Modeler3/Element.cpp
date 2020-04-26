@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 9)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 10)
 
 int CElement::m_counter = 0;
 std::wstring CElement::m_elementGroupNames = _T("");
@@ -236,7 +236,13 @@ void CElement::Serialize(CArchive& ar)
 		//
 		// Set version of file format
 		//
-		ar.SetObjectSchema(9);
+		ar.SetObjectSchema(10);
+
+		// The schema v10 contains extra info: documenttypetext
+		//CString doct = W2T((LPTSTR)m_documentTypeText.c_str());
+		//ar << doct;
+		int doct = m_documentType;
+		ar << doct;
 
 		// The schema v9 contains extra info: names, elements
 		CString n;
@@ -329,6 +335,16 @@ void CElement::Serialize(CArchive& ar)
 		// get the document back pointer from the archive
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
+
+		if (version >= 10)
+		{
+			//CString doct;
+			//ar >> doct;
+			//this->m_documentTypeText = T2W((LPTSTR)(LPCTSTR)doct);
+			int doct;
+			ar >> doct;
+			m_documentType = (DocumentType)doct;
+		}
 
 		if (version >= 9)
 		{
@@ -662,6 +678,55 @@ CString CElement::ToString(ShapeType type)
 			break;
 	}
 	return str;
+}
+
+CString CElement::ToString(DocumentType type)
+{
+	CString str = _T("");
+	switch (type)
+	{
+	case DocumentType::document_none:
+		str = _T("None");
+		break;
+
+	case DocumentType::document_file:
+		str = _T("File");
+		break;
+
+	case DocumentType::document_folder:
+		str = _T("Folder");
+		break;
+
+	case DocumentType::document_diagram:
+		str = _T("Diagram");
+		break;
+
+	default:
+		break;
+	}
+	return str;
+}
+
+DocumentType CElement::FromString(wstring type)
+{
+	DocumentType doctype = DocumentType::document_none;
+	if (type == _T("None"))
+	{
+		doctype = DocumentType::document_none;
+	}
+	if (type == _T("File"))
+	{
+		doctype = DocumentType::document_file;
+	}
+	if (type == _T("Folder"))
+	{
+		doctype = DocumentType::document_folder;
+	}
+	if (type == _T("Diagram"))
+	{
+		doctype = DocumentType::document_diagram;
+	}
+	return doctype;
 }
 
 /*

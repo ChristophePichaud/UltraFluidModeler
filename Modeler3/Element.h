@@ -180,6 +180,8 @@ public:
 	CString ToString(ElementType type);
 	CString ToString(ShapeType type);
 	CString ToString(shared_ptr<CConnector> pConnector);
+	CString ToString(DocumentType type);
+	DocumentType FromString(wstring type);
 	//static bool IsDrawable(ElementType type);
 	bool Intersects(const CRect& rect);
 	void InvalidateObj(void);

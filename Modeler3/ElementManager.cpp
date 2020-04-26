@@ -11,7 +11,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 9)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 10)
 
 CElementManager::CElementManager()
 {
@@ -57,7 +57,7 @@ void CElementManager::Serialize(CArchive& ar)
 		//
 		// Set version of file format
 		//
-		ar.SetObjectSchema(9);
+		ar.SetObjectSchema(10);
 
 		//CString elementGroup = W2T((LPTSTR)m_elementGroup.c_str());
 		//ar << elementGroup;
@@ -1245,7 +1245,7 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 	{
 		if (value == _T("None") || value == _T("File") || value == _T("Folder") || value == _T("Diagram"))
 		{
-			pElement->m_documentTypeText = value;
+			pElement->m_documentType = pElement->FromString(value);
 		}
 	}
 
