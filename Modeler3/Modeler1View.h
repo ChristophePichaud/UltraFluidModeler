@@ -210,7 +210,9 @@ public:
 	afx_msg void OnUpdateEditOpenFile(CCmdUI* pCmdUI);
 	afx_msg void OnEditOpenFileContent();
 	afx_msg void OnUpdateEditOpenFileContent(CCmdUI* pCmdUI);
-};
+	afx_msg void OnActionElements();
+	afx_msg void OnUpdateActionElements(CCmdUI* pCmdUI);
+	};
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp
 inline CModeler1Doc* CModeler1View::GetDocument() const

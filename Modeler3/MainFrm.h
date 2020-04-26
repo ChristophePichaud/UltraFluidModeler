@@ -72,6 +72,9 @@ public:
 	COLORREF GetColorFromColorButton(int nButtonID);
 	int GetWidthFromLineWidth(int nButtonID);
 	void UpdateRibbonUI(CModeler1View * pView);
+	void OnActionElements(CModeler1View* pView);
+	void BuildElementsCombo(CModeler1View* pView);
+	void SelectElementsCombo(CModeler1View* pView);
 
 // Attributes
 public:
@@ -95,6 +98,7 @@ protected:
 	CFileViewBar	  m_wndFileView;
 	CMFCRibbonFontComboBox* m_pFontCombo;
 	CMFCRibbonComboBox* m_pFontSizeCombo;
+	CMFCRibbonComboBox* m_pElementsCombo;
 
 private:
 	CModeler1View * m_pModelerView;

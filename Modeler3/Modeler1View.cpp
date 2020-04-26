@@ -187,6 +187,8 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE, &CModeler1View::OnUpdateEditOpenFile)
 	ON_COMMAND(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnEditOpenFileContent)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnUpdateEditOpenFileContent)
+	ON_COMMAND(ID_ACTION_ELEMENTS, &CModeler1View::OnActionElements)
+	ON_UPDATE_COMMAND_UI(ID_ACTION_ELEMENTS, &CModeler1View::OnUpdateActionElements)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -342,6 +344,7 @@ void CModeler1View::OnInitialUpdate()
 	str.Format(_T("Windows CSize x=%d y=%d"), size.cx, size.cy);
 	LogDebug(str);
 
+	GetManager()->OnActionElements(this);
 	GetManager()->UpdateClassView();
 	GetManager()->UpdateFileView();
 }
@@ -1304,5 +1307,16 @@ void CModeler1View::OnUpdateEditOpenFileContent(CCmdUI* pCmdUI)
 	{
 		pCmdUI->Enable(FALSE);
 	}
+}
+
+void CModeler1View::OnActionElements()
+{
+	// TODO: Add your command handler code here
+	GetManager()->OnActionElements(this);
+}
+
+void CModeler1View::OnUpdateActionElements(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
 }
 

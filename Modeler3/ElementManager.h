@@ -209,6 +209,11 @@ public:
 	void OnFontColor(CModeler1View* pView);
 	void OnFontTextHighlight(CModeler1View* pView);
 	void OnFontChangeCase(CModeler1View* pView);
+
+// Elements
+public:
+	void OnActionElements(CModeler1View* pView);
+	void BuildElementsCombo(CModeler1View* pView);
 };
 
 enum FileType : int

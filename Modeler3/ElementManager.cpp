@@ -20,7 +20,7 @@ CElementManager::CElementManager()
 	m_objectId = L"";
 	m_lastPoint = CPoint(0, 0);
 	m_paperColor = RGB(255, 255, 255); //RGB(242, 242, 200); //RGB(255, 255, 255); //RGB(188, 251, 255);
-	m_size = CSize(1500, 1500);
+	m_size = CSize(3000, 3000);
 
 	// Initialize Current UI interaction members
 	m_bDrawing = FALSE;
@@ -2544,4 +2544,18 @@ void CElementManager::OnFontChangeCase(CModeler1View* pView)
 
 	// Redraw the element
 	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnActionElements(CModeler1View* pView)
+{
+	CWnd* p = AfxGetMainWnd();
+	CMainFrame* pmf = (CMainFrame*)p;
+	pmf->OnActionElements(pView);
+}
+
+void CElementManager::BuildElementsCombo(CModeler1View* pView)
+{
+	CWnd* p = AfxGetMainWnd();
+	CMainFrame* pmf = (CMainFrame*)p;
+	pmf->BuildElementsCombo(pView);
 }

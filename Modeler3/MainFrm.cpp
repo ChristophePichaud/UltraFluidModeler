@@ -501,10 +501,19 @@ void CMainFrame::InitMainButton()
 	// Create "Action" panel
 	CMFCRibbonPanel* pPanelAction = pCategory->AddPanel(_T("Action\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_REMOVE, _T("Remove\nc"), 12));
-	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import Modules\nin"), 35));
-	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\ndc"), 2));
+	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import\nin"), 35));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump\ndc"), 2));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_FOLDERS, _T("Folders\nc"), 48));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_DIAGRAM, _T("Diagram\nc"), 49));
+	//m_pElementsCombo = new CMFCRibbonComboBox(ID_ACTION_ELEMENTS, FALSE, 39);
+	//m_pElementsCombo->SetWidth(100, TRUE); // Width in "floaty" mode
+	//pPanelAction->Add(m_pElementsCombo);
+
+	// Create "Elements" panel
+	CMFCRibbonPanel* pPanelElements = pCategory->AddPanel(_T("Elements\nzd"), m_PanelImages.ExtractIcon(2));
+	m_pElementsCombo = new CMFCRibbonComboBox(ID_ACTION_ELEMENTS, FALSE, 39);
+	m_pElementsCombo->SetWidth(100, TRUE); // Width in "floaty" mode
+	pPanelElements->Add(m_pElementsCombo);
 
 	// Create "Format" panel
 	CMFCRibbonPanel* pPanelFormat = pCategory->AddPanel(_T("Format and Style\nzd"), m_PanelImages.ExtractIcon(2));
@@ -1000,8 +1009,72 @@ void CMainFrame::UpdateRibbonUI(CModeler1View * pView)
 			}
 		}
 	}
-	m_wndRibbonBar.RedrawWindow();
 
+	SelectElementsCombo(pView);
+		
+	m_wndRibbonBar.RedrawWindow();
+}
+
+void CMainFrame::SelectElementsCombo(CModeler1View* pView)
+{
+	CElementContainer& selection = pView->GetManager()->m_selection;
+	int count = selection.GetCount();
+	if (count == 0)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = selection.GetHead();
+		
+	m_pElementsCombo->RemoveAllItems();
+	for (shared_ptr<CElement> pElement : GetManager()->GetObjects())
+	{
+		m_pElementsCombo->AddItem(pElement->m_name.c_str());
+	}
+
+	m_pElementsCombo->SelectItem(pElement->m_name.c_str());
+
+	m_wndRibbonBar.RedrawWindow();
+}
+
+void CMainFrame::BuildElementsCombo(CModeler1View* pView)
+{
+	m_pElementsCombo->RemoveAllItems();
+	for (shared_ptr<CElement> pElement : GetManager()->GetObjects())
+	{
+		m_pElementsCombo->AddItem(pElement->m_name.c_str());
+	}
+	m_wndRibbonBar.RedrawWindow();
+}
+
+void CMainFrame::OnActionElements(CModeler1View* pView)
+{
+	USES_CONVERSION;
+
+	int count = m_pElementsCombo->GetCount();
+	if (count == 0)
+	{
+		return;
+	}
+
+	CString name = m_pElementsCombo->GetEditText();
+	if (name == _T(""))
+	{
+		return;
+	}
+
+	if (m_pElementsCombo->FindItem(name) == -1)
+	{
+		return;
+	}
+
+	wstring wname = T2W((LPTSTR)(LPCTSTR)name);
+	std::shared_ptr<CElement> pElement = GetManager()->m_objects.FindElementByName(wname);
+	GetManager()->SelectNone();
+	GetManager()->Select(pElement);
+
+	// Redraw the element
+	GetManager()->InvalObj(pView, pElement);
 }
 
 /*

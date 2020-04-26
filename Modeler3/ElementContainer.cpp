@@ -104,6 +104,10 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 		// Build groups
 		pElementManager->BuildGroups();
 
+		POSITION pos2 = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
+		CModeler1View* pView = (CModeler1View*)(ar.m_pDocument->GetNextView(pos2)); //()->GetRoutingView();
+		pElementManager->BuildElementsCombo(pView);
+
 	}
 }
 
