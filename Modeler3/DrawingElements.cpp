@@ -794,7 +794,7 @@ void CSelectionElement::Draw(CDrawingContext& ctxt)
 }
 
 //
-// CDevelopmentElement class
+// CPlanningElement class
 //
 void CPlanningElement::Draw(CDrawingContext& ctxt)
 {
@@ -813,6 +813,26 @@ void CPlanningElement::Draw(CDrawingContext& ctxt)
 		graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
 		graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
 		// Draw single line
+		int width = rect.Width() - 20; //*0.75;
+		int height = 20; //Height()-20; //*0.25;
+		graphics->DrawLine(&colorPen, rect.left + width, rect.top, rect.right, rect.top + height);
+	}
+}
+
+//
+// CDiagramElement class
+//
+void CDiagramElement::Draw(CDrawingContext& ctxt)
+{
+	CRect rect = m_rect;
+	Graphics* graphics = ctxt.GetGraphics();
+	Pen& colorPen = ctxt.GetPenColor();
+	SolidBrush& solidBrush = ctxt.GetBrushColor();
+
+	if (m_shapeType == ShapeType::diagram)
+	{
+		graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
+		graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
 		int width = rect.Width() - 20; //*0.75;
 		int height = 20; //Height()-20; //*0.25;
 		graphics->DrawLine(&colorPen, rect.left + width, rect.top, rect.right, rect.top + height);

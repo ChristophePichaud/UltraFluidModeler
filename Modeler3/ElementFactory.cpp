@@ -372,6 +372,34 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		}
 	}
 
+	if (type == ElementType::type_file)
+	{
+		std::shared_ptr<CElement> apNewElement(new CDiagramElement());
+		pNewElement = apNewElement;
+		pNewElement->m_bColorLine = true;
+		pNewElement->m_bColorFill = true;
+		pNewElement->m_bSolidColorFill = true;
+		pNewElement->m_documentType = DocumentType::document_diagram;
+		pNewElement->m_documentTypeText = _T("Diagram");
+
+		// Set colors for development shapes
+		Color colorLineClass(255, 52, 101, 164);
+		Color colorFillClass(255, 200, 210, 233);
+		Color colorLineComment(255, 202, 178, 45);
+		Color colorFillComment(255, 251, 247, 200);
+
+		switch (shapeType)
+		{
+		case ShapeType::diagram:
+			pNewElement->m_text = L"Diagram";
+			pNewElement->m_colorFill = colorFillClass.ToCOLORREF();
+			pNewElement->m_colorLine = colorLineClass.ToCOLORREF();
+			break;
+		}
+	}
+
+
+
 	//
 	// Initialize default members for the element
 	//

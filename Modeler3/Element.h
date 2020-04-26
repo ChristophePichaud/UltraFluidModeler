@@ -30,7 +30,8 @@ enum ElementType : int
 	type_shapes_import,
 	type_shapes_planning,
 	type_selection,
-	type_connection
+	type_connection,
+	type_file
 };
 
 #define OffsetShapes_Simple			0
@@ -111,6 +112,7 @@ enum ShapeType : int
 	planning_task,
 	selection,
 	connection,
+	diagram,
 	unknown = 1000
 };
 
@@ -120,6 +122,15 @@ enum TrackerState
 	selected, 
 	active 
 };
+
+enum DocumentType : int
+{
+	document_none,
+	document_file,
+	document_folder,
+	document_diagram
+};
+
 
 // Hints for UpdateAllViews/OnUpdate
 #define HINT_UPDATE_WINDOW      0
@@ -234,6 +245,8 @@ public:
 	std::wstring m_document;
 	static std::wstring m_elementGroupNames;
 	static std::wstring m_elementGroupElements;
+	DocumentType m_documentType;
+	std::wstring m_documentTypeText;
 
 // Methods for Attributes
 public:

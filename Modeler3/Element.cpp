@@ -134,6 +134,8 @@ CElement::CElement()
 	m_connectorName1 = _T("");
 	m_connectorName2 = _T("");
 	m_document = _T("");
+	m_documentType = DocumentType::document_none;
+	m_documentTypeText = _T("None");
 
 	m_bMoving = FALSE;
 

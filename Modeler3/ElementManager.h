@@ -157,6 +157,7 @@ public:
 	void OnFileOpenGabarit(CModeler1View* pView);
 	CString SearchDrive(const CString& strFile, const CString& strFilePath, const bool& bRecursive, const bool& bStopWhenFound);
 	std::vector<std::shared_ptr<CCodeFile>> _files;
+	void LoadFolders(CModeler1View* pView);
 
 // Managing Object Selection
 public:
@@ -207,6 +208,12 @@ public:
 	void OnFontChangeCase(CModeler1View* pView);
 };
 
+enum FileType : int
+{
+	file,
+	folder
+};
+
 class CCodeFile
 {
 public:
@@ -216,4 +223,5 @@ public:
 public:
 	std::wstring _name;
 	std::wstring _path;
+	FileType _type;
 };

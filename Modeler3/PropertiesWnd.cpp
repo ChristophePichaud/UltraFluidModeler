@@ -262,6 +262,14 @@ void CPropertiesWnd::InitPropList()
 	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Document"), TRUE, _T(""), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 		strFilter2, _T("Specifies the file's document"), 0));
 
+	pProp = new CMFCPropertyGridProperty(_T("Document Type"), _T(""), _T("Specifies the type of document"));
+	pProp->AddOption(_T("None"));
+	pProp->AddOption(_T("File"));
+	pProp->AddOption(_T("Folder"));
+	pProp->AddOption(_T("Diagram"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
+
 	m_wndPropList.AddProperty(pGroup3);
 
 	/*
@@ -355,6 +363,7 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 	UpdateProperty(prop_Fixed, vFixed);
 
 	UpdateProperty(prop_Document, pObj->m_document.c_str());
+	UpdateProperty(prop_Document_Type, pObj->m_documentTypeText.c_str());
 }
 
 void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewValue)
@@ -496,6 +505,13 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 	else if(propName == prop_Fixed || propName == prop_Has_Fill_Color || propName == prop_Has_Line_Color || propName == prop_Is_Fill_Solid_Color )
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, (long) propValue.bVal);
+	}
+	else if (propName == prop_Document_Type)
+	{
+		if (propValueText == _T("None") || propValueText == _T("File") || propValueText == _T("Folder") || propValueText == _T("Diagram"))
+		{
+			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
+		}
 	}
 	else
 	{

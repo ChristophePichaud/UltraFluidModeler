@@ -21,4 +21,5 @@ const std::wstring prop_Has_Fill_Color = L"Has Fill Color";
 const std::wstring prop_Is_Fill_Solid_Color = L"Is Fill Solid Color";
 const std::wstring prop_Has_Line_Color = L"Has Line Color";
 const std::wstring prop_Document = L"Document";
+const std::wstring prop_Document_Type = L"Document Type";
 

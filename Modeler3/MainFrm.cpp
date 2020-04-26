@@ -494,15 +494,17 @@ void CMainFrame::InitMainButton()
 
 	// Create "Show/Hide" panel:
 	CMFCRibbonPanel* pPanelShow = pCategory->AddPanel(_T("Show/Hide\nzs"), m_PanelImages.ExtractIcon(4));
-	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_FILE_VIEW, _T("Solution View\nc")));
-	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_CLASS_VIEW, _T("Class View\nc")));
-	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_PROPERTIES, _T("Properties View\np")));
+	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_FILE_VIEW, _T("Solution\nc")));
+	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_CLASS_VIEW, _T("Class\nc")));
+	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_PROPERTIES, _T("Properties\np")));
 
 	// Create "Action" panel
 	CMFCRibbonPanel* pPanelAction = pCategory->AddPanel(_T("Action\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_REMOVE, _T("Remove\nc"), 12));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import Modules\nin"), 35));
 	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\ndc"), 2));
+	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_FOLDERS, _T("Folders\nc"), 48));
+	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_DIAGRAM, _T("Diagram\nc"), 49));
 
 	// Create "Format" panel
 	CMFCRibbonPanel* pPanelFormat = pCategory->AddPanel(_T("Format and Style\nzd"), m_PanelImages.ExtractIcon(2));

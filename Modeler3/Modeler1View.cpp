@@ -177,6 +177,10 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_SELECT_INTUITIVE, &CModeler1View::OnUpdateSelectIntuitive)
 	ON_COMMAND(ID_EDIT_OPEN, &CModeler1View::OnEditOpen)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN, &CModeler1View::OnUpdateEditOpen)
+	ON_COMMAND(ID_ACTION_FOLDERS, &CModeler1View::OnActionLoadFolders)
+	ON_UPDATE_COMMAND_UI(ID_ACTION_FOLDERS, &CModeler1View::OnUpdateActionLoadFolders)
+	ON_COMMAND(ID_ACTION_DIAGRAM, &CModeler1View::OnActionDiagram)
+	ON_UPDATE_COMMAND_UI(ID_ACTION_DIAGRAM, &CModeler1View::OnUpdateActionDiagram)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -1201,3 +1205,24 @@ void CModeler1View::OnUpdateEditOpen(CCmdUI* pCmdUI)
 		pCmdUI->Enable(FALSE);
 	}
 }
+
+void CModeler1View::OnActionLoadFolders()
+{
+	GetManager()->LoadFolders(this);
+}
+
+void CModeler1View::OnUpdateActionLoadFolders(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+}
+
+void CModeler1View::OnActionDiagram()
+{
+	GetManager()->m_type = ElementType::type_file;
+	GetManager()->m_shapeType = ShapeType::diagram;
+}
+
+void CModeler1View::OnUpdateActionDiagram(CCmdUI* pCmdUI)
+{
+}
+

@@ -1231,14 +1231,22 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 		pElement->m_image = value;
 	}
 
+	if (name == prop_Font_Name)
+	{
+		pElement->m_fontName = value;
+	}
+
 	if (name == prop_Document)
 	{
 		pElement->m_document = value;
 	}
 
-	if (name == prop_Font_Name)
+	if (name == prop_Document_Type)
 	{
-		pElement->m_fontName = value;
+		if (value == _T("None") || value == _T("File") || value == _T("Folder") || value == _T("Diagram"))
+		{
+			pElement->m_documentTypeText = value;
+		}
 	}
 
 	// Some properties could change the UI in class view or file view
@@ -1629,13 +1637,23 @@ CString CElementManager::SearchDrive(const CString& strFile, const CString& strF
 			// if so look into that dir
 			if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			{
+				if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != ".."))
+				{
+					// ADD TO COLLECTION TYPE
+					std::shared_ptr<CCodeFile> cf = std::make_shared<CCodeFile>();
+					cf->_type = FileType::folder;
+					cf->_name = T2W((LPTSTR)(LPCTSTR)(strTheNameOfTheFile));
+					cf->_path = T2W((LPTSTR)(LPCTSTR)(strPathToSearch + strTheNameOfTheFile));
+					_files.push_back(cf);
+				}
+
 				if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != "..") && (bRecursive))
 				{
 					strFoundFilePath = SearchDrive(strFile, strPathToSearch + strTheNameOfTheFile, bRecursive, bStopWhenFound);
 
 					if (!strFoundFilePath.IsEmpty() && bStopWhenFound)
 						break;
-				}
+				}		
 			}
 			else
 			{
@@ -1645,6 +1663,7 @@ CString CElementManager::SearchDrive(const CString& strFile, const CString& strF
 
 					// ADD TO COLLECTION TYPE
 					std::shared_ptr<CCodeFile> cf = std::make_shared<CCodeFile>();
+					cf->_type = FileType::file;
 					cf->_name = T2W((LPTSTR)(LPCTSTR)strTheNameOfTheFile); //strFile;
 					cf->_path = T2W((LPTSTR)(LPCTSTR)strFoundFilePath);
 					_files.push_back(cf);
@@ -1695,6 +1714,53 @@ void CElementManager::LoadModule(CModeler1View * pView)
 		pNewElement->m_text = file->_name;
 		// Read file content
 		pNewElement->m_code = GetFileContent(file);
+		pNewElement->m_documentType = DocumentType::document_file;
+		pNewElement->m_documentTypeText = _T("File");
+
+		// Add an object
+		m_objects.AddTail(pNewElement);
+		pView->LogDebug(_T("object created ->") + pNewElement->ToString());
+
+		++count;
+	}
+
+	Invalidate(pView);
+}
+
+void CElementManager::LoadFolders(CModeler1View* pView)
+{
+	CFolderPickerDialog dlg;
+	if (dlg.DoModal() == IDCANCEL)
+		return;
+
+	CString strPath = dlg.GetFolderPath();
+	_files.clear();
+	SearchDrive(_T("*.*"), strPath, false, false);
+
+	int count = 0;
+	for (shared_ptr<CCodeFile> file : _files)
+	{
+		std::shared_ptr<CElement> pNewElement = nullptr;
+		if (file->_type == FileType::file)
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_class);
+			pNewElement->m_documentType = DocumentType::document_file;
+			pNewElement->m_documentTypeText = _T("File");
+		}
+		else
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_interface);
+			pNewElement->m_documentType = DocumentType::document_folder;
+			pNewElement->m_documentTypeText = _T("Folder");
+		}
+		
+		CalcAutoPointRect(count, pNewElement);
+		pNewElement->m_pManager = this;
+		pNewElement->m_pView = pView;
+		pNewElement->m_text = file->_name;
+		// Read file content
+		//pNewElement->m_code = GetFileContent(file);
+		pNewElement->m_document = file->_path;
 
 		// Add an object
 		m_objects.AddTail(pNewElement);
