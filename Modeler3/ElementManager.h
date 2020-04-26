@@ -159,6 +159,8 @@ public:
 	std::vector<std::shared_ptr<CCodeFile>> _files;
 	void LoadFolders(CModeler1View* pView);
 	void OpenFolder(CModeler1View* pView);
+	void OpenFile(CModeler1View* pView);
+	void OpenFileContent(CModeler1View* pView);
 
 // Managing Object Selection
 public:

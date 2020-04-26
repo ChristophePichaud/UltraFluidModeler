@@ -183,6 +183,10 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_ACTION_DIAGRAM, &CModeler1View::OnUpdateActionDiagram)
 	ON_COMMAND(ID_EDIT_OPEN_FOLDER, &CModeler1View::OnEditOpenFolder)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FOLDER, &CModeler1View::OnUpdateEditOpenFolder)
+	ON_COMMAND(ID_EDIT_OPEN_FILE, &CModeler1View::OnEditOpenFile)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE, &CModeler1View::OnUpdateEditOpenFile)
+	ON_COMMAND(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnEditOpenFileContent)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnUpdateEditOpenFileContent)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -1238,6 +1242,56 @@ void CModeler1View::OnUpdateEditOpenFolder(CCmdUI* pCmdUI)
 	{
 		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
 		if (pElement->m_documentType == DocumentType::document_folder)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}
+
+void CModeler1View::OnEditOpenFile()
+{
+	GetManager()->OpenFile(this);
+}
+
+void CModeler1View::OnUpdateEditOpenFile(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->m_documentType == DocumentType::document_file)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}
+
+void CModeler1View::OnEditOpenFileContent()
+{
+	GetManager()->OpenFileContent(this);
+}
+
+void CModeler1View::OnUpdateEditOpenFileContent(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->m_documentType == DocumentType::document_file)
 		{
 			pCmdUI->Enable(TRUE);
 		}

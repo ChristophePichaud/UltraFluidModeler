@@ -206,6 +206,10 @@ public:
 	afx_msg void OnUpdateActionDiagram(CCmdUI* pCmdUI);
 	afx_msg void OnEditOpenFolder();
 	afx_msg void OnUpdateEditOpenFolder(CCmdUI* pCmdUI);
+	afx_msg void OnEditOpenFile();
+	afx_msg void OnUpdateEditOpenFile(CCmdUI* pCmdUI);
+	afx_msg void OnEditOpenFileContent();
+	afx_msg void OnUpdateEditOpenFileContent(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp

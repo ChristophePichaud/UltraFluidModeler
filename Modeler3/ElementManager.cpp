@@ -6,6 +6,8 @@
 #include "DrawingContext.h"
 #include "DrawingElements.h"
 #include <sstream>
+#include "TabbedView.h"
+#include "Modeler1SourceView.h"
 
 //
 // CElementManager
@@ -1637,7 +1639,7 @@ CString CElementManager::SearchDrive(const CString& strFile, const CString& strF
 			// if so look into that dir
 			if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			{
-				if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != ".."))
+				//if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != ".."))
 				{
 					// ADD TO COLLECTION TYPE
 					std::shared_ptr<CCodeFile> cf = std::make_shared<CCodeFile>();
@@ -1680,17 +1682,22 @@ CString CElementManager::SearchDrive(const CString& strFile, const CString& strF
 	return strFoundFilePath;
 }
 
-wstring GetFileContent(shared_ptr<CCodeFile> codeFile)
+wstring GetFileContent(wstring filename)
 {
-	ifstream file(codeFile->_path);
+	ifstream file(filename);
 	string str;
 	string file_contents;
-	while (std::getline(file, str)) 
+	while (std::getline(file, str))
 	{
 		file_contents += str + string("\r\n");
 	}
 	wstring ws(file_contents.begin(), file_contents.end());
 	return ws;
+}
+
+wstring GetFileContent(shared_ptr<CCodeFile> codeFile)
+{
+	return GetFileContent(codeFile->_path);
 }
 
 
@@ -1816,6 +1823,39 @@ void CElementManager::OpenFolder(CModeler1View* pView)
 	}
 
 	Invalidate(pView);
+}
+
+void CElementManager::OpenFile(CModeler1View* pView)
+{
+
+	shared_ptr<CElement> pElement = m_selection.GetHead();
+	::ShellExecuteW(NULL, NULL, pElement->m_document.c_str(), NULL/*lpszArgs*/, NULL, SW_SHOW);
+}
+
+void CElementManager::OpenFileContent(CModeler1View* pView)
+{
+
+	shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_code = GetFileContent(pElement->m_document);
+	
+	CRuntimeClass* prt = RUNTIME_CLASS(CTabbedView); // CModeler1SourceView);
+	CView* pview = NULL;
+	// Continue search in inactive View by T(o)m
+	CModeler1Doc* pDoc = pView->GetDocument();
+	POSITION pos = pDoc->GetFirstViewPosition();
+	while (pos != NULL)
+	{
+		pview = pDoc->GetNextView(pos);
+		CRuntimeClass* pRT = pview->GetRuntimeClass();
+		
+		if( prt = pRT)
+		{
+			CTabbedView* pTView = (CTabbedView*)pview;
+			pTView->SetActiveView(1);
+			break;
+		}
+		pView = NULL;       // not valid vie
+	}
 }
 
 void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pCurrentElement, CPoint point, CModeler1View* pView)
