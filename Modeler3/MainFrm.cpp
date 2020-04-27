@@ -428,7 +428,7 @@ void CMainFrame::InitMainButton()
 	CMFCRibbonButtonsGroup * apFontGroup = new CMFCRibbonButtonsGroup();
 	CMFCRibbonFontComboBox::m_bDrawUsingFont = TRUE;
 	m_pFontCombo = new CMFCRibbonFontComboBox(ID_FONT_FONT, TRUETYPE_FONTTYPE );
-	m_pFontCombo->SetWidth(55, TRUE); // Width in "floaty" mode
+	m_pFontCombo->SetWidth(40, TRUE); // Width in "floaty" mode
 	m_pFontCombo->SelectItem(_T("Calibri"));
 	apFontGroup->AddButton(m_pFontCombo);
 
@@ -462,7 +462,7 @@ void CMainFrame::InitMainButton()
 	m_pFontSizeCombo->AddItem(_T("56"));
 	m_pFontSizeCombo->AddItem(_T("58"));
 	m_pFontSizeCombo->AddItem(_T("60"));
-	m_pFontSizeCombo->SetWidth(20, TRUE); // Width in "floaty" mode
+	m_pFontSizeCombo->SetWidth(15, TRUE); // Width in "floaty" mode
 	m_pFontSizeCombo->SelectItem(7);
 	apFontGroup->AddButton(m_pFontSizeCombo);
 	pPanelFont->Add(apFontGroup);

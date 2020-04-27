@@ -344,7 +344,7 @@ void CModeler1View::OnInitialUpdate()
 	str.Format(_T("Windows CSize x=%d y=%d"), size.cx, size.cy);
 	LogDebug(str);
 
-	GetManager()->OnActionElements(this);
+	GetManager()->BuildElementsCombo(this); // OnActionElements(this);
 	GetManager()->UpdateClassView();
 	GetManager()->UpdateFileView();
 }

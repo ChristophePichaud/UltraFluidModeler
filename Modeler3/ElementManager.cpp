@@ -1022,6 +1022,9 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 
 	m_bSizingALine = false;
 
+	// Set selectType to default
+	m_selectType = SelectType::intuitive;
+
 	pElement->m_bMoving = FALSE;
 	// Update UI
 	UpdateUI(pView, pElement);
