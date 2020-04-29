@@ -387,6 +387,65 @@ void CElementManager::DrawBackground(CModeler1View * pView, CDC * pDC)
 	graphics.FillRectangle(&brush, fillRect);
 }
 
+void CElementManager::DrawConnector(Graphics& graphics, std::shared_ptr<CElement> pLineElement, ConnectorType connector)
+{
+	shared_ptr<CElement> pElement1; // = pLineElement->m_pConnector->m_pElement1;
+	if (connector == ConnectorType::connector1)
+	{
+		pElement1 = pLineElement->m_pConnector->m_pElement1;
+	}
+	else
+	{
+		pElement1 = pLineElement->m_pConnector->m_pElement2;
+	}
+
+	CPoint point1;
+	if (pElement1 == nullptr)
+	{
+		point1 = pLineElement->m_rect.TopLeft();
+	}
+	else
+	{
+		//point1 = pElement1->m_rect.CenterPoint();
+		int handle;// = pLineElement->m_connectorDragHandle1;
+		if (connector == ConnectorType::connector1)
+		{
+			handle = pLineElement->m_connectorDragHandle1;
+		}
+		else
+		{
+			handle = pLineElement->m_connectorDragHandle2;
+		}
+
+
+		if (handle == 0)
+		{
+			point1 = pElement1->m_rect.TopLeft();
+		}
+		else
+		{
+			point1 = pElement1->GetHandle(handle);
+		}
+
+		CPoint point2;
+		point2.x = point1.x;
+		point2.y = point1.y;
+		CRect rect(point1, point2);
+		rect.NormalizeRect();
+
+		SolidBrush colorBrush(Color::DarkOrange);
+		graphics.FillRectangle(&colorBrush, rect.left - 3, rect.top - 3, 7, 7);
+		Pen  colorPen(Color::Black);
+		graphics.DrawRectangle(&colorPen, rect.left - 3, rect.top - 3, 7, 7);
+
+		std::wstring imagePath = L"Images\\Custom\\Connect.png";
+		Image image(CStringW(imagePath.c_str()));
+		CPoint p1(rect.left, rect.top);
+		CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
+		graphics.DrawImage(&image, rect.left - 3, rect.top - 3, image.GetWidth(), image.GetHeight());
+	}
+}
+
 void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 {
 	// Initialize GDI+ graphics context
@@ -523,6 +582,101 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 		if (pView != NULL && pView->m_bActive && !pDC->IsPrinting() && IsSelected(pElement))
 			pElement->DrawTracker(ctxt, TrackerState::selected);
 	}
+
+	// Last....
+	// Add connector shape to the handles
+	for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+
+		if (pElement->IsLine() == false)
+		{
+			continue;
+		}
+
+
+		DrawConnector(graphics, pElement, ConnectorType::connector1);
+		/*
+		shared_ptr<CElement> pElement1 = pElement->m_pConnector->m_pElement1;
+		CPoint point1;
+		if (pElement1 == nullptr)
+		{
+			point1 = pElement->m_rect.TopLeft();
+		}
+		else
+		{
+			//point1 = pElement1->m_rect.CenterPoint();
+			int handle = pElement->m_connectorDragHandle1;
+			if (handle == 0)
+			{
+				point1 = pElement1->m_rect.TopLeft();
+			}
+			else
+			{
+				point1 = pElement1->GetHandle(handle);
+			}
+
+			CPoint point2;
+			point2.x = point1.x;
+			point2.y = point1.y;
+			CRect rect(point1, point2);
+			rect.NormalizeRect();
+
+			SolidBrush colorBrush(Color::DarkOrange);
+			graphics.FillRectangle(&colorBrush, rect.left - 3, rect.top - 3, 7, 7);
+			Pen  colorPen(Color::Black);
+			graphics.DrawRectangle(&colorPen, rect.left - 3, rect.top - 3, 7, 7);
+
+			std::wstring imagePath = L"Images\\Custom\\Connect.png";
+			Image image(CStringW(imagePath.c_str()));
+			CPoint p1(rect.left, rect.top);
+			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
+			graphics.DrawImage(&image, rect.left - 3, rect.top - 3, image.GetWidth(), image.GetHeight());
+
+		}
+		*/
+
+		DrawConnector(graphics, pElement, ConnectorType::connector2);
+
+		/*
+		shared_ptr<CElement> pElement2 = pElement->m_pConnector->m_pElement2;
+		if (pElement2 == nullptr)
+		{
+			point1 = pElement->m_rect.TopLeft();
+		}
+		else
+		{
+			//point1 = pElement2->m_rect.CenterPoint();
+			int handle = pElement->m_connectorDragHandle2;
+			if (handle == 0)
+			{
+				point1 = pElement2->m_rect.TopLeft();
+			}
+			else
+			{
+				point1 = pElement2->GetHandle(handle);
+			}
+
+			CPoint point2;
+			point2.x = point1.x;
+			point2.y = point1.y;
+			CRect rect(point1, point2);
+			rect.NormalizeRect();
+
+			SolidBrush colorBrush(Color::DarkOrange);
+			graphics.FillRectangle(&colorBrush, rect.left - 3, rect.top - 3, 7, 7);
+			Pen  colorPen(Color::Black);
+			graphics.DrawRectangle(&colorPen, rect.left - 3, rect.top - 3, 7, 7);
+
+			std::wstring imagePath = L"Images\\Custom\\Connect.png";
+			Image image(CStringW(imagePath.c_str()));
+			CPoint p1(rect.left, rect.top);
+			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
+			graphics.DrawImage(&image, rect.left - 3, rect.top - 3, image.GetWidth(), image.GetHeight());
+		}
+		*/
+	}
+
 }
 
 void CElementManager::DrawEx(CModeler1View * pView, CDC * pDC)

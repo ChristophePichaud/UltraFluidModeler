@@ -190,6 +190,7 @@ public:
 	virtual void Draw(CModeler1View * pView, CDC * pDC);
 	virtual void DrawEx(CModeler1View * pView, CDC * pDC);
 	virtual void Update(CModeler1View * pView, LPARAM lHint, CObject* pHint);
+	void DrawConnector(Graphics& graphics, std::shared_ptr<CElement> pLineElement, ConnectorType connector);
 
 // UI Handlers
 public:
