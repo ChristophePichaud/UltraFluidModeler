@@ -125,8 +125,8 @@ public:
 
 // Managing UI object connections
 public:
-	void FindAConnectionFor(bool start, std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView);
-	void SetConnector(bool start, std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector);
+	void FindAConnectionFor(std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView, ConnectorType connector);
+	void SetConnector(std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector);
 
 // Managing UI dependencies (Ribbon UI, Property Grid, ClassView)
 public:

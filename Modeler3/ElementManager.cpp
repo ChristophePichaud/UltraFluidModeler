@@ -594,87 +594,9 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			continue;
 		}
 
-
 		DrawConnector(graphics, pElement, ConnectorType::connector1);
-		/*
-		shared_ptr<CElement> pElement1 = pElement->m_pConnector->m_pElement1;
-		CPoint point1;
-		if (pElement1 == nullptr)
-		{
-			point1 = pElement->m_rect.TopLeft();
-		}
-		else
-		{
-			//point1 = pElement1->m_rect.CenterPoint();
-			int handle = pElement->m_connectorDragHandle1;
-			if (handle == 0)
-			{
-				point1 = pElement1->m_rect.TopLeft();
-			}
-			else
-			{
-				point1 = pElement1->GetHandle(handle);
-			}
-
-			CPoint point2;
-			point2.x = point1.x;
-			point2.y = point1.y;
-			CRect rect(point1, point2);
-			rect.NormalizeRect();
-
-			SolidBrush colorBrush(Color::DarkOrange);
-			graphics.FillRectangle(&colorBrush, rect.left - 3, rect.top - 3, 7, 7);
-			Pen  colorPen(Color::Black);
-			graphics.DrawRectangle(&colorPen, rect.left - 3, rect.top - 3, 7, 7);
-
-			std::wstring imagePath = L"Images\\Custom\\Connect.png";
-			Image image(CStringW(imagePath.c_str()));
-			CPoint p1(rect.left, rect.top);
-			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
-			graphics.DrawImage(&image, rect.left - 3, rect.top - 3, image.GetWidth(), image.GetHeight());
-
-		}
-		*/
-
 		DrawConnector(graphics, pElement, ConnectorType::connector2);
 
-		/*
-		shared_ptr<CElement> pElement2 = pElement->m_pConnector->m_pElement2;
-		if (pElement2 == nullptr)
-		{
-			point1 = pElement->m_rect.TopLeft();
-		}
-		else
-		{
-			//point1 = pElement2->m_rect.CenterPoint();
-			int handle = pElement->m_connectorDragHandle2;
-			if (handle == 0)
-			{
-				point1 = pElement2->m_rect.TopLeft();
-			}
-			else
-			{
-				point1 = pElement2->GetHandle(handle);
-			}
-
-			CPoint point2;
-			point2.x = point1.x;
-			point2.y = point1.y;
-			CRect rect(point1, point2);
-			rect.NormalizeRect();
-
-			SolidBrush colorBrush(Color::DarkOrange);
-			graphics.FillRectangle(&colorBrush, rect.left - 3, rect.top - 3, 7, 7);
-			Pen  colorPen(Color::Black);
-			graphics.DrawRectangle(&colorPen, rect.left - 3, rect.top - 3, 7, 7);
-
-			std::wstring imagePath = L"Images\\Custom\\Connect.png";
-			Image image(CStringW(imagePath.c_str()));
-			CPoint p1(rect.left, rect.top);
-			CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
-			graphics.DrawImage(&image, rect.left - 3, rect.top - 3, image.GetWidth(), image.GetHeight());
-		}
-		*/
 	}
 
 }
@@ -934,7 +856,7 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 		m_selectMode = SelectMode::size;
 		pView->LogDebug(_T("selectMode == size"));
 
-		FindAConnectionFor(true, pNewElement, point, pView);
+		FindAConnectionFor(pNewElement, point, pView, ConnectorType::connector1);
 
 		pView->GetDocument()->SetModifiedFlag();
 
@@ -1038,7 +960,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 
 					std::shared_ptr<CElement> pObj = m_selection.GetHead();
 					pObj->MoveHandleTo(m_nDragHandle, point, pView);
-					FindAConnectionFor(false, pElement, point, pView);
+					FindAConnectionFor(pElement, point, pView, ConnectorType::connector2);
 					InvalObj(pView, pObj);
 
 					pView->GetDocument()->SetModifiedFlag();
@@ -1055,7 +977,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 		
 			pElement->m_last = point;
 			pElement->InvalidateObj();
-			FindAConnectionFor(false, pElement, point, pView);
+			FindAConnectionFor(pElement, point, pView, ConnectorType::connector2);
 			InvalObj(pView, pElement);
 
 			pView->GetDocument()->SetModifiedFlag();
@@ -2061,8 +1983,9 @@ void CElementManager::OpenFileContent(CModeler1View* pView)
 	}
 }
 
-void CElementManager::SetConnector(bool start, std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector)
+void CElementManager::SetConnector(std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector)
 {
+	/*
 	pLineElement->m_connectorDragHandle2 = 2;
 
 	shared_ptr<CElement> pElement = nullptr;
@@ -2077,7 +2000,9 @@ void CElementManager::SetConnector(bool start, std::shared_ptr<CElement> pLineEl
 	CPoint pointElementCenter = pElement->m_rect.TopLeft();
 	CRect re = pElement->m_rect;
 	int handle = 2;
+	*/
 
+	/*
 	if (pointLine2.x < re.TopLeft().x && pointLine2.y < re.TopLeft().y)
 	{
 		// haut centre
@@ -2102,7 +2027,9 @@ void CElementManager::SetConnector(bool start, std::shared_ptr<CElement> pLineEl
 	{
 		pLineElement->m_connectorDragHandle2 = handle;
 	}
+	*/
 
+	/*
 	CPoint point1 = pLineElement->m_rect.TopLeft();
 	CPoint point2;
 	if (connector == ConnectorType::connector1)
@@ -2114,10 +2041,37 @@ void CElementManager::SetConnector(bool start, std::shared_ptr<CElement> pLineEl
 		point2 = pLineElement->m_pConnector->m_pElement2->GetHandle(handle);
 	}
 	CRect rect(point1, point2);
+	rect.NormalizeRect();
 	pLineElement->m_rect = rect;
+	*/
+
+	/*
+	shared_ptr<CElement> pElement = pLineElement;
+	shared_ptr<CElement> pElement1 = pLineElement->m_pConnector->m_pElement1;
+	shared_ptr<CElement> pElement2 = pLineElement->m_pConnector->m_pElement2;
+	CPoint point1;
+
+	if (pElement1 == nullptr)
+	{
+		point1 = pElement->m_rect.TopLeft();
+	}
+	else
+	{
+		//point1 = pElement1->m_rect.CenterPoint();
+		int handle = pElement->m_connectorDragHandle1;
+		if (handle == 0)
+		{
+			point1 = pElement1->m_rect.TopLeft();
+		}
+		else
+		{
+			point1 = pElement1->GetHandle(handle);
+		}
+	}
+	*/
 }
 
-void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView)
+void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView, ConnectorType connector)
 {
 	// Find a connection ?
 	if (pLineElement->IsLine() == true)
@@ -2140,37 +2094,31 @@ void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> p
 
 			// Register the connector
 			// if start, we take only the first connector in handle
-			if (start == true || m_nDragHandle == 1)
+			if (connector == ConnectorType::connector1 || m_nDragHandle == 1)
 			{
 				pLineElement->m_pConnector->m_pElement1 = pElement;
 				pLineElement->m_connectorDragHandle1 = 2;
 
 				// Connect to the right connector
-				SetConnector(start, pLineElement, pElement, ConnectorType::connector1);
+				SetConnector(pLineElement, pElement, ConnectorType::connector1);
 			}
-			else if (m_nDragHandle == 1)
-			{
-				pLineElement->m_pConnector->m_pElement1 = pElement;
-				pLineElement->m_connectorDragHandle1 = 2;
-
-				// Connect to the right connector
-				SetConnector(start, pLineElement, pElement, ConnectorType::connector1);
-			}
-			else
+			else if (connector == ConnectorType::connector2 || m_nDragHandle == 2)
 			{
 				pLineElement->m_pConnector->m_pElement2 = pElement;
 				pLineElement->m_connectorDragHandle2 = 2;
-				SetConnector(start, pLineElement, pElement, ConnectorType::connector2);
+
+				// Connect to the right connector
+				SetConnector(pLineElement, pElement, ConnectorType::connector2);
 			}
 		}
 		else
 		{
 			// Register no connector
-			if (start == true || m_nDragHandle == 1)
+			if (connector == ConnectorType::connector1 || m_nDragHandle == 1 )
 			{
 				pLineElement->m_pConnector->m_pElement1 = nullptr;
 			}
-			else
+			else if (connector == ConnectorType::connector2 || m_nDragHandle == 2)
 			{
 				pLineElement->m_pConnector->m_pElement2 = nullptr;
 			}
