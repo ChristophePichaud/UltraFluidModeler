@@ -132,6 +132,11 @@ enum DocumentType : int
 	document_diagram
 };
 
+enum ConnectorType : int
+{
+	connector1,
+	connector2
+};
 
 // Hints for UpdateAllViews/OnUpdate
 #define HINT_UPDATE_WINDOW      0
@@ -245,6 +250,8 @@ public:
 	shared_ptr<CConnector> m_pConnector;
 	std::wstring m_connectorName1;
 	std::wstring m_connectorName2;
+	int m_connectorDragHandle1;
+	int m_connectorDragHandle2;
 	std::wstring m_document;
 	static std::wstring m_elementGroupNames;
 	static std::wstring m_elementGroupElements;

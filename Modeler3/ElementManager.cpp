@@ -13,7 +13,7 @@
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 10)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 11)
 
 CElementManager::CElementManager()
 {
@@ -59,7 +59,7 @@ void CElementManager::Serialize(CArchive& ar)
 		//
 		// Set version of file format
 		//
-		ar.SetObjectSchema(10);
+		ar.SetObjectSchema(11);
 
 		//CString elementGroup = W2T((LPTSTR)m_elementGroup.c_str());
 		//ar << elementGroup;
@@ -420,7 +420,16 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			}
 			else
 			{
-				point1 = pElement1->m_rect.CenterPoint();
+				//point1 = pElement1->m_rect.CenterPoint();
+				int handle = pElement1->m_connectorDragHandle1;
+				if (handle == 0)
+				{
+					point1 = pElement1->m_rect.TopLeft();
+				}
+				else
+				{
+					point1 = pElement1->GetHandle(handle);
+				}
 			}
 
 			shared_ptr<CElement> pElement2 = pElement->m_pConnector->m_pElement2;
@@ -431,7 +440,16 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			}
 			else
 			{
-				point2 = pElement2->m_rect.CenterPoint();
+				//point2 = pElement2->m_rect.CenterPoint();
+				int handle = pElement2->m_connectorDragHandle2;
+				if (handle == 0)
+				{
+					point2 = pElement2->m_rect.TopLeft();
+				}
+				else
+				{
+					point2 = pElement2->GetHandle(handle);
+				}
 			}
 
 			CRect rect(point1, point2);
@@ -1871,18 +1889,74 @@ void CElementManager::OpenFileContent(CModeler1View* pView)
 	}
 }
 
-void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pCurrentElement, CPoint point, CModeler1View* pView)
+void CElementManager::SetConnector(bool start, std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector)
+{
+	pLineElement->m_connectorDragHandle2 = 2;
+
+	shared_ptr<CElement> pElement = nullptr;
+	pElement = pElementFound;
+
+	// Connect to the right connector
+	CPoint pointLine1 = pLineElement->m_rect.TopLeft();
+	CPoint pointLine2 = pLineElement->m_rect.BottomRight();
+
+	CPoint pointElement1 = pElement->m_rect.TopLeft();
+	CPoint pointElement2 = pElement->m_rect.CenterPoint();
+	CPoint pointElementCenter = pElement->m_rect.TopLeft();
+	CRect re = pElement->m_rect;
+	int handle = 2;
+
+	if (pointLine2.x < re.TopLeft().x && pointLine2.y < re.TopLeft().y)
+	{
+		// haut centre
+		handle = 2;
+	}
+	else if (pointLine2.x < re.CenterPoint().x && pointLine2.y < re.TopLeft().y)
+	{
+		// milieu gauche
+		handle = 8;
+	}
+	else if (pointLine2.x < re.CenterPoint().x && pointLine2.y < re.BottomRight().y)
+	{
+		// bas centre
+		handle = 6;
+	}
+
+	if (connector == ConnectorType::connector1)
+	{
+		pLineElement->m_connectorDragHandle1 = handle;
+	}
+	else
+	{
+		pLineElement->m_connectorDragHandle2 = handle;
+	}
+
+	CPoint point1 = pLineElement->m_rect.TopLeft();
+	CPoint point2;
+	if (connector == ConnectorType::connector1)
+	{
+		point2 = pLineElement->m_pConnector->m_pElement1->GetHandle(handle);
+	}
+	else
+	{
+		point2 = pLineElement->m_pConnector->m_pElement2->GetHandle(handle);
+	}
+	CRect rect(point1, point2);
+	pLineElement->m_rect = rect;
+}
+
+void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView)
 {
 	// Find a connection ?
-	if (pCurrentElement->IsLine() == true)
+	if (pLineElement->IsLine() == true)
 	{
 		m_bSizingALine = true;
 
-		CRect rect = pCurrentElement->m_rect;
+		CRect rect = pLineElement->m_rect;
 
 		SelectNone();
-		Select(pCurrentElement);
-		std::shared_ptr<CElement> pElement = m_objects.ObjectExceptLinesAt(point, pCurrentElement);
+		Select(pLineElement);
+		std::shared_ptr<CElement> pElement = m_objects.ObjectExceptLinesAt(point, pLineElement);
 		if (pElement != NULL)
 		{
 			CClientDC dc(pView);
@@ -1893,13 +1967,28 @@ void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> p
 			graphics.FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
 
 			// Register the connector
+			// if start, we take only the first connector in handle
 			if (start == true || m_nDragHandle == 1)
 			{
-				pCurrentElement->m_pConnector->m_pElement1 = pElement;
+				pLineElement->m_pConnector->m_pElement1 = pElement;
+				pLineElement->m_connectorDragHandle1 = 2;
+
+				// Connect to the right connector
+				SetConnector(start, pLineElement, pElement, ConnectorType::connector1);
+			}
+			else if (m_nDragHandle == 1)
+			{
+				pLineElement->m_pConnector->m_pElement1 = pElement;
+				pLineElement->m_connectorDragHandle1 = 2;
+
+				// Connect to the right connector
+				SetConnector(start, pLineElement, pElement, ConnectorType::connector1);
 			}
 			else
 			{
-				pCurrentElement->m_pConnector->m_pElement2 = pElement;
+				pLineElement->m_pConnector->m_pElement2 = pElement;
+				pLineElement->m_connectorDragHandle2 = 2;
+				SetConnector(start, pLineElement, pElement, ConnectorType::connector2);
 			}
 		}
 		else
@@ -1907,11 +1996,11 @@ void CElementManager::FindAConnectionFor(bool start, std::shared_ptr<CElement> p
 			// Register no connector
 			if (start == true || m_nDragHandle == 1)
 			{
-				pCurrentElement->m_pConnector->m_pElement1 = nullptr;
+				pLineElement->m_pConnector->m_pElement1 = nullptr;
 			}
 			else
 			{
-				pCurrentElement->m_pConnector->m_pElement2 = nullptr;
+				pLineElement->m_pConnector->m_pElement2 = nullptr;
 			}
 		}
 	}

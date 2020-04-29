@@ -93,7 +93,7 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 10)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 11)
 
 int CElement::m_counter = 0;
 std::wstring CElement::m_elementGroupNames = _T("");
@@ -133,6 +133,9 @@ CElement::CElement()
 	m_pConnector->m_pElement2 = nullptr;
 	m_connectorName1 = _T("");
 	m_connectorName2 = _T("");
+	m_connectorDragHandle1 = 0;
+	m_connectorDragHandle2 = 0;
+		
 	m_document = _T("");
 	m_documentType = DocumentType::document_none;
 	m_documentTypeText = _T("None");
@@ -236,7 +239,12 @@ void CElement::Serialize(CArchive& ar)
 		//
 		// Set version of file format
 		//
-		ar.SetObjectSchema(10);
+		ar.SetObjectSchema(11);
+
+
+		// The schema v11 contains extra info: connectorDragHandle1 & 2
+		ar << m_connectorDragHandle1;
+		ar << m_connectorDragHandle2;
 
 		// The schema v10 contains extra info: documenttypetext
 		//CString doct = W2T((LPTSTR)m_documentTypeText.c_str());
@@ -336,6 +344,12 @@ void CElement::Serialize(CArchive& ar)
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
 
+		if (version >= 11)
+		{
+			ar >> m_connectorDragHandle1;
+			ar >> m_connectorDragHandle2;
+		}
+			
 		if (version >= 10)
 		{
 			//CString doct;
@@ -928,9 +942,6 @@ CPoint CElement::GetHandle(int nHandle)
 
 	switch (nHandle)
 	{
-	default:
-		ASSERT(FALSE);
-
 	case 1:
 		x = rect.left;
 		y = rect.top;
