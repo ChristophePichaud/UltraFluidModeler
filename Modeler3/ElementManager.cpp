@@ -2095,6 +2095,7 @@ void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement,
 			// if start, we take only the first connector in handle
 			if (connector == ConnectorType::connector1 || m_nDragHandle == 1)
 			{
+				pView->LogDebug(_T("FindAConnectionFor:: if (connector == ConnectorType::connector1 || m_nDragHandle == 1)"));
 				pLineElement->m_pConnector->m_pElement1 = pElement;
 				pLineElement->m_connectorDragHandle1 = 2;
 
@@ -2103,6 +2104,7 @@ void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement,
 			}
 			else if (connector == ConnectorType::connector2 || m_nDragHandle == 2)
 			{
+				pView->LogDebug(_T("FindAConnectionFor:: if (connector == ConnectorType::connector2 || m_nDragHandle == 2)"));
 				pLineElement->m_pConnector->m_pElement2 = pElement;
 				pLineElement->m_connectorDragHandle2 = 2;
 
@@ -2115,10 +2117,12 @@ void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement,
 			// Register no connector
 			if (connector == ConnectorType::connector1 || m_nDragHandle == 1 )
 			{
+				pView->LogDebug(_T("FindAConnectionFor:: pLineElement->m_pConnector->m_pElement1 = nullptr;"));
 				pLineElement->m_pConnector->m_pElement1 = nullptr;
 			}
 			else if (connector == ConnectorType::connector2 || m_nDragHandle == 2)
 			{
+				pView->LogDebug(_T("FindAConnectionFor:: pLineElement->m_pConnector->m_pElement2 = nullptr;"));
 				pLineElement->m_pConnector->m_pElement2 = nullptr;
 			}
 		}
