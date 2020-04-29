@@ -189,6 +189,10 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnUpdateEditOpenFileContent)
 	ON_COMMAND(ID_ACTION_ELEMENTS, &CModeler1View::OnActionElements)
 	ON_UPDATE_COMMAND_UI(ID_ACTION_ELEMENTS, &CModeler1View::OnUpdateActionElements)
+	ON_COMMAND(ID_DESIGN_DECONNECT, &CModeler1View::OnDesignDeconnect)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_DECONNECT, &CModeler1View::OnUpdateDesignDeconnect)
+	ON_COMMAND(ID_SELECT_ONLY_FIRST_LINE, &CModeler1View::OnSelectOnlyFirstLine)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_FIRST_LINE, &CModeler1View::OnUpdateSelectOnlyFirstLine)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -1151,6 +1155,18 @@ void CModeler1View::OnUpdateSelectAll(CCmdUI* pCmdUI)
 	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::all);
 }
 
+void CModeler1View::OnSelectOnlyFirstLine()
+{
+	GetManager()->m_selectType = SelectType::only_first_line;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectOnlyFirstLine(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::only_first_line);
+}
+
 void CModeler1View::OnSelectOnlyLines()
 {
 	GetManager()->m_selectType = SelectType::only_lines;
@@ -1320,3 +1336,27 @@ void CModeler1View::OnUpdateActionElements(CCmdUI* pCmdUI)
 	pCmdUI->Enable(TRUE);
 }
 
+void CModeler1View::OnDesignDeconnect()
+{
+	GetManager()->OnDesignDeconnect(this);
+}
+
+void CModeler1View::OnUpdateDesignDeconnect(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->IsLine() && (pElement->m_pConnector->m_pElement1 != nullptr || pElement->m_pConnector->m_pElement2 != nullptr))
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}

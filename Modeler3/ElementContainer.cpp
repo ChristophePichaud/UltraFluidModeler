@@ -299,6 +299,14 @@ std::shared_ptr<CElement> CElementContainer::ObjectAt(const CRect& rect, SelectT
 				}
 			}
 
+			if (selectType == SelectType::only_first_line)
+			{
+				if (pElementCandidate->IsLine() == true)
+				{
+					return pElementCandidate;
+				}
+			}
+
 		}
 	next_value:
 		int nop = 0;
@@ -473,6 +481,15 @@ vector<std::shared_ptr<CElement>> CElementContainer::ObjectsInRectEx(const CRect
 				if (pElementCandidate->IsLine() == true)
 				{
 					v.push_back(pElementCandidate);
+				}
+			}
+
+			if (selectType == SelectType::only_first_line)
+			{
+				if (pElementCandidate->IsLine() == true)
+				{
+					v.push_back(pElementCandidate);
+					return v;
 				}
 			}
 		}

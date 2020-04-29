@@ -212,7 +212,11 @@ public:
 	afx_msg void OnUpdateEditOpenFileContent(CCmdUI* pCmdUI);
 	afx_msg void OnActionElements();
 	afx_msg void OnUpdateActionElements(CCmdUI* pCmdUI);
-	};
+	afx_msg void OnDesignDeconnect();
+	afx_msg void OnUpdateDesignDeconnect(CCmdUI* pCmdUI);
+	afx_msg void OnSelectOnlyFirstLine();
+	afx_msg void OnUpdateSelectOnlyFirstLine(CCmdUI* pCmdUI);
+};
 
 #ifndef _DEBUG  // debug version in Modeler1View.cpp
 inline CModeler1Doc* CModeler1View::GetDocument() const

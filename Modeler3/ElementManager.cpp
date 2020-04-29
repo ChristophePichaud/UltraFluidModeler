@@ -992,6 +992,7 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 	{
 		CRect rect = pSelectionElement->m_rect;
 
+		// remove the selection element from the objects list
 		vector<std::shared_ptr<CElement>>::iterator pos;
 		pos = find(m_objects.m_objects.begin(), m_objects.m_objects.end(), pSelectionElement);
 		if (pos != m_objects.m_objects.end())
@@ -999,7 +1000,16 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 			m_objects.m_objects.erase(pos);
 		}
 
+		// remove the selection element from the selection list
+		vector<std::shared_ptr<CElement>>::iterator pos2;
+		pos2 = find(m_selection.m_objects.begin(), m_selection.m_objects.end(), pSelectionElement);
+		if (pos2 != m_selection.m_objects.end())
+		{
+			m_selection.m_objects.erase(pos2);
+		}
+
 		//ViewToManager(pView, rect);
+		SelectNone();
 
 		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRectEx(rect, m_selectType); // version Ex : do not select lines with full connector
 		if (v.size() != 0)
@@ -2562,3 +2572,11 @@ void CElementManager::BuildElementsCombo(CModeler1View* pView)
 	CMainFrame* pmf = (CMainFrame*)p;
 	pmf->BuildElementsCombo(pView);
 }
+
+void CElementManager::OnDesignDeconnect(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_pConnector->m_pElement1 = nullptr;
+	pElement->m_pConnector->m_pElement2 = nullptr;
+}
+

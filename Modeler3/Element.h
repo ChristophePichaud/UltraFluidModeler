@@ -6,6 +6,7 @@ enum SelectType : int
 {
 	intuitive,
 	all,
+	only_first_line,
 	only_lines,
 	only_items
 };

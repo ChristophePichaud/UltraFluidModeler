@@ -402,7 +402,7 @@ void CMainFrame::InitMainButton()
 	pListBtnDev->EnableMenuResize();
 	pPanelDesign->Add(pListBtnDev);
 
-	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_CONNECT, _T("Connect\nc"), 47));
+	pPanelDesign->Add(new CMFCRibbonButton(ID_ACTION_DIAGRAM, _T("Diagram\nc"), 49));
 
 	// Create "Planning" panel
 	CMFCRibbonPanel* pPanelPlanning = pCategory->AddPanel(_T("Planning\npa"), m_PanelImages.ExtractIcon(2));
@@ -504,7 +504,8 @@ void CMainFrame::InitMainButton()
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import\nin"), 35));
 	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump\ndc"), 2));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_FOLDERS, _T("Folders\nc"), 48));
-	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_DIAGRAM, _T("Diagram\nc"), 49));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DESIGN_CONNECT, _T("Connect\nc"), 47));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DESIGN_DECONNECT, _T("Deconect\nc"), 50));
 	//m_pElementsCombo = new CMFCRibbonComboBox(ID_ACTION_ELEMENTS, FALSE, 39);
 	//m_pElementsCombo->SetWidth(100, TRUE); // Width in "floaty" mode
 	//pPanelAction->Add(m_pElementsCombo);

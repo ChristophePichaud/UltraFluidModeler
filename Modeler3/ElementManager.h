@@ -179,6 +179,10 @@ public:
 	std::vector<std::wstring> Split(const std::wstring& s, wchar_t delim);
 	void BuildGroups();
 
+// Managing Connecting
+public:
+	void OnDesignDeconnect(CModeler1View* pView);
+
 // Overridables
 public:
 	virtual void PrepareDC(CModeler1View * pView, CDC* pDC, CPrintInfo* pInfo);
