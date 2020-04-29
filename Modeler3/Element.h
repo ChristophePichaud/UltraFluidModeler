@@ -188,6 +188,8 @@ public:
 	CString ToString(shared_ptr<CConnector> pConnector);
 	CString ToString(DocumentType type);
 	DocumentType FromString(wstring type);
+	CString DragHandleToString(int nHandle);
+	int DragHandleFromString(wstring value);
 	//static bool IsDrawable(ElementType type);
 	bool Intersects(const CRect& rect);
 	void InvalidateObj(void);

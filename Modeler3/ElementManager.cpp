@@ -421,7 +421,7 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			else
 			{
 				//point1 = pElement1->m_rect.CenterPoint();
-				int handle = pElement1->m_connectorDragHandle1;
+				int handle = pElement->m_connectorDragHandle1;
 				if (handle == 0)
 				{
 					point1 = pElement1->m_rect.TopLeft();
@@ -441,7 +441,7 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			else
 			{
 				//point2 = pElement2->m_rect.CenterPoint();
-				int handle = pElement2->m_connectorDragHandle2;
+				int handle = pElement->m_connectorDragHandle2;
 				if (handle == 0)
 				{
 					point2 = pElement2->m_rect.TopLeft();
@@ -1256,6 +1256,24 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 		if (value == _T("Left") || value == _T("Center") || value == _T("Right"))
 		{
 			pElement->m_textAlign = value;
+		}
+	}
+
+	if (name == prop_Connector1Handle)
+	{
+		if (value == _T("") || value == _T("TopLeft") || value == _T("Center") || value == _T("TopCenter")
+			|| value == _T("BottomCenter") || value == _T("LeftCenter") || value == _T("RightCenter"))
+		{
+			pElement->m_connectorDragHandle1 = pElement->DragHandleFromString(value);
+		}
+	}
+
+	if (name == prop_Connector2Handle)
+	{
+		if (value == _T("") || value == _T("TopLeft") || value == _T("Center") || value == _T("TopCenter")
+			|| value == _T("BottomCenter") || value == _T("LeftCenter") || value == _T("RightCenter"))
+		{
+			pElement->m_connectorDragHandle2 = pElement->DragHandleFromString(value);
 		}
 	}
 

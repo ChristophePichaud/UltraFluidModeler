@@ -270,6 +270,28 @@ void CPropertiesWnd::InitPropList()
 	pProp->AllowEdit(FALSE);
 	pGroup3->AddSubItem(pProp);
 
+	pProp = new CMFCPropertyGridProperty(_T("Connector1 Handle"), _T(""), _T("Specifies the connector's handle"));
+	pProp->AddOption(_T(""));
+	pProp->AddOption(_T("TopLeft"));
+	pProp->AddOption(_T("Center"));
+	pProp->AddOption(_T("TopCenter"));
+	pProp->AddOption(_T("BottomCenter"));
+	pProp->AddOption(_T("LeftCenter"));
+	pProp->AddOption(_T("RightCenter"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Connector2 Handle"), _T(""), _T("Specifies the connector's handle"));
+	pProp->AddOption(_T(""));
+	pProp->AddOption(_T("TopLeft"));
+	pProp->AddOption(_T("Center"));
+	pProp->AddOption(_T("TopCenter"));
+	pProp->AddOption(_T("BottomCenter"));
+	pProp->AddOption(_T("LeftCenter"));
+	pProp->AddOption(_T("RightCenter"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
+
 	m_wndPropList.AddProperty(pGroup3);
 
 	/*
@@ -364,6 +386,8 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 
 	UpdateProperty(prop_Document, pObj->m_document.c_str());
 	UpdateProperty(prop_Document_Type, pObj->ToString(pObj->m_documentType));
+	UpdateProperty(prop_Connector1Handle, pObj->DragHandleToString(pObj->m_connectorDragHandle1));
+	UpdateProperty(prop_Connector2Handle, pObj->DragHandleToString(pObj->m_connectorDragHandle2));
 }
 
 void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewValue)
@@ -477,6 +501,15 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 	else if (propName == prop_Text_Align)
 	{
 		if (propValueText == _T("Left") || propValueText == _T("Center") || propValueText == _T("Right"))
+		{
+			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
+		}
+	}
+	else if (propName == prop_Connector1Handle || propName == prop_Connector2Handle)
+	{
+		if (propValueText == _T("")
+			|| propValueText == _T("TopLeft") || propValueText == _T("Center") || propValueText == _T("TopCenter")
+			|| propValueText == _T("BottomCenter") || propValueText == _T("LeftCenter") || propValueText == _T("RightCenter"))
 		{
 			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
 		}

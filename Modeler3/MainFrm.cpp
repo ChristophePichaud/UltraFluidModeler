@@ -1073,6 +1073,7 @@ void CMainFrame::OnActionElements(CModeler1View* pView)
 	std::shared_ptr<CElement> pElement = GetManager()->m_objects.FindElementByName(wname);
 	GetManager()->SelectNone();
 	GetManager()->Select(pElement);
+	GetManager()->UpdatePropertyGrid(pView, pElement);
 
 	// Redraw the element
 	GetManager()->InvalObj(pView, pElement);

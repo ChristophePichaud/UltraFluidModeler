@@ -461,11 +461,12 @@ void CElement::Serialize(CArchive& ar)
 CString CElement::ToString()
 {
 	CString str;
-	str.Format(_T("Element name=<%s> id={%s} type=<%s> shape=<%s> rect={%d,%d,%d,%d} caption=<%s> text=<%s> connector=<%s> image=<%s> colorFill={%03d%03d%03d} colorLine={%03d%03d%03d}"), 
+	str.Format(_T("Element name=<%s> id={%s} type=<%s> shape=<%s> rect={%d,%d,%d,%d} caption=<%s> text=<%s> connector=<%s> handle1=<%d> handle2=<%d> image=<%s> colorFill={%03d%03d%03d} colorLine={%03d%03d%03d}"), 
 		m_name.c_str(), m_objectId.c_str(), ToString(m_type), ToString(m_shapeType),
 		m_rect.left, m_rect.top, m_rect.right, m_rect.bottom,
 		m_caption.c_str(), m_text.c_str(), 
 		ToString(m_pConnector), 
+		m_connectorDragHandle1, m_connectorDragHandle1,
 		m_image.c_str(),
 		GetRValue(m_colorFill), GetGValue(m_colorFill), GetBValue(m_colorFill),
 		GetRValue(m_colorLine), GetGValue(m_colorLine), GetBValue(m_colorLine));
@@ -924,6 +925,74 @@ CRect CElement::GetHandleRect(int nHandleID, CModeler1View* pView)
 	GetManager()->ViewToManager(pView, rect);
 
 	return rect;
+}
+
+CString CElement::DragHandleToString(int nHandle)
+{
+	CString str = _T("");
+
+	switch (nHandle)
+	{
+	case 0:
+		str = _T("");
+		break;
+
+	case 2:
+		str = _T("TopCenter");
+		break;
+
+	case 4:
+		str = _T("RightCenter");
+		break;
+
+	case 6:
+		str = _T("BottomCenter");
+		break;
+
+	case 8:
+		str = _T("LeftCenter");
+		break;
+	}
+
+	return str;
+}
+
+int CElement::DragHandleFromString(wstring value)
+{
+
+	int dragHandle = 0;
+
+	if (value == _T(""))
+	{
+		dragHandle = 0;
+	}
+		
+	if (value == _T("Center"))
+	{
+		dragHandle = 9;
+	}
+
+	if (value == _T("TopCenter"))
+	{
+		dragHandle = 2;
+	}
+
+	if (value == _T("RightCenter"))
+	{
+		dragHandle = 4;
+	}
+
+	if (value == _T("BottomCenter"))
+	{
+		dragHandle = 6;
+	}
+
+	if (value == _T("LeftCenter"))
+	{
+		dragHandle = 8;
+	}
+
+	return dragHandle;
 }
 
 // returns logical coords of center of handle
