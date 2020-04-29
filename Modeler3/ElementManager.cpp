@@ -856,6 +856,7 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 		m_selectMode = SelectMode::size;
 		pView->LogDebug(_T("selectMode == size"));
 
+		m_nDragHandle == 1;
 		FindAConnectionFor(pNewElement, point, pView, ConnectorType::connector1);
 
 		pView->GetDocument()->SetModifiedFlag();
@@ -2077,8 +2078,6 @@ void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement,
 	if (pLineElement->IsLine() == true)
 	{
 		m_bSizingALine = true;
-
-		CRect rect = pLineElement->m_rect;
 
 		SelectNone();
 		Select(pLineElement);
