@@ -856,7 +856,7 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 		m_selectMode = SelectMode::size;
 		pView->LogDebug(_T("selectMode == size"));
 
-		m_nDragHandle == 1;
+		m_nDragHandle = 1;
 		FindAConnectionFor(pNewElement, point, pView, ConnectorType::connector1);
 
 		pView->GetDocument()->SetModifiedFlag();
@@ -2093,7 +2093,7 @@ void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement,
 
 			// Register the connector
 			// if start, we take only the first connector in handle
-			if (connector == ConnectorType::connector1 || m_nDragHandle == 1)
+			if (connector == ConnectorType::connector1) //|| m_nDragHandle == 1)
 			{
 				pView->LogDebug(_T("FindAConnectionFor:: if (connector == ConnectorType::connector1 || m_nDragHandle == 1)"));
 				pLineElement->m_pConnector->m_pElement1 = pElement;
@@ -2102,7 +2102,7 @@ void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement,
 				// Connect to the right connector
 				SetConnector(pLineElement, pElement, ConnectorType::connector1);
 			}
-			else if (connector == ConnectorType::connector2 || m_nDragHandle == 2)
+			else if (connector == ConnectorType::connector2) // || m_nDragHandle == 2)
 			{
 				pView->LogDebug(_T("FindAConnectionFor:: if (connector == ConnectorType::connector2 || m_nDragHandle == 2)"));
 				pLineElement->m_pConnector->m_pElement2 = pElement;
