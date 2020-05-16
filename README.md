@@ -7,6 +7,6 @@ Modeler2 : drawing tool with Import Assembly .NET for visualizating types from a
 
 Modeler3 : drawing tool with no features discussed above. Version 2018. New features will be inserted  in this version.
 
-UFM_BETA2 : UltraFluid Modeler BETA 2, started in May 2020 and avilable on download at www.buildonthemetal.com.
+UFM_BETA2 : UltraFluid Modeler BETA 2, started in May 2020 and available on download at www.buildonthemetal.com.
 
 Look at the wiki to see a screen shot.
