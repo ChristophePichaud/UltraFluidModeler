@@ -6,7 +6,7 @@
 // CElementContainer Class
 //
 
-IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 4)
+IMPLEMENT_SERIAL(CElementContainer, CObject, VERSIONABLE_SCHEMA | 11)
 
 CElementContainer::CElementContainer()
 {
@@ -21,6 +21,8 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 {
 	if( ar.IsStoring() == TRUE )
 	{
+		ar.SetObjectSchema(11);
+
 		CTypedPtrList<CObList, CElement *> objects;
 		for( vector<std::shared_ptr<CElement>>::iterator i = m_objects.begin() ; i!=m_objects.end() ; i++ )
 		{
@@ -70,12 +72,48 @@ void CElementContainer::Serialize(CElementManager * pElementManager, CArchive& a
 			// Schema v4
 			pNewElement->m_code = pElement->m_code;
 
+			// Schema v5
+			pNewElement->m_bBold = pElement->m_bBold;
+			pNewElement->m_bItalic = pElement->m_bItalic;
+			pNewElement->m_bUnderline = pElement->m_bUnderline;
+			pNewElement->m_bStrikeThrough = pElement->m_bStrikeThrough;
+
+			// Schema v6
+			pNewElement->m_colorText = pElement->m_colorText;
+
+			// Schema v7
+			pNewElement->m_connectorName1 = pElement->m_connectorName1;
+			pNewElement->m_connectorName2 = pElement->m_connectorName2;
+			if (pElement->IsLine())
+			{
+				pNewElement->m_pConnector->m_pElement1 = FindElementByName(pElement->m_connectorName1);
+				pNewElement->m_pConnector->m_pElement2 = FindElementByName(pElement->m_connectorName2);
+			}
+
+			// Schema v8
+			pNewElement->m_document = pElement->m_document;
+
+			// Schema v10
+			pNewElement->m_documentType = pElement->m_documentType;
+
+			// Schema v11
+			pNewElement->m_connectorDragHandle1 = pElement->m_connectorDragHandle1;
+			pNewElement->m_connectorDragHandle2 = pElement->m_connectorDragHandle2;
+
+
 			POSITION pos = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
 			pNewElement->m_pView = (CModeler1View *) (ar.m_pDocument->GetNextView(pos)); //()->GetRoutingView();
 			m_objects.push_back(pNewElement);
 		}
-	}
 
+		// Build groups
+		pElementManager->BuildGroups();
+
+		POSITION pos2 = /*pNewElement->m_pView =*/ ar.m_pDocument->GetFirstViewPosition(); //nullptr; // TODO
+		CModeler1View* pView = (CModeler1View*)(ar.m_pDocument->GetNextView(pos2)); //()->GetRoutingView();
+		pElementManager->BuildElementsCombo(pView);
+
+	}
 }
 
 std::shared_ptr<CElement> CElementContainer::FindElement(ElementType type)
@@ -108,6 +146,21 @@ std::shared_ptr<CElement> CElementContainer::FindElement(std::wstring objectId)
 	return pNull;
 }
 
+std::shared_ptr<CElement> CElementContainer::FindElementByName(std::wstring name)
+{
+	// find last element of a given type
+	for (vector<std::shared_ptr<CElement>>::iterator i = m_objects.begin(); i != m_objects.end(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pElement->m_name == name)
+		{
+			return pElement;
+		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+
 bool CElementContainer::FindElement(std::wstring objectId, vector<std::shared_ptr<CElement>>::iterator & it)
 {
 	// find last element of a given type
@@ -123,12 +176,188 @@ bool CElementContainer::FindElement(std::wstring objectId, vector<std::shared_pt
 	return false;
 }
 
+#ifdef ORIGINAL_CODE
 std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint & point)
 {
 	CRect rect(point, CSize(1, 1));
 	for( vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin() ; i!=m_objects.rend() ; i++ )
 	{
 		std::shared_ptr<CElement> pElement = *i;
+		if (pElement->Intersects(rect))
+		{
+			return pElement;
+		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+#endif
+
+std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint& point, SelectType selectType)
+{
+	CRect rect(point, CSize(1, 1));
+	return ObjectAt(rect, selectType);
+}
+
+std::shared_ptr<CElement> CElementContainer::ObjectAt(const CRect& rect, SelectType selectType)
+{
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+
+		// If Intersects, we have a candidate but...
+		if (pElement->Intersects(rect))
+		{
+			std::shared_ptr<CElement> pElementCandidate = pElement;
+
+
+			if (selectType == SelectType::intuitive)
+			{
+				// If Intersects, we have a candidate if not a line...
+				// except if the line connector intersects, then it's the line connector element !
+				//   except if pElement1 and pElement2 are differenet of nullptr
+				for (vector<std::shared_ptr<CElement>>::iterator i2 = m_objects.begin(); i2 != m_objects.end(); i2++)
+				{
+					std::shared_ptr<CElement> pElementLine = *i2;
+					if (pElementLine->IsLine() == false)
+					{
+						continue;
+					}
+
+					shared_ptr<CElement> pElement1 = pElementLine->m_pConnector->m_pElement1;
+					shared_ptr<CElement> pElement2 = pElementLine->m_pConnector->m_pElement2;
+
+					if (pElement1 == pElementCandidate)
+					{
+						return pElement1;
+					}
+
+					if (pElement1 != nullptr)
+					{
+						if (pElement1->Intersects(rect))
+						{
+							if (pElement2 != nullptr)
+							{
+								continue;
+							}
+
+							return pElement1;
+						}
+					}
+
+					if (pElement2 == pElementCandidate)
+					{
+						return pElement2;
+					}
+
+					if (pElement2 != nullptr)
+					{
+						if (pElement2->Intersects(rect))
+						{
+							if (pElement1 != nullptr)
+							{
+								continue;
+							}
+
+							return pElement2;
+						}
+					}
+				}
+
+				if (pElementCandidate->IsLine() == true)
+				{
+					shared_ptr<CElement> pElement1 = pElementCandidate->m_pConnector->m_pElement1;
+					shared_ptr<CElement> pElement2 = pElementCandidate->m_pConnector->m_pElement2;
+					if (pElement1 != nullptr && pElement2 != nullptr)
+					{
+						continue;
+					}
+					else
+					{
+						return pElementCandidate;
+					}
+				}
+				else
+				{
+					return pElementCandidate;
+				}
+			}
+
+			if (selectType == SelectType::all)
+			{
+				return pElementCandidate;
+			}
+
+			if (selectType == SelectType::only_items)
+			{
+				if (pElementCandidate->IsLine() == false)
+				{
+					return pElementCandidate;
+				}
+			}
+
+			if (selectType == SelectType::only_lines)
+			{
+				if (pElementCandidate->IsLine() == true)
+				{
+					return pElementCandidate;
+				}
+			}
+
+			if (selectType == SelectType::only_first_line)
+			{
+				if (pElementCandidate->IsLine() == true)
+				{
+					return pElementCandidate;
+				}
+			}
+
+		}
+	next_value:
+		int nop = 0;
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+
+std::shared_ptr<CElement> CElementContainer::ObjectAt(const CPoint& point, std::shared_ptr<CElement> pObj)
+{
+	CRect rect(point, CSize(1, 1));
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pObj == pElement)
+		{
+			// the object that is draing is slected... we dont want this object
+			continue;
+		}
+
+		if (pElement->Intersects(rect))
+		{
+			return pElement;
+		}
+	}
+	std::shared_ptr<CElement> pNull;
+	return pNull;
+}
+
+std::shared_ptr<CElement> CElementContainer::ObjectExceptLinesAt(const CPoint& point, std::shared_ptr<CElement> pObj)
+{
+	CRect rect(point, CSize(1, 1));
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+		if (pObj == pElement)
+		{
+			// the object that is drawing is slected... we dont want this object
+			continue;
+		}
+
+		if (pElement->IsLine() == true)
+		{
+			continue;
+		}
+
 		if (pElement->Intersects(rect))
 		{
 			return pElement;
@@ -149,6 +378,130 @@ vector<std::shared_ptr<CElement>> CElementContainer::ObjectsInRect(const CRect &
 			v.push_back(pElement);
 		}
 	}
+	return v;
+}
+
+vector<std::shared_ptr<CElement>> CElementContainer::ObjectsInRectEx(const CRect& rect, SelectType selectType)
+{
+	vector<std::shared_ptr<CElement>> v;
+	for (vector<std::shared_ptr<CElement>>::reverse_iterator i = m_objects.rbegin(); i != m_objects.rend(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+
+		// If Intersects, we have a candidate but...
+		if (pElement->Intersects(rect))
+		{
+			std::shared_ptr<CElement> pElementCandidate = pElement;
+
+
+			if (selectType == SelectType::intuitive)
+			{
+				// If Intersects, we have a candidate if not a line...
+			// except if the line connector intersects, then it's the line connector element !
+			//   except if pElement1 and pElement2 are differenet of nullptr
+				for (vector<std::shared_ptr<CElement>>::iterator i2 = m_objects.begin(); i2 != m_objects.end(); i2++)
+				{
+					std::shared_ptr<CElement> pElementLine = *i2;
+					if (pElementLine->IsLine() == false)
+					{
+						continue;
+					}
+
+					shared_ptr<CElement> pElement1 = pElementLine->m_pConnector->m_pElement1;
+					shared_ptr<CElement> pElement2 = pElementLine->m_pConnector->m_pElement2;
+
+					if (pElement1 == pElementCandidate)
+					{
+						v.push_back(pElement1);
+					}
+
+					if (pElement1 != nullptr)
+					{
+						if (pElement1->Intersects(rect))
+						{
+							if (pElement2 != nullptr)
+							{
+								continue;
+							}
+
+							v.push_back(pElement1);
+							break;
+						}
+					}
+
+					if (pElement2 == pElementCandidate)
+					{
+						v.push_back(pElement2);
+					}
+
+					if (pElement2 != nullptr)
+					{
+						if (pElement2->Intersects(rect))
+						{
+							if (pElement1 != nullptr)
+							{
+								continue;
+							}
+
+							v.push_back(pElement2);
+							break;
+						}
+					}
+				}
+
+				if (pElementCandidate->IsLine() == true)
+				{
+					shared_ptr<CElement> pElement1 = pElementCandidate->m_pConnector->m_pElement1;
+					shared_ptr<CElement> pElement2 = pElementCandidate->m_pConnector->m_pElement2;
+					if (pElement1 != nullptr && pElement2 != nullptr)
+					{
+						continue;
+					}
+					else
+					{
+						v.push_back(pElementCandidate);
+					}
+				}
+				else
+				{
+					v.push_back(pElementCandidate);
+				}
+			}
+
+			if (selectType == SelectType::all)
+			{
+				v.push_back(pElementCandidate);
+			}
+
+			if (selectType == SelectType::only_items)
+			{
+				if (pElementCandidate->IsLine() == false)
+				{
+					v.push_back(pElementCandidate);
+				}
+			}
+
+			if (selectType == SelectType::only_lines)
+			{
+				if (pElementCandidate->IsLine() == true)
+				{
+					v.push_back(pElementCandidate);
+				}
+			}
+
+			if (selectType == SelectType::only_first_line)
+			{
+				if (pElementCandidate->IsLine() == true)
+				{
+					v.push_back(pElementCandidate);
+					return v;
+				}
+			}
+		}
+	next_value:
+		int nop = 0;
+	}
+
 	return v;
 }
 
@@ -353,6 +706,13 @@ void CElementContainer::Clone(const CElementContainer& selection)
 	for( vector<std::shared_ptr<CElement>>::const_iterator itSel = selection.m_objects.begin() ; itSel!=selection.m_objects.end() ; itSel++ )
 	{
 		std::shared_ptr<CElement> pElement = *itSel;
+		
+		// Select the new element if not a selection area
+		if (pElement->m_shapeType == ShapeType::selection)
+		{
+			continue;
+		}
+			
 		std::shared_ptr<CElement> pNewElement = pElement->MakeCopy();
 		pNewElement->SetGuid();
 		pNewElement->SetName();

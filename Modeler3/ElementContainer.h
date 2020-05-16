@@ -22,9 +22,14 @@ public:
 public:
 	std::shared_ptr<CElement> FindElement(ElementType type);
 	std::shared_ptr<CElement> FindElement(std::wstring objectId);
+	std::shared_ptr<CElement> FindElementByName(std::wstring name);
 	bool FindElement(std::wstring objectId, vector<std::shared_ptr<CElement>>::iterator & it);
-	std::shared_ptr<CElement> ObjectAt(const CPoint & point);	
+	std::shared_ptr<CElement> ObjectAt(const CRect& rect, SelectType selectType = SelectType::intuitive);
+	std::shared_ptr<CElement> ObjectAt(const CPoint & point, SelectType selectType = SelectType::intuitive);
+	std::shared_ptr<CElement> ObjectAt(const CPoint& point, std::shared_ptr<CElement> pObj);
+	std::shared_ptr<CElement> ObjectExceptLinesAt(const CPoint& point, std::shared_ptr<CElement> pObj);
 	vector<std::shared_ptr<CElement>> ObjectsInRect(const CRect& rect);
+	vector<std::shared_ptr<CElement>> ObjectsInRectEx(const CRect& rect, SelectType selectType = SelectType::intuitive);
 	void Remove(const CElementContainer& selection);
 	void Copy(const CElementContainer& selection);
 	void Clone(const CElementContainer& selection);

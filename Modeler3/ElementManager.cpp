@@ -5,18 +5,22 @@
 #include "MainFrm.h"
 #include "DrawingContext.h"
 #include "DrawingElements.h"
+#include <sstream>
+#include "TabbedView.h"
+#include "Modeler1SourceView.h"
+
 //
 // CElementManager
 //
 
-IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 4)
+IMPLEMENT_SERIAL(CElementManager, CObject, VERSIONABLE_SCHEMA | 11)
 
 CElementManager::CElementManager()
 {
 	m_objectId = L"";
 	m_lastPoint = CPoint(0, 0);
 	m_paperColor = RGB(255, 255, 255); //RGB(242, 242, 200); //RGB(255, 255, 255); //RGB(188, 251, 255);
-	m_size = CSize(1500, 1500);
+	m_size = CSize(3000, 3000);
 
 	// Initialize Current UI interaction members
 	m_bDrawing = FALSE;
@@ -28,7 +32,11 @@ CElementManager::CElementManager()
 	m_fZoomFactor = 1.0f;
 	
 	m_bSavingCode = false;
-	
+	m_bSizingALine = false;
+
+	m_selectType = SelectType::intuitive;
+	m_elementGroup = _T("ElementGroup");
+
 	// Initiate the connection with the Property Window
 	ConnectToPropertyGrid();
 }
@@ -48,12 +56,29 @@ void CElementManager::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
+		//
+		// Set version of file format
+		//
+		ar.SetObjectSchema(11);
+
+		//CString elementGroup = W2T((LPTSTR)m_elementGroup.c_str());
+		//ar << elementGroup;
+
 		ar << m_size;
 		ar << m_paperColor;
 		ar << m_lastPoint;
 	}
 	else
 	{
+		int version = ar.GetObjectSchema();
+
+		if (version >= 9)
+		{
+			//CString elementGroup;
+			//ar >> elementGroup;
+			//this->m_elementGroup = T2W((LPTSTR)(LPCTSTR)elementGroup);
+		}
+
 		ar >> m_size;
 		ar >> m_paperColor;
 		ar >> m_lastPoint;
@@ -102,6 +127,8 @@ void CElementManager::OnFont(CModeler1View * pView)
 	std::shared_ptr<CElement> pElement = m_selection.GetHead();
 	pElement->m_fontName = T2W((LPTSTR)(LPCTSTR)fontName);
 
+	UpdatePropertyGrid(pView, pElement);
+
 	// Redraw the element
 	InvalObj(pView, pElement);
 }
@@ -121,6 +148,8 @@ void CElementManager::OnFontSize(CModeler1View * pView)
 
 	std::shared_ptr<CElement> pElement = m_selection.GetHead();
 	pElement->m_fontSize = iFontSize;
+
+	UpdatePropertyGrid(pView, pElement);
 
 	// Redraw the element
 	InvalObj(pView, pElement);
@@ -150,9 +179,10 @@ void CElementManager::OnEditPaste(CModeler1View * pView)
 		std::shared_ptr<CElement> pElement = *itSel;
 		Select(pElement);
 	}
+
 	m_selectMode = SelectMode::move;
 
-	m_clipboard.RemoveAll();
+	//m_clipboard.RemoveAll();
 
 	Invalidate(pView);
 }
@@ -357,6 +387,65 @@ void CElementManager::DrawBackground(CModeler1View * pView, CDC * pDC)
 	graphics.FillRectangle(&brush, fillRect);
 }
 
+void CElementManager::DrawConnector(Graphics& graphics, std::shared_ptr<CElement> pLineElement, ConnectorType connector)
+{
+	shared_ptr<CElement> pElement1; // = pLineElement->m_pConnector->m_pElement1;
+	if (connector == ConnectorType::connector1)
+	{
+		pElement1 = pLineElement->m_pConnector->m_pElement1;
+	}
+	else
+	{
+		pElement1 = pLineElement->m_pConnector->m_pElement2;
+	}
+
+	CPoint point1;
+	if (pElement1 == nullptr)
+	{
+		point1 = pLineElement->m_rect.TopLeft();
+	}
+	else
+	{
+		//point1 = pElement1->m_rect.CenterPoint();
+		int handle;// = pLineElement->m_connectorDragHandle1;
+		if (connector == ConnectorType::connector1)
+		{
+			handle = pLineElement->m_connectorDragHandle1;
+		}
+		else
+		{
+			handle = pLineElement->m_connectorDragHandle2;
+		}
+
+
+		if (handle == 0)
+		{
+			point1 = pElement1->m_rect.TopLeft();
+		}
+		else
+		{
+			point1 = pElement1->GetHandle(handle);
+		}
+
+		CPoint point2;
+		point2.x = point1.x;
+		point2.y = point1.y;
+		CRect rect(point1, point2);
+		rect.NormalizeRect();
+
+		SolidBrush colorBrush(Color::DarkOrange);
+		graphics.FillRectangle(&colorBrush, rect.left - 3, rect.top - 3, 7, 7);
+		Pen  colorPen(Color::Black);
+		graphics.DrawRectangle(&colorPen, rect.left - 3, rect.top - 3, 7, 7);
+
+		std::wstring imagePath = L"Images\\Custom\\Connect.png";
+		Image image(CStringW(imagePath.c_str()));
+		CPoint p1(rect.left, rect.top);
+		CPoint p2(p1.x + image.GetWidth(), p1.y + image.GetHeight());
+		graphics.DrawImage(&image, rect.left - 3, rect.top - 3, image.GetWidth(), image.GetHeight());
+	}
+}
+
 void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 {
 	// Initialize GDI+ graphics context
@@ -365,10 +454,73 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 	//graphics.ScaleTransform(0.75f, 0.75f);
 	graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
 	
+	// Iterate on Line elements
+	// if connector1 exists, its draghandle 1 is connector1.centeroint else nothing (its inner value)
+	// if connector2 exists, its draghandle 2 is connector2.centeroint else nothing (its inner value)
+	// Then the m_rect value is m_rect = CRrect(point1, point2);
+	if (m_bSizingALine == false)
+	{
+		for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
+		{
+			std::shared_ptr<CElement> pElement = *i;
+
+			if (pElement->IsLine() == false)
+			{
+				continue;
+			}
+
+			//pElement->m_rect.NormalizeRect();
+
+			shared_ptr<CElement> pElement1 = pElement->m_pConnector->m_pElement1;
+			CPoint point1;
+			if (pElement1 == nullptr)
+			{
+				point1 = pElement->m_rect.TopLeft();
+			}
+			else
+			{
+				//point1 = pElement1->m_rect.CenterPoint();
+				int handle = pElement->m_connectorDragHandle1;
+				if (handle == 0)
+				{
+					point1 = pElement1->m_rect.TopLeft();
+				}
+				else
+				{
+					point1 = pElement1->GetHandle(handle);
+				}
+			}
+
+			shared_ptr<CElement> pElement2 = pElement->m_pConnector->m_pElement2;
+			CPoint point2;
+			if (pElement2 == nullptr)
+			{
+				point2 = pElement->m_rect.BottomRight();
+			}
+			else
+			{
+				//point2 = pElement2->m_rect.CenterPoint();
+				int handle = pElement->m_connectorDragHandle2;
+				if (handle == 0)
+				{
+					point2 = pElement2->m_rect.TopLeft();
+				}
+				else
+				{
+					point2 = pElement2->GetHandle(handle);
+				}
+			}
+
+			CRect rect(point1, point2);
+			pElement->m_rect = rect;
+		}
+	}
+
 	// TODO: add draw code for native data here
 	for( vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin() ; i!=GetObjects().end() ; i++ )
 	{
-		std::shared_ptr<CElement> pElement = *i;		
+		std::shared_ptr<CElement> pElement = *i;	
+
 		// FIXME: Update the view for Property Window
 		pElement->m_pView = pView;
 		
@@ -390,11 +542,38 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 			(pElement->m_type != ElementType::type_text)
 			)
 		{
-			//std::shared_ptr<CElement> pTextElement = make_shared<CSimpleTextElement>();
-			std::shared_ptr<CElement> pTextElement(new CSimpleTextElement());
-			pTextElement->m_rect = pElement->m_rect;
+			//std::shared_ptr<CElement> pTextElement(new CSimpleTextElement());
+			//pTextElement->m_rect = pElement->m_rect;
+			//pTextElement->m_text = pElement->m_text;
+			//pTextElement->m_textAlign = pElement->m_textAlign;
+			//pTextElement->Draw(ctxt);
+			std::shared_ptr<CElement> pTextElement(new CTextElement());
+			//pTextElement->m_name = pElement->m_name;
+			//pTextElement->m_objectId = pElement->m_objectId;
+			pTextElement->m_caption = pElement->m_caption;
 			pTextElement->m_text = pElement->m_text;
+			pTextElement->m_code = pElement->m_code;
+			pTextElement->m_image = pElement->m_image;
+			pTextElement->m_lineWidth = pElement->m_lineWidth;
+			pTextElement->m_pManager = pElement->m_pManager;
+			pTextElement->m_pView = pElement->m_pView;
+			pTextElement->m_rect = pElement->m_rect;
+			pTextElement->m_bColorFill = pElement->m_bColorFill;
+			pTextElement->m_bColorLine = pElement->m_bColorLine;
+			pTextElement->m_bLineWidth = pElement->m_bLineWidth;
+			pTextElement->m_bSolidColorFill = pElement->m_bSolidColorFill;
+			pTextElement->m_colorFill = pElement->m_colorFill;
+			pTextElement->m_colorLine = pElement->m_colorLine;
 			pTextElement->m_textAlign = pElement->m_textAlign;
+			pTextElement->m_fontName = pElement->m_fontName;
+			pTextElement->m_bFixed = pElement->m_bFixed;
+			pTextElement->m_bBold = pElement->m_bBold;
+			pTextElement->m_bItalic = pElement->m_bItalic;
+			pTextElement->m_bUnderline = pElement->m_bUnderline;
+			pTextElement->m_bStrikeThrough = pElement->m_bStrikeThrough;
+			//pTextElement->m_code = pElement->m_code;
+			pTextElement->m_fontSize = pElement->m_fontSize;
+			pTextElement->m_colorText = pElement->m_colorText;
 			pTextElement->Draw(ctxt);
 		}
 
@@ -403,6 +582,23 @@ void CElementManager::Draw(CModeler1View * pView, CDC * pDC)
 		if (pView != NULL && pView->m_bActive && !pDC->IsPrinting() && IsSelected(pElement))
 			pElement->DrawTracker(ctxt, TrackerState::selected);
 	}
+
+	// Last....
+	// Add connector shape to the handles
+	for (vector<std::shared_ptr<CElement>>::const_iterator i = GetObjects().begin(); i != GetObjects().end(); i++)
+	{
+		std::shared_ptr<CElement> pElement = *i;
+
+		if (pElement->IsLine() == false)
+		{
+			continue;
+		}
+
+		DrawConnector(graphics, pElement, ConnectorType::connector1);
+		DrawConnector(graphics, pElement, ConnectorType::connector2);
+
+	}
+
 }
 
 void CElementManager::DrawEx(CModeler1View * pView, CDC * pDC)
@@ -535,14 +731,18 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 			if (m_nDragHandle != 0)
 			{
 				m_selectMode = SelectMode::size;
-				pView->LogDebug(_T("selectMode == sized"));
+				
+				CString str;
+				str.Format(_T("m_nDragHandle=%d - selectMode == sized"), m_nDragHandle);
+				pView->LogDebug(str);
+				//pView->LogDebug(_T("selectMode == sized"));
 			}
 		}
 
 		if( m_selectMode == SelectMode::none )
 		{
 			// See if the click was on an object
-			std::shared_ptr<CElement> pElement = m_objects.ObjectAt(point);
+			std::shared_ptr<CElement> pElement = m_objects.ObjectAt(point, m_selectType);
 			if( pElement != NULL )
 			{
 				//if( HasSelection() )
@@ -612,6 +812,15 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 	// Create a Drawable Object...
 	else
 	{
+
+#ifdef VERSION_COMMUNITY
+		if (CFactory::g_counter > MAX_SHAPES)
+		{
+			AfxMessageBox(_T("Maximum number or shapes reached !\nFor more, please buy the Architect Edition."));
+			return;
+		}
+#endif
+
 		pView->LogDebug(_T("selection cleared"));
 		SelectNone();
 
@@ -646,6 +855,9 @@ void CElementManager::OnLButtonDown(CModeler1View* pView, UINT nFlags, const CPo
 
 		m_selectMode = SelectMode::size;
 		pView->LogDebug(_T("selectMode == size"));
+
+		m_nDragHandle = 1;
+		FindAConnectionFor(pNewElement, point, pView, ConnectorType::connector1);
 
 		pView->GetDocument()->SetModifiedFlag();
 
@@ -704,40 +916,6 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 	str.Format(_T("point {%d,%d} / {%d,%d}"), cpoint.x, cpoint.y, point.x, point.y);
 	//pView->LogDebug(str);
 
-	// Unused code !
-	if (m_selectMode == SelectMode::netselect) //|| m_shapeType == ShapeType::selection)
-	//if (m_bSelectionHasStarted == true)
-	{
-		//pView->LogDebug("selection is under drawing");
-		
-		CRect selectionRect(m_selectPoint.x, m_selectPoint.y, point.x, point.y);
-		CRect rect = selectionRect;
-		ViewToManager(pView, rect);
-
-		//std::shared_ptr<CElement> pObj = m_objects.ObjectAt(point);
-		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
-		if (v.size() != 0)
-		{
-			for (std::shared_ptr<CElement> pElement : v)
-			{
-				if (IsSelected(pElement) == false)
-				{
-					if (pElement->m_bGrouping == false)
-					{
-						Select(pElement);
-					}
-				}
-			}
-		}
-
-		//CRect rect2(m_clickPoint.x, m_clickPoint.y, m_movePoint.x, m_movePoint.y);
-		//ManagerToView(pView, rect2);
-		//m_selectionRect = rect2;
-		//DrawSelectionRect(pView);
-
-		return;
-	}
-	
 	std::shared_ptr<CElement> pElement = m_selection.GetHead(); //m_objects.FindElement(m_objectId);
 	if( pElement == NULL )
 	{
@@ -783,8 +961,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 
 					std::shared_ptr<CElement> pObj = m_selection.GetHead();
 					pObj->MoveHandleTo(m_nDragHandle, point, pView);
-					// Find a connection ?
-					FindAConnectionFor(pObj, point, pView);
+					FindAConnectionFor(pElement, point, pView, ConnectorType::connector2);
 					InvalObj(pView, pObj);
 
 					pView->GetDocument()->SetModifiedFlag();
@@ -801,9 +978,7 @@ void CElementManager::OnMouseMove(CModeler1View* pView, UINT nFlags, const CPoin
 		
 			pElement->m_last = point;
 			pElement->InvalidateObj();
-			//MoveToBack(pView);
-			// Find a connection ?
-			FindAConnectionFor(pElement, point, pView);
+			FindAConnectionFor(pElement, point, pView, ConnectorType::connector2);
 			InvalObj(pView, pElement);
 
 			pView->GetDocument()->SetModifiedFlag();
@@ -912,6 +1087,7 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 	{
 		CRect rect = pSelectionElement->m_rect;
 
+		// remove the selection element from the objects list
 		vector<std::shared_ptr<CElement>>::iterator pos;
 		pos = find(m_objects.m_objects.begin(), m_objects.m_objects.end(), pSelectionElement);
 		if (pos != m_objects.m_objects.end())
@@ -919,9 +1095,18 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 			m_objects.m_objects.erase(pos);
 		}
 
-		//ViewToManager(pView, rect);
+		// remove the selection element from the selection list
+		vector<std::shared_ptr<CElement>>::iterator pos2;
+		pos2 = find(m_selection.m_objects.begin(), m_selection.m_objects.end(), pSelectionElement);
+		if (pos2 != m_selection.m_objects.end())
+		{
+			m_selection.m_objects.erase(pos2);
+		}
 
-		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRect(rect);
+		//ViewToManager(pView, rect);
+		SelectNone();
+
+		vector<std::shared_ptr<CElement>> v = m_objects.ObjectsInRectEx(rect, m_selectType); // version Ex : do not select lines with full connector
 		if (v.size() != 0)
 		{
 			for (std::shared_ptr<CElement> pElement : v)
@@ -940,6 +1125,10 @@ void CElementManager::OnLButtonUp(CModeler1View* pView, UINT nFlags, const CPoin
 		m_bSelectionHasStarted = false;
 	}
 
+	m_bSizingALine = false;
+
+	// Set selectType to default
+	m_selectType = SelectType::intuitive;
 
 	pElement->m_bMoving = FALSE;
 	// Update UI
@@ -1147,6 +1336,24 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 		}
 	}
 
+	if (name == prop_Connector1Handle)
+	{
+		if (value == _T("") || value == _T("TopLeft") || value == _T("Center") || value == _T("TopCenter")
+			|| value == _T("BottomCenter") || value == _T("LeftCenter") || value == _T("RightCenter"))
+		{
+			pElement->m_connectorDragHandle1 = pElement->DragHandleFromString(value);
+		}
+	}
+
+	if (name == prop_Connector2Handle)
+	{
+		if (value == _T("") || value == _T("TopLeft") || value == _T("Center") || value == _T("TopCenter")
+			|| value == _T("BottomCenter") || value == _T("LeftCenter") || value == _T("RightCenter"))
+		{
+			pElement->m_connectorDragHandle2 = pElement->DragHandleFromString(value);
+		}
+	}
+
 	if (name == prop_Image)
 	{
 		pElement->m_image = value;
@@ -1155,6 +1362,19 @@ void CElementManager::UpdateFromPropertyGrid(std::wstring objectId, std::wstring
 	if (name == prop_Font_Name)
 	{
 		pElement->m_fontName = value;
+	}
+
+	if (name == prop_Document)
+	{
+		pElement->m_document = value;
+	}
+
+	if (name == prop_Document_Type)
+	{
+		if (value == _T("None") || value == _T("File") || value == _T("Folder") || value == _T("Diagram"))
+		{
+			pElement->m_documentType = pElement->FromString(value);
+		}
 	}
 
 	// Some properties could change the UI in class view or file view
@@ -1500,13 +1720,13 @@ void CalcAutoPointRect2(int count, std::shared_ptr<CElement> pNewElement)
 void CalcAutoPointRect(int count, std::shared_ptr<CElement> pNewElement)
 {
 	int c = 0;
-	for (int x = 0; x < 20; x++)
+	for (int y = 0; y < 30; y++)
 	{
-		for (int y = 0; y < 20; y++)
+		for (int x = 0; x < 8; x++)
 		{
 			if (count%400 == c)
 			{
-				pNewElement->m_point.x = 200 * x;
+				pNewElement->m_point.x = 175 * x;
 				pNewElement->m_point.y = 50 * y;
 
 				pNewElement->m_rect.left = pNewElement->m_point.x;
@@ -1521,12 +1741,392 @@ void CalcAutoPointRect(int count, std::shared_ptr<CElement> pNewElement)
 	}
 }
 
-void CElementManager::LoadModule(CModeler1View * pView)
+CString CElementManager::SearchDrive(const CString& strFile, const CString& strFilePath, const bool& bRecursive, const bool& bStopWhenFound)
 {
+	USES_CONVERSION;
+
+	CWnd* pWnd = AfxGetMainWnd();
+	CMainFrame* pMainFrame = (CMainFrame*)pWnd;
+
+	CString strFoundFilePath;
+	WIN32_FIND_DATA file;
+
+	CString strPathToSearch = strFilePath;
+	strPathToSearch += _T("\\");
+
+	HANDLE hFile = FindFirstFile((strPathToSearch + "*"), &file);
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			CString strTheNameOfTheFile = file.cFileName;
+
+			// It could be a directory we are looking at
+			// if so look into that dir
+			if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			{
+				//if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != ".."))
+				{
+					// ADD TO COLLECTION TYPE
+					std::shared_ptr<CCodeFile> cf = std::make_shared<CCodeFile>();
+					cf->_type = FileType::folder;
+					cf->_name = T2W((LPTSTR)(LPCTSTR)(strTheNameOfTheFile));
+					cf->_path = T2W((LPTSTR)(LPCTSTR)(strPathToSearch + strTheNameOfTheFile));
+					_files.push_back(cf);
+				}
+
+				if ((strTheNameOfTheFile != ".") && (strTheNameOfTheFile != "..") && (bRecursive))
+				{
+					strFoundFilePath = SearchDrive(strFile, strPathToSearch + strTheNameOfTheFile, bRecursive, bStopWhenFound);
+
+					if (!strFoundFilePath.IsEmpty() && bStopWhenFound)
+						break;
+				}		
+			}
+			else
+			{
+				//if (strTheNameOfTheFile == strFile)
+				{
+					strFoundFilePath = strPathToSearch + strTheNameOfTheFile; //strFile;
+
+					// ADD TO COLLECTION TYPE
+					std::shared_ptr<CCodeFile> cf = std::make_shared<CCodeFile>();
+					cf->_type = FileType::file;
+					cf->_name = T2W((LPTSTR)(LPCTSTR)strTheNameOfTheFile); //strFile;
+					cf->_path = T2W((LPTSTR)(LPCTSTR)strFoundFilePath);
+					_files.push_back(cf);
+
+					if (bStopWhenFound)
+						break;
+				}
+			}
+		} while (FindNextFile(hFile, &file));
+
+		FindClose(hFile);
+	}
+
+	return strFoundFilePath;
 }
 
-void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pElement, CPoint point, CModeler1View* pView)
+wstring GetFileContent(wstring filename)
 {
+	ifstream file(filename);
+	string str;
+	string file_contents;
+	while (std::getline(file, str))
+	{
+		file_contents += str + string("\r\n");
+	}
+	wstring ws(file_contents.begin(), file_contents.end());
+	return ws;
+}
+
+wstring GetFileContent(shared_ptr<CCodeFile> codeFile)
+{
+	return GetFileContent(codeFile->_path);
+}
+
+
+void CElementManager::LoadModule(CModeler1View * pView)
+{
+	CFolderPickerDialog dlg;
+	if (dlg.DoModal() == IDCANCEL)
+		return;
+
+	CString strPath = dlg.GetFolderPath();
+	_files.clear();
+	SearchDrive(_T("*.*"), strPath, false, false);
+
+	int count = 0;
+	for (shared_ptr<CCodeFile> file : _files)
+	{
+		std::shared_ptr<CElement> pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_class);
+		CalcAutoPointRect(count, pNewElement);
+		pNewElement->m_pManager = this;
+		pNewElement->m_pView = pView;
+		pNewElement->m_text = file->_name;
+		// Read file content
+		pNewElement->m_code = GetFileContent(file);
+		pNewElement->m_documentType = DocumentType::document_file;
+		pNewElement->m_documentTypeText = _T("File");
+
+		// Add an object
+		m_objects.AddTail(pNewElement);
+		pView->LogDebug(_T("object created ->") + pNewElement->ToString());
+
+		++count;
+	}
+
+	Invalidate(pView);
+}
+
+void CElementManager::LoadFolders(CModeler1View* pView)
+{
+	CFolderPickerDialog dlg;
+	if (dlg.DoModal() == IDCANCEL)
+		return;
+
+	CString strPath = dlg.GetFolderPath();
+	_files.clear();
+	SearchDrive(_T("*.*"), strPath, false, false);
+
+	int count = 0;
+	for (shared_ptr<CCodeFile> file : _files)
+	{
+		std::shared_ptr<CElement> pNewElement = nullptr;
+		if (file->_type == FileType::file)
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_class);
+			pNewElement->m_documentType = DocumentType::document_file;
+			pNewElement->m_documentTypeText = _T("File");
+		}
+		else
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_interface);
+			pNewElement->m_documentType = DocumentType::document_folder;
+			pNewElement->m_documentTypeText = _T("Folder");
+		}
+		
+		CalcAutoPointRect(count, pNewElement);
+		pNewElement->m_pManager = this;
+		pNewElement->m_pView = pView;
+		pNewElement->m_text = file->_name;
+		// Read file content
+		//pNewElement->m_code = GetFileContent(file);
+		pNewElement->m_document = file->_path;
+
+		// Add an object
+		m_objects.AddTail(pNewElement);
+		pView->LogDebug(_T("object created ->") + pNewElement->ToString());
+
+		++count;
+	}
+
+	Invalidate(pView);
+}
+
+void CElementManager::OpenFolder(CModeler1View* pView)
+{
+	shared_ptr<CElement> pElement = m_selection.GetHead();
+
+	CString strPath = pElement->m_document.c_str();;
+	_files.clear();
+	SearchDrive(_T("*.*"), strPath, false, false);
+
+	m_objects.RemoveAll();
+	Invalidate(pView);
+
+	int count = 0;
+	for (shared_ptr<CCodeFile> file : _files)
+	{
+		std::shared_ptr<CElement> pNewElement = nullptr;
+		if (file->_type == FileType::file)
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_class);
+			pNewElement->m_documentType = DocumentType::document_file;
+			pNewElement->m_documentTypeText = _T("File");
+		}
+		else
+		{
+			pNewElement = CFactory::CreateElementOfType(ElementType::type_shapes_development, ShapeType::development_interface);
+			pNewElement->m_documentType = DocumentType::document_folder;
+			pNewElement->m_documentTypeText = _T("Folder");
+		}
+
+		CalcAutoPointRect(count, pNewElement);
+		pNewElement->m_pManager = this;
+		pNewElement->m_pView = pView;
+		pNewElement->m_text = file->_name;
+		// Read file content
+		//pNewElement->m_code = GetFileContent(file);
+		pNewElement->m_document = file->_path;
+
+		// Add an object
+		m_objects.AddTail(pNewElement);
+		pView->LogDebug(_T("object created ->") + pNewElement->ToString());
+
+		++count;
+	}
+
+	Invalidate(pView);
+}
+
+void CElementManager::OpenFile(CModeler1View* pView)
+{
+
+	shared_ptr<CElement> pElement = m_selection.GetHead();
+	::ShellExecuteW(NULL, NULL, pElement->m_document.c_str(), NULL/*lpszArgs*/, NULL, SW_SHOW);
+}
+
+void CElementManager::OpenFileContent(CModeler1View* pView)
+{
+
+	shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_code = GetFileContent(pElement->m_document);
+	
+	CRuntimeClass* prt = RUNTIME_CLASS(CTabbedView); // CModeler1SourceView);
+	CView* pview = NULL;
+	// Continue search in inactive View by T(o)m
+	CModeler1Doc* pDoc = pView->GetDocument();
+	POSITION pos = pDoc->GetFirstViewPosition();
+	while (pos != NULL)
+	{
+		pview = pDoc->GetNextView(pos);
+		CRuntimeClass* pRT = pview->GetRuntimeClass();
+		
+		if( prt = pRT)
+		{
+			CTabbedView* pTView = (CTabbedView*)pview;
+			pTView->SetActiveView(1);
+			break;
+		}
+		pView = NULL;       // not valid vie
+	}
+}
+
+void CElementManager::SetConnector(std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector)
+{
+	/*
+	pLineElement->m_connectorDragHandle2 = 2;
+
+	shared_ptr<CElement> pElement = nullptr;
+	pElement = pElementFound;
+
+	// Connect to the right connector
+	CPoint pointLine1 = pLineElement->m_rect.TopLeft();
+	CPoint pointLine2 = pLineElement->m_rect.BottomRight();
+
+	CPoint pointElement1 = pElement->m_rect.TopLeft();
+	CPoint pointElement2 = pElement->m_rect.CenterPoint();
+	CPoint pointElementCenter = pElement->m_rect.TopLeft();
+	CRect re = pElement->m_rect;
+	int handle = 2;
+	*/
+
+	/*
+	if (pointLine2.x < re.TopLeft().x && pointLine2.y < re.TopLeft().y)
+	{
+		// haut centre
+		handle = 2;
+	}
+	else if (pointLine2.x < re.CenterPoint().x && pointLine2.y < re.TopLeft().y)
+	{
+		// milieu gauche
+		handle = 8;
+	}
+	else if (pointLine2.x < re.CenterPoint().x && pointLine2.y < re.BottomRight().y)
+	{
+		// bas centre
+		handle = 6;
+	}
+
+	if (connector == ConnectorType::connector1)
+	{
+		pLineElement->m_connectorDragHandle1 = handle;
+	}
+	else
+	{
+		pLineElement->m_connectorDragHandle2 = handle;
+	}
+	*/
+
+	/*
+	CPoint point1 = pLineElement->m_rect.TopLeft();
+	CPoint point2;
+	if (connector == ConnectorType::connector1)
+	{
+		point2 = pLineElement->m_pConnector->m_pElement1->GetHandle(handle);
+	}
+	else
+	{
+		point2 = pLineElement->m_pConnector->m_pElement2->GetHandle(handle);
+	}
+	CRect rect(point1, point2);
+	rect.NormalizeRect();
+	pLineElement->m_rect = rect;
+	*/
+
+	/*
+	shared_ptr<CElement> pElement = pLineElement;
+	shared_ptr<CElement> pElement1 = pLineElement->m_pConnector->m_pElement1;
+	shared_ptr<CElement> pElement2 = pLineElement->m_pConnector->m_pElement2;
+	CPoint point1;
+
+	if (pElement1 == nullptr)
+	{
+		point1 = pElement->m_rect.TopLeft();
+	}
+	else
+	{
+		//point1 = pElement1->m_rect.CenterPoint();
+		int handle = pElement->m_connectorDragHandle1;
+		if (handle == 0)
+		{
+			point1 = pElement1->m_rect.TopLeft();
+		}
+		else
+		{
+			point1 = pElement1->GetHandle(handle);
+		}
+	}
+	*/
+}
+
+void CElementManager::FindAConnectionFor(std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView, ConnectorType connector)
+{
+	// Find a connection ?
+	if (pLineElement->IsLine() == true)
+	{
+		m_bSizingALine = true;
+
+		SelectNone();
+		Select(pLineElement);
+		std::shared_ptr<CElement> pElement = m_objects.ObjectExceptLinesAt(point, pLineElement);
+		if (pElement != NULL)
+		{
+			CClientDC dc(pView);
+			Graphics graphics(dc.m_hDC);
+			graphics.ScaleTransform(m_fZoomFactor, m_fZoomFactor);
+			SolidBrush solidBrush(Color::Yellow);
+			CRect rect = pElement->m_rect;
+			graphics.FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
+
+			// Register the connector
+			// if start, we take only the first connector in handle
+			if (connector == ConnectorType::connector1) 
+			{
+				pView->LogDebug(_T("FindAConnectionFor:: if (connector == ConnectorType::connector1)"));
+				pLineElement->m_pConnector->m_pElement1 = pElement;
+				pLineElement->m_connectorDragHandle1 = 2;
+
+				// Connect to the right connector
+				SetConnector(pLineElement, pElement, ConnectorType::connector1);
+			}
+			else if (connector == ConnectorType::connector2)
+			{
+				pView->LogDebug(_T("FindAConnectionFor:: if (connector == ConnectorType::connector2)"));
+				pLineElement->m_pConnector->m_pElement2 = pElement;
+				pLineElement->m_connectorDragHandle2 = 2;
+
+				// Connect to the right connector
+				SetConnector(pLineElement, pElement, ConnectorType::connector2);
+			}
+		}
+		else
+		{
+			// Register no connector
+			if (connector == ConnectorType::connector1)
+			{
+				pView->LogDebug(_T("FindAConnectionFor:: pLineElement->m_pConnector->m_pElement1 = nullptr;"));
+				pLineElement->m_pConnector->m_pElement1 = nullptr;
+			}
+			else if (connector == ConnectorType::connector2)
+			{
+				pView->LogDebug(_T("FindAConnectionFor:: pLineElement->m_pConnector->m_pElement2 = nullptr;"));
+				pLineElement->m_pConnector->m_pElement2 = nullptr;
+			}
+		}
+	}
 }
 
 void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
@@ -1551,6 +2151,8 @@ void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
 		std::shared_ptr<CElement> pNewElement = CFactory::CreateElementOfType(pElement->m_type, pElement->m_shapeType);
 		pNewElement->m_name = pElement->m_name;
 		pNewElement->m_text = pElement->m_text;
+		pNewElement->m_code = pElement->m_code;
+		pNewElement->m_image = pElement->m_image;
 		pNewElement->m_objectId = pElement->m_objectId;
 		pNewElement->m_rect = pElement->m_rect;
 		pNewElement->m_bColorFill = pElement->m_bColorFill;
@@ -1564,6 +2166,8 @@ void CElementManager::OnFileOpenGabarit(CModeler1View* pView)
 		pNewElement->m_image = pElement->m_image;
 		pNewElement->m_last = pElement->m_last;
 		pNewElement->m_lineWidth = pElement->m_lineWidth;
+		pNewElement->m_textAlign = pElement->m_textAlign;
+		pNewElement->m_fontName = pElement->m_fontName;
 		pNewElement->m_pManager = this;
 		pNewElement->m_point = pElement->m_point;
 		pNewElement->m_pView = pView;
@@ -1679,6 +2283,8 @@ void CElementManager::AlignTextLeft(CModeler1View* pView)
 			InvalObj(pView, pObj);
 		}
 
+		UpdatePropertyGrid(pView, pElementBase);
+
 		pView->GetDocument()->SetModifiedFlag();
 	}
 }
@@ -1696,6 +2302,8 @@ void CElementManager::AlignTextCenter(CModeler1View* pView)
 			pObj->m_textAlign = _T("Center");
 			InvalObj(pView, pObj);
 		}
+
+		UpdatePropertyGrid(pView, pElementBase);
 
 		pView->GetDocument()->SetModifiedFlag();
 	}
@@ -1715,24 +2323,31 @@ void CElementManager::AlignTextRight(CModeler1View* pView)
 			InvalObj(pView, pObj);
 		}
 
+		UpdatePropertyGrid(pView, pElementBase);
+
 		pView->GetDocument()->SetModifiedFlag();
 	}
 }
 
 void CElementManager::OnEditGroup(CModeler1View* pView)
 {
+	static int count = 0;
 	//AfxMessageBox(L"Grouping");
 
-	shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
+	++count;
 
+	wstringstream ss;
+	ss << _T("Group_") << count;
+
+	shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
 	for (vector<std::shared_ptr<CElement>>::const_iterator itSel = m_selection.m_objects.begin(); itSel != m_selection.m_objects.end(); itSel++)
 	{
-		std::shared_ptr<CElement> pObj = *itSel;
-		pObj->m_pElementGroup = speg;
-		pObj->m_bGrouping = true;
-		speg->m_Groups.push_back(pObj);
+		std::shared_ptr<CElement> pElement = *itSel;
+		pElement->m_pElementGroup = speg;
+		pElement->m_bGrouping = true;
+		speg->m_name = ss.str();
+		speg->m_Groups.push_back(pElement);
 	}
-
 	this->m_groups.push_back(speg);
 }
 
@@ -1765,6 +2380,70 @@ void CElementManager::OnEditUngroup(CModeler1View* pView)
 			break;
 		}
 	}
+}
+
+std::vector<std::wstring> CElementManager::Split(const std::wstring& s, wchar_t delim)
+{
+	std::wstringstream ss(s);
+	std::wstring item;
+	std::vector<std::wstring> elems;
+	while (std::getline(ss, item, delim))
+	{
+		elems.push_back(item);
+		// elems.push_back(std::move(item)); // if C++11 (based on comment from @mchiasson)
+	}
+	return elems;
+}
+
+void CElementManager::BuildGroups()
+{
+	wstring n = CElement::m_elementGroupNames;
+	wstring elts = CElement::m_elementGroupElements;
+	vector<wstring> vnames = CElementManager::Split(n, _T('|'));
+	vector<wstring> vlistes = CElementManager::Split(elts, _T('|'));
+
+	//for (int i = 0; i < vnames.size(); ++i)
+	//{
+	//	wstring aName = vnames[i];
+	//	if (aName.size() == 0)
+	//	{
+	//		continue;
+	//	}
+	//}
+
+	for (int j = 0; j < vlistes.size(); ++j)
+	{
+
+		wstring aName = vnames[j];
+		wstring aList = vlistes[j];
+		if (aList.size() <= 2)
+		{
+			continue;
+		}
+
+		shared_ptr<CElementGroup> speg = make_shared<CElementGroup>();
+
+		vector<wstring> velements = CElementManager::Split(aList, _T(';'));
+		for (int x = 0; x < velements.size(); ++x)
+		{
+			wstring element = velements[x];
+			if (element.size() <= 2)
+			{
+				continue;
+			}
+
+			std::shared_ptr<CElement> pElement = this->m_objects.FindElementByName(element);
+			if (pElement != nullptr)
+			{
+				pElement->m_pElementGroup = speg;
+				pElement->m_bGrouping = true;
+				speg->m_Groups.push_back(pElement);
+			}
+		}
+
+		this->m_groups.push_back(speg);
+	}
+
 }
 
 int CElementManager::GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
@@ -1863,5 +2542,253 @@ void CElementManager::OnSelectAll(CModeler1View* pView)
 	}
 
 	Invalidate(pView);
+}
+
+void CElementManager::OnFontBold(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bBold == true)
+	{
+		pElement->m_bBold = false;
+	}
+	else
+	{
+		pElement->m_bBold = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontItalic(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bItalic == true)
+	{
+		pElement->m_bItalic = false;
+	}
+	else
+	{
+		pElement->m_bItalic = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontUnderline(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bUnderline == true)
+	{
+		pElement->m_bUnderline = false;
+	}
+	else
+	{
+		pElement->m_bUnderline = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontStrikeThrough(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	if (pElement->m_bStrikeThrough == true)
+	{
+		pElement->m_bStrikeThrough = false;
+	}
+	else
+	{
+		pElement->m_bStrikeThrough = true;
+	}
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontGrowFont(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	CMFCRibbonComboBox* pFontCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_FONT_FONTSIZE));
+	if (pFontCombo == NULL)
+	{
+		return;
+	}
+
+	CString fontSize = pFontCombo->GetEditText();
+	int iFontSize = _ttoi(fontSize);
+
+	iFontSize += 2;
+
+	if (iFontSize > 60)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_fontSize = iFontSize;
+
+	TCHAR sz[255];
+	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
+	pFontCombo->SelectItem(sz);
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontShrink(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	CMFCRibbonComboBox* pFontCombo = DYNAMIC_DOWNCAST(CMFCRibbonComboBox, pRibbon->FindByID(ID_FONT_FONTSIZE));
+	if (pFontCombo == NULL)
+	{
+		return;
+	}
+
+	CString fontSize = pFontCombo->GetEditText();
+	int iFontSize = _ttoi(fontSize);
+
+	iFontSize -= 2;
+
+	if (iFontSize < 8)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_fontSize = iFontSize;
+
+	TCHAR sz[255];
+	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
+	pFontCombo->SelectItem(sz);
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontClearFormat(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_fontName = _T("Calibri");
+	pElement->m_fontSize = 12;
+	pElement->m_bBold = false;
+	pElement->m_bItalic = false;
+	pElement->m_bUnderline = false;
+	pElement->m_bStrikeThrough = false;
+	pElement->m_colorText = RGB(0, 0, 0);
+	pElement->m_colorFill = RGB(255, 255, 255);
+	pElement->m_bColorFill = true;
+	pElement->m_bColorLine = false;
+	pElement->m_bSolidColorFill = true;
+
+	UpdatePropertyGrid(pView, pElement);
+	UpdateRibbonUI(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontColor(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	COLORREF color = ((CMainFrame*)AfxGetMainWnd())->GetColorFromColorButton(ID_FONT_COLOR);
+
+	if (color == (COLORREF)-1)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_colorText = color;
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontTextHighlight(CModeler1View* pView)
+{
+	CMFCRibbonBar* pRibbon = ((CMainFrame*)pView->GetTopLevelFrame())->GetRibbonBar();
+
+	COLORREF color = ((CMainFrame*)AfxGetMainWnd())->GetColorFromColorButton(ID_FONT_TEXTHIGHLIGHT);
+
+	if (color == (COLORREF)-1)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_colorFill = color;
+	pElement->m_bColorFill = true;
+	pElement->m_bColorLine = false;
+	pElement->m_bSolidColorFill = true;
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnFontChangeCase(CModeler1View* pView)
+{
+	static int count = 0;
+
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	wstring text = pElement->m_text;
+
+	++count;
+
+	if (count % 2 == 0)
+	{
+		transform(text.begin(), text.end(), text.begin(), tolower);
+	}
+	else
+	{
+		transform(text.begin(), text.end(), text.begin(), toupper);
+	}
+
+	pElement->m_text = text;
+
+	UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	InvalObj(pView, pElement);
+}
+
+void CElementManager::OnActionElements(CModeler1View* pView)
+{
+	CWnd* p = AfxGetMainWnd();
+	CMainFrame* pmf = (CMainFrame*)p;
+	pmf->OnActionElements(pView);
+}
+
+void CElementManager::BuildElementsCombo(CModeler1View* pView)
+{
+	CWnd* p = AfxGetMainWnd();
+	CMainFrame* pmf = (CMainFrame*)p;
+	pmf->BuildElementsCombo(pView);
+}
+
+void CElementManager::OnDesignDeconnect(CModeler1View* pView)
+{
+	std::shared_ptr<CElement> pElement = m_selection.GetHead();
+	pElement->m_pConnector->m_pElement1 = nullptr;
+	pElement->m_pConnector->m_pElement2 = nullptr;
 }
 

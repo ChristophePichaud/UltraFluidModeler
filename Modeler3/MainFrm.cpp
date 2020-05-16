@@ -345,11 +345,22 @@ void CMainFrame::InitMainButton()
 
 	CMFCRibbonCategory* pCategory = m_wndRibbonBar.AddCategory(_T("&Home"), IDB_RIBBON_WRITESMALL, IDB_RIBBON_WRITELARGE);
 	// Create "Design" panel
+	CMFCRibbonPanel* pPanelClipboard = pCategory->AddPanel(_T("Clipboard\nc"), m_PanelImages.ExtractIcon(2));
+	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_COPY, _T("Copy\nc"), 13));
+	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_CUT, _T("Cut\nc"), 12));
+	pPanelClipboard->Add(new CMFCRibbonButton(ID_CLIPBOARD_PASTE, _T("Paste\nc"), 11));
+
 	CMFCRibbonPanel* pPanelDesign = pCategory->AddPanel(_T("Design\nzd"), m_PanelImages.ExtractIcon(2));
+
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT, _T("Select\nc"), 2));
-	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\nc"), 2));
+	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\nc"), 2));
+
+	CMFCRibbonButton* pBtnSelection = new CMFCRibbonButton(ID_DESIGN_SELECTION, _T("Selection\ns"), 2);
+	pBtnSelection->SetMenu(IDR_SELECT_MENU);
+	pPanelDesign->Add(pBtnSelection);
+
 	pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_SELECT_ALL, _T("Select All\nc"), 2));
-	
+
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_RECTANGLE, _T("Rectangle\ng"), 2));
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_LINE, _T("Line\ng"), 2));
 	//pPanelDesign->Add(new CMFCRibbonButton(ID_DESIGN_ELLIPSE, _T("Ellipse\ng"), 2));
@@ -374,10 +385,10 @@ void CMainFrame::InitMainButton()
 	pBtnDrawText->SetMenu(IDR_DRAW_TEXT_MENU);
 	pPanelDesign->Add(pBtnDrawText);
 	// Add hidden button
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_LEFT, _T("&Bottom Border"), 28));
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_CENTER, _T("Paste Special"), 29));
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_RIGHT, _T("Paste Special"), 30));
-	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_JUSTIFY, _T("Paste Special"), 31));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_LEFT, _T("Left"), 28));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_CENTER, _T("Center"), 29));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_RIGHT, _T("Right"), 30));
+	pCategory->AddHidden(new CMFCRibbonButton(ID_TEXT_JUSTIFY, _T("Justify"), 31));
 
 	CRibbonListButton *pListBtnInfra = new CRibbonListButton(ID_DESIGN_SHAPESINFRA, _T("Infrastructure\nti"), 20, -1, FALSE);
 	pListBtnInfra->AddGroup(_T("Built-In"), IDB_SHAPES_INFRA, 64, m_arInfraShapes);
@@ -391,10 +402,13 @@ void CMainFrame::InitMainButton()
 	pListBtnDev->EnableMenuResize();
 	pPanelDesign->Add(pListBtnDev);
 
+	pPanelDesign->Add(new CMFCRibbonButton(ID_ACTION_DIAGRAM, _T("Diagram\nc"), 49));
+
 	// Create "Planning" panel
 	CMFCRibbonPanel* pPanelPlanning = pCategory->AddPanel(_T("Planning\npa"), m_PanelImages.ExtractIcon(2));
 	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_TASK, _T("Task\ntt"), 36));
 	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_MONTH, _T("Month\ntm"), 37));
+	pPanelPlanning->Add(new CMFCRibbonButton(ID_DESIGN_TEXT, _T("Text\ndt"), 46));
 
 	// Create "Development" panel
 	CMFCRibbonPanel* pPanelDev = pCategory->AddPanel(_T("Development\nwd"), m_PanelImages.ExtractIcon(2));
@@ -409,12 +423,13 @@ void CMainFrame::InitMainButton()
 	//CMFCRibbonPanel* pPanelDebug = pCategory->AddPanel(_T("Debug\nzd"), m_PanelImages.ExtractIcon(2));
 	//pPanelDebug->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\nc"), 2));
 
-	/*
+	// Create "Font" panel
+	CMFCRibbonPanel* pPanelFont = pCategory->AddPanel(_T("Font\nzd"), m_PanelImages.ExtractIcon(2));
 	CMFCRibbonButtonsGroup * apFontGroup = new CMFCRibbonButtonsGroup();
 	CMFCRibbonFontComboBox::m_bDrawUsingFont = TRUE;
 	m_pFontCombo = new CMFCRibbonFontComboBox(ID_FONT_FONT, TRUETYPE_FONTTYPE );
-	m_pFontCombo->SetWidth(55, TRUE); // Width in "floaty" mode
-	m_pFontCombo->SelectItem(_T("Arial"));
+	m_pFontCombo->SetWidth(40, TRUE); // Width in "floaty" mode
+	m_pFontCombo->SelectItem(_T("Calibri"));
 	apFontGroup->AddButton(m_pFontCombo);
 
 	m_pFontSizeCombo = new CMFCRibbonComboBox(ID_FONT_FONTSIZE, FALSE, 39);
@@ -431,27 +446,75 @@ void CMainFrame::InitMainButton()
 	m_pFontSizeCombo->AddItem(_T("24"));
 	m_pFontSizeCombo->AddItem(_T("26"));
 	m_pFontSizeCombo->AddItem(_T("28"));
+	m_pFontSizeCombo->AddItem(_T("30"));
+	m_pFontSizeCombo->AddItem(_T("32"));
+	m_pFontSizeCombo->AddItem(_T("34"));
 	m_pFontSizeCombo->AddItem(_T("36"));
+	m_pFontSizeCombo->AddItem(_T("38"));
+	m_pFontSizeCombo->AddItem(_T("40"));
+	m_pFontSizeCombo->AddItem(_T("42"));
+	m_pFontSizeCombo->AddItem(_T("44"));
+	m_pFontSizeCombo->AddItem(_T("46"));
 	m_pFontSizeCombo->AddItem(_T("48"));
-	m_pFontSizeCombo->AddItem(_T("72"));
-	m_pFontSizeCombo->SetWidth(20, TRUE); // Width in "floaty" mode
-	m_pFontSizeCombo->SelectItem(3);
+	m_pFontSizeCombo->AddItem(_T("50"));
+	m_pFontSizeCombo->AddItem(_T("52"));
+	m_pFontSizeCombo->AddItem(_T("54"));
+	m_pFontSizeCombo->AddItem(_T("56"));
+	m_pFontSizeCombo->AddItem(_T("58"));
+	m_pFontSizeCombo->AddItem(_T("60"));
+	m_pFontSizeCombo->SetWidth(15, TRUE); // Width in "floaty" mode
+	m_pFontSizeCombo->SelectItem(7);
 	apFontGroup->AddButton(m_pFontSizeCombo);
+	pPanelFont->Add(apFontGroup);
 
-	pPanelDebug->Add(apFontGroup);
-	*/
+	// Add toolbar(all toolbar buttons will be automatically
+	// converted to ribbon elements:
+	pPanelFont->AddToolBar(IDR_FONT);
+
+	// Replace ID_FONT_COLOR and ID_FONT_TEXTHIGHLIGHT elements
+	// by color pickers:
+	CMFCRibbonColorButton* pFontColorBtn = new CMFCRibbonColorButton();
+	pFontColorBtn->EnableAutomaticButton(_T("&Automatic"), RGB(0, 0, 0));
+	pFontColorBtn->EnableOtherButton(_T("&More Colors..."), _T("More Colors"));
+	pFontColorBtn->SetColumns(10);
+	pFontColorBtn->SetColor(RGB(255, 0, 0));
+	pFontColorBtn->SetColorBoxSize(CSize(17, 17));
+	pFontColorBtn->AddColorsGroup(_T("Theme Colors"), m_lstMainColors);
+	pFontColorBtn->AddColorsGroup(_T(""), m_lstAdditionalColors, TRUE /* Contiguous Columns*/);
+	pFontColorBtn->AddColorsGroup(_T("Standard Colors"), m_lstStandardColors);
+	pPanelFont->ReplaceByID(ID_FONT_COLOR, pFontColorBtn);
+
+	CMFCRibbonColorButton* pFontColorHighlightBtn = new CMFCRibbonColorButton();
+	pFontColorHighlightBtn->SetColor(RGB(255, 255, 255));
+	pFontColorHighlightBtn->EnableAutomaticButton(_T("&No Color"), RGB(240, 240, 240), TRUE, NULL, FALSE /* Bottom */, TRUE /* Draw border */);
+	pPanelFont->ReplaceByID(ID_FONT_TEXTHIGHLIGHT, pFontColorHighlightBtn);
+
+	pFontColorHighlightBtn->SetColorBoxSize(CSize(26, 26));
+	pFontColorHighlightBtn->AddSubItem(new CMFCRibbonButton(ID_STOP_HIGHLIGHTING, _T("&Stop Highlighting")));
 
 	// Create "Show/Hide" panel:
 	CMFCRibbonPanel* pPanelShow = pCategory->AddPanel(_T("Show/Hide\nzs"), m_PanelImages.ExtractIcon(4));
-	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_FILE_VIEW, _T("Solution View\nc")));
-	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_CLASS_VIEW, _T("Class View\nc")));
-	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_PROPERTIES, _T("Properties View\np")));
+	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_FILE_VIEW, _T("Solution\nc")));
+	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_CLASS_VIEW, _T("Class\nc")));
+	pPanelShow->Add(new CMFCRibbonCheckBox(ID_VIEW_PROPERTIES, _T("Properties\np")));
 
 	// Create "Action" panel
 	CMFCRibbonPanel* pPanelAction = pCategory->AddPanel(_T("Action\nzd"), m_PanelImages.ExtractIcon(2));
 	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_REMOVE, _T("Remove\nc"), 12));
-	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import .NET Module\nin"), 35));
-	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump Objects\ndc"), 2));
+	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_LOAD_MODULE, _T("Import\nin"), 35));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DEBUG_DUMP_OBJECTS, _T("Dump\ndc"), 2));
+	pPanelAction->Add(new CMFCRibbonButton(ID_ACTION_FOLDERS, _T("Folders\nc"), 48));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DESIGN_CONNECT, _T("Connect\nc"), 47));
+	pPanelAction->Add(new CMFCRibbonButton(ID_DESIGN_DECONNECT, _T("Deconect\nc"), 50));
+	//m_pElementsCombo = new CMFCRibbonComboBox(ID_ACTION_ELEMENTS, FALSE, 39);
+	//m_pElementsCombo->SetWidth(100, TRUE); // Width in "floaty" mode
+	//pPanelAction->Add(m_pElementsCombo);
+
+	// Create "Elements" panel
+	CMFCRibbonPanel* pPanelElements = pCategory->AddPanel(_T("Elements\nzd"), m_PanelImages.ExtractIcon(2));
+	m_pElementsCombo = new CMFCRibbonComboBox(ID_ACTION_ELEMENTS, FALSE, 39);
+	m_pElementsCombo->SetWidth(100, TRUE); // Width in "floaty" mode
+	pPanelElements->Add(m_pElementsCombo);
 
 	// Create "Format" panel
 	CMFCRibbonPanel* pPanelFormat = pCategory->AddPanel(_T("Format and Style\nzd"), m_PanelImages.ExtractIcon(2));
@@ -912,17 +975,108 @@ void CMainFrame::UpdateRibbonUI(CModeler1View * pView)
 		}
 	}
 
-	/*
 	// Update font combo boxes name and size
 	std::shared_ptr<CElement> pElement = selection.GetHead();
 	m_pFontCombo->SelectItem(pElement->m_fontName.c_str());
 	TCHAR sz[255];
 	_stprintf_s(sz, _T("%d"), pElement->m_fontSize);
 	m_pFontSizeCombo->SelectItem(sz);
-	*/
+
+
+	{
+		Color color = pElement->m_colorText;
+		CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
+		m_wndRibbonBar.GetElementsByID(ID_FONT_COLOR, arButtons);
+		if (arButtons.GetSize() > 0)
+		{
+			for (int i = 0; i < arButtons.GetSize(); i++)
+			{
+				CMFCRibbonColorButton* pButton = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, arButtons[i]);
+				pButton->SetColor(color.GetValue());
+			}
+		}
+	}
+
+	{
+		Color color = pElement->m_colorFill;
+		CArray<CMFCRibbonBaseElement*, CMFCRibbonBaseElement*> arButtons;
+		m_wndRibbonBar.GetElementsByID(ID_FONT_TEXTHIGHLIGHT, arButtons);
+		if (arButtons.GetSize() > 0)
+		{
+			for (int i = 0; i < arButtons.GetSize(); i++)
+			{
+				CMFCRibbonColorButton* pButton = DYNAMIC_DOWNCAST(CMFCRibbonColorButton, arButtons[i]);
+				pButton->SetColor(color.GetValue());
+			}
+		}
+	}
+
+	SelectElementsCombo(pView);
+		
+	m_wndRibbonBar.RedrawWindow();
+}
+
+void CMainFrame::SelectElementsCombo(CModeler1View* pView)
+{
+	CElementContainer& selection = pView->GetManager()->m_selection;
+	int count = selection.GetCount();
+	if (count == 0)
+	{
+		return;
+	}
+
+	std::shared_ptr<CElement> pElement = selection.GetHead();
+		
+	m_pElementsCombo->RemoveAllItems();
+	for (shared_ptr<CElement> pElement : GetManager()->GetObjects())
+	{
+		m_pElementsCombo->AddItem(pElement->m_name.c_str());
+	}
+
+	m_pElementsCombo->SelectItem(pElement->m_name.c_str());
 
 	m_wndRibbonBar.RedrawWindow();
+}
 
+void CMainFrame::BuildElementsCombo(CModeler1View* pView)
+{
+	m_pElementsCombo->RemoveAllItems();
+	for (shared_ptr<CElement> pElement : GetManager()->GetObjects())
+	{
+		m_pElementsCombo->AddItem(pElement->m_name.c_str());
+	}
+	m_wndRibbonBar.RedrawWindow();
+}
+
+void CMainFrame::OnActionElements(CModeler1View* pView)
+{
+	USES_CONVERSION;
+
+	int count = m_pElementsCombo->GetCount();
+	if (count == 0)
+	{
+		return;
+	}
+
+	CString name = m_pElementsCombo->GetEditText();
+	if (name == _T(""))
+	{
+		return;
+	}
+
+	if (m_pElementsCombo->FindItem(name) == -1)
+	{
+		return;
+	}
+
+	wstring wname = T2W((LPTSTR)(LPCTSTR)name);
+	std::shared_ptr<CElement> pElement = GetManager()->m_objects.FindElementByName(wname);
+	GetManager()->SelectNone();
+	GetManager()->Select(pElement);
+	GetManager()->UpdatePropertyGrid(pView, pElement);
+
+	// Redraw the element
+	GetManager()->InvalObj(pView, pElement);
 }
 
 /*

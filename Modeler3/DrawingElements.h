@@ -128,3 +128,8 @@ public:
 	virtual void Draw(CDrawingContext& ctxt);
 };
 
+class CDiagramElement : public CElement
+{
+public:
+	virtual void Draw(CDrawingContext& ctxt);
+};

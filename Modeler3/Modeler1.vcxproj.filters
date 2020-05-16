@@ -538,5 +538,8 @@
     <Image Include="res\writesmall_original.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\WriteFont.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

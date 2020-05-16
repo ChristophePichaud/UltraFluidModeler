@@ -629,14 +629,17 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 	SolidBrush & solidBrush = ctxt.GetBrushColor();
 	LinearGradientBrush & lgBrush = ctxt.GetGradientBrushColor();
 	// RectF object for Text
-	PointF pointF(p1.x, p1.y);
-	SizeF sizeF(rect.Width(), rect.Height());
-	RectF rectF(pointF, sizeF);
+	//PointF pointF(p1.x, p1.y);
+	//SizeF sizeF(rect.Width(), rect.Height());
+	//RectF rectF(pointF, sizeF);
+	PointF pointText(rect.left + 10, rect.top + 10);
+	SizeF sizeF(rect.Width() - 10, rect.Height() - 10);
+	RectF rectF(pointText, sizeF);
 
 	//if( m_shapeType == ShapeType::text )
 	{
 		// Useless or not do fill a rectangle around the texte ???
-		if( HasColorFill() )
+		/*if( HasColorFill() )
 		{
 			if( IsSolidColorFill() )
 				graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
@@ -647,31 +650,54 @@ void CTextElement::Draw(CDrawingContext & ctxt)
 		if( HasColorLine() )
 		{
 			graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
-		}
+		}*/
 
 		// Font object
 		//FontFamily fontFamily(L"Calibri");
 		//Gdiplus::Font font(&fontFamily, 12, FontStyleRegular, UnitPixel);
 		CStringW fontName(m_fontName.c_str());
 		FontFamily fontFamily(fontName);
-		Gdiplus::Font font(&fontFamily, this->m_fontSize, FontStyleRegular, UnitPixel);
+		FontStyle style = FontStyle::FontStyleRegular;
+		if (m_bBold == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleBold);
+		}
+		if (m_bItalic == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleItalic);
+		}
+		if (m_bUnderline == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleUnderline);
+		}
+		if (m_bStrikeThrough == true)
+		{
+			style = (FontStyle)(style | FontStyle::FontStyleStrikeout);
+		}
+
+		//Gdiplus::Font font(&fontFamily, this->m_fontSize, FontStyleRegular, UnitPixel);
+		Gdiplus::Font font(&fontFamily, this->m_fontSize, style, UnitPixel);
+
 		// StringFormat object
 		StringFormat stringFormat;
-		if( m_shapeType == ShapeType::text_left )
+		if (m_textAlign == _T("Left"))
 		{
 			stringFormat.SetAlignment(StringAlignmentNear);
 		}
-		if( m_shapeType == ShapeType::text_center )
+		if (m_textAlign == _T("Center"))
 		{
 			stringFormat.SetAlignment(StringAlignmentCenter);
 		}
-		if( m_shapeType == ShapeType::text_right )
+		if (m_textAlign == _T("Right"))
 		{
 			stringFormat.SetAlignment(StringAlignmentFar);
 		}
 		//stringFormat.SetLineAlignment(StringAlignmentCenter);
 		// Brush object
-		SolidBrush solidBrush(Color(255, 0, 0, 0));
+		//SolidBrush solidBrush(Color(255, 0, 0, 0));
+		Color color;
+		color.SetFromCOLORREF(m_colorText);
+		SolidBrush solidBrush(color);
 		graphics->SetTextRenderingHint(TextRenderingHintAntiAlias);
 		graphics->DrawString(CStringW(m_text.c_str()), -1, &font, rectF, &stringFormat, &solidBrush);
 	}
@@ -768,7 +794,7 @@ void CSelectionElement::Draw(CDrawingContext& ctxt)
 }
 
 //
-// CDevelopmentElement class
+// CPlanningElement class
 //
 void CPlanningElement::Draw(CDrawingContext& ctxt)
 {
@@ -787,6 +813,26 @@ void CPlanningElement::Draw(CDrawingContext& ctxt)
 		graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
 		graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
 		// Draw single line
+		int width = rect.Width() - 20; //*0.75;
+		int height = 20; //Height()-20; //*0.25;
+		graphics->DrawLine(&colorPen, rect.left + width, rect.top, rect.right, rect.top + height);
+	}
+}
+
+//
+// CDiagramElement class
+//
+void CDiagramElement::Draw(CDrawingContext& ctxt)
+{
+	CRect rect = m_rect;
+	Graphics* graphics = ctxt.GetGraphics();
+	Pen& colorPen = ctxt.GetPenColor();
+	SolidBrush& solidBrush = ctxt.GetBrushColor();
+
+	if (m_shapeType == ShapeType::diagram)
+	{
+		graphics->FillRectangle(&solidBrush, rect.left, rect.top, rect.Width(), rect.Height());
+		graphics->DrawRectangle(&colorPen, rect.left, rect.top, rect.Width(), rect.Height());
 		int width = rect.Width() - 20; //*0.75;
 		int height = 20; //Height()-20; //*0.25;
 		graphics->DrawLine(&colorPen, rect.left + width, rect.top, rect.right, rect.top + height);

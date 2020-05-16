@@ -19,6 +19,9 @@ int CFactory::g_counter = 0;
 
 std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeType shapeType)
 {
+	// Inc counter of created objects
+	CFactory::g_counter++;
+
 	//std::shared_ptr<CElement> pNewElement = new CElement();
 	std::shared_ptr<CElement> pNewElement;
 	//pNewElement = make_shared<CElement>();
@@ -103,9 +106,11 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 			case notimpl_multi_line:
 			default:
 			{
-				std::shared_ptr<CElement> apNewElement(new CNotImplementedElement());
-				// Not implemented yet !
-				pNewElement->m_type = ElementType::type_unknown;
+				//std::shared_ptr<CElement> apNewElement(new CNotImplementedElement());
+				//// Not implemented yet !
+				//pNewElement->m_type = ElementType::type_unknown;
+				//pNewElement = apNewElement;
+				std::shared_ptr<CElement> apNewElement(new CRectangleElement());
 				pNewElement = apNewElement;
 				break;
 			}
@@ -300,7 +305,20 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorFill = false;
 		pNewElement->m_bSolidColorFill = true;
 		pNewElement->m_text = L"<type text>";
-		pNewElement->m_textAlign = L"Left";
+		//pNewElement->m_textAlign = L"Left";
+
+		if (shapeType == ShapeType::text_left)
+		{
+			pNewElement->m_textAlign = L"Left";
+		}
+		if (shapeType == ShapeType::text_center)
+		{
+			pNewElement->m_textAlign = L"Center";
+		}
+		if (shapeType == ShapeType::text_right)
+		{
+			pNewElement->m_textAlign = L"Right";
+		}
 	}
 
 	if( type == ElementType::type_image )
@@ -311,13 +329,20 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 		pNewElement->m_bColorLine = FALSE;
 	}
 	
-	if (shapeType == selection)
+	if (shapeType == ShapeType::selection)
 	{
 		std::shared_ptr<CElement> apNewElement(new CSelectionElement());
 		pNewElement = apNewElement;
 		pNewElement->m_bColorFill = false;
 	}
 		
+	/*if (shapeType == ShapeType::connection)
+	{
+		std::shared_ptr<CElement> apNewElement(new CLineElement());
+		pNewElement = apNewElement;
+		pNewElement->m_bColorFill = false;
+	}*/
+
 	if (type == ElementType::type_shapes_planning)
 	{
 		std::shared_ptr<CElement> apNewElement(new CPlanningElement());
@@ -346,6 +371,34 @@ std::shared_ptr<CElement> CFactory::CreateElementOfType(ElementType type, ShapeT
 			break;
 		}
 	}
+
+	if (type == ElementType::type_file)
+	{
+		std::shared_ptr<CElement> apNewElement(new CDiagramElement());
+		pNewElement = apNewElement;
+		pNewElement->m_bColorLine = true;
+		pNewElement->m_bColorFill = true;
+		pNewElement->m_bSolidColorFill = true;
+		pNewElement->m_documentType = DocumentType::document_diagram;
+		pNewElement->m_documentTypeText = _T("Diagram");
+
+		// Set colors for development shapes
+		Color colorLineClass(255, 52, 101, 164);
+		Color colorFillClass(255, 200, 210, 233);
+		Color colorLineComment(255, 202, 178, 45);
+		Color colorFillComment(255, 251, 247, 200);
+
+		switch (shapeType)
+		{
+		case ShapeType::diagram:
+			pNewElement->m_text = L"Diagram";
+			pNewElement->m_colorFill = colorFillClass.ToCOLORREF();
+			pNewElement->m_colorLine = colorLineClass.ToCOLORREF();
+			break;
+		}
+	}
+
+
 
 	//
 	// Initialize default members for the element

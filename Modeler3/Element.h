@@ -2,12 +2,21 @@
 
 #include "Constants.h"
 
+enum SelectType : int
+{
+	intuitive,
+	all,
+	only_first_line,
+	only_lines,
+	only_items
+};
+
 enum SelectMode : int
 {
 	none,
 	netselect,
 	move,
-	size
+	size,
 };
 
 enum ElementType : int
@@ -21,7 +30,9 @@ enum ElementType : int
 	type_shapes_development,
 	type_shapes_import,
 	type_shapes_planning,
-	type_selection
+	type_selection,
+	type_connection,
+	type_file
 };
 
 #define OffsetShapes_Simple			0
@@ -101,6 +112,8 @@ enum ShapeType : int
 	planning_month = OffsetShapes_Planning,
 	planning_task,
 	selection,
+	connection,
+	diagram,
 	unknown = 1000
 };
 
@@ -109,6 +122,20 @@ enum TrackerState
 	normal, 
 	selected, 
 	active 
+};
+
+enum DocumentType : int
+{
+	document_none,
+	document_file,
+	document_folder,
+	document_diagram
+};
+
+enum ConnectorType : int
+{
+	connector1,
+	connector2
 };
 
 // Hints for UpdateAllViews/OnUpdate
@@ -129,6 +156,7 @@ class CModeler1View;
 class CElementManager;
 class CDrawingContext;
 class CElementGroup;
+class CConnector;
 
 class CElement : public CObject
 {
@@ -153,9 +181,15 @@ public:
 
 // Operations
 public:
+	static CString ToString(shared_ptr<CElement> pElement);
 	CString ToString();
 	CString ToString(ElementType type);
 	CString ToString(ShapeType type);
+	CString ToString(shared_ptr<CConnector> pConnector);
+	CString ToString(DocumentType type);
+	DocumentType FromString(wstring type);
+	CString DragHandleToString(int nHandle);
+	int DragHandleFromString(wstring value);
 	//static bool IsDrawable(ElementType type);
 	bool Intersects(const CRect& rect);
 	void InvalidateObj(void);
@@ -170,13 +204,14 @@ public:
 	void DrawTracker(CDrawingContext & ctxt, TrackerState state);
 	HCURSOR GetHandleCursor(int nHandle);
 	void MoveHandleTo(int nHandle, CPoint point, CModeler1View* pView);	
+	void DrawTracker(CPoint cnx, CDrawingContext& ctxt, CModeler1View* pView);
 
 // Managing Object Format
 public:
 	virtual bool CanChangeFillColor() const;
 	virtual bool CanChangeLineColor() const;
 	virtual bool CanChangeLineWidth() const;
-	
+
 // Attributes
 public:
 	std::wstring m_name;
@@ -189,9 +224,14 @@ public:
 	std::wstring m_textAlign;
 	std::wstring m_fontName;
 	int m_fontSize;
+	bool m_bBold;
+	bool m_bItalic;
+	bool m_bUnderline;
+	bool m_bStrikeThrough;
 	CRect m_rect;
 	CPoint m_point;
 	CPoint m_last;
+	COLORREF m_colorText;
 	COLORREF m_colorFill;
 	bool m_bColorFill;
 	COLORREF m_colorLine;
@@ -209,6 +249,16 @@ public:
 	// Grouping
 	shared_ptr<CElementGroup> m_pElementGroup;
 	bool m_bGrouping;
+	shared_ptr<CConnector> m_pConnector;
+	std::wstring m_connectorName1;
+	std::wstring m_connectorName2;
+	int m_connectorDragHandle1;
+	int m_connectorDragHandle2;
+	std::wstring m_document;
+	static std::wstring m_elementGroupNames;
+	static std::wstring m_elementGroupElements;
+	DocumentType m_documentType;
+	std::wstring m_documentTypeText;
 
 // Methods for Attributes
 public:
@@ -225,9 +275,17 @@ public:
 	CModeler1View * GetView() const	{ return m_pView; }
 };
 
+class CConnector
+{
+public:
+	std::shared_ptr<CElement> m_pElement1;
+	std::shared_ptr<CElement> m_pElement2;
+};
+
 class CElementGroup
 {
 public:
+	std::wstring m_name;
 	std::vector<std::shared_ptr<CElement>> m_Groups;
 };
 

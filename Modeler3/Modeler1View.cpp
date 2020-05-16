@@ -133,6 +133,66 @@ BEGIN_MESSAGE_MAP(CModeler1View, CScrollView)
 	ON_COMMAND(ID_DESIGN_COMPONENT, &CModeler1View::OnDesignComponent)
 	ON_COMMAND(ID_FILE_EXPORT_PNG, &CModeler1View::OnFileExportPNG)
 	ON_COMMAND(ID_DESIGN_SELECT_ALL, &CModeler1View::OnDesignSelectAll)
+	ON_COMMAND(ID_CLIPBOARD_CUT, &CModeler1View::OnEditCut)
+	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_CUT, &CModeler1View::OnUpdateEditCut)
+	ON_COMMAND(ID_CLIPBOARD_COPY, &CModeler1View::OnEditCopy)
+	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_COPY, &CModeler1View::OnUpdateEditCopy)
+	ON_COMMAND(ID_CLIPBOARD_PASTE, &CModeler1View::OnEditPaste)
+	ON_UPDATE_COMMAND_UI(ID_CLIPBOARD_PASTE, &CModeler1View::OnUpdateEditPaste)
+	ON_COMMAND(ID_FONT_GROWFONT, &CModeler1View::OnFontGrowFont)
+	ON_UPDATE_COMMAND_UI(ID_FONT_GROWFONT, &CModeler1View::OnUpdateFontGrowFont)
+	ON_COMMAND(ID_FONT_SHRINK, &CModeler1View::OnFontShrink)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SHRINK, &CModeler1View::OnUpdateFontShrink)
+	ON_COMMAND(ID_FONT_CLEARFORMAT, &CModeler1View::OnFontClearFormat)
+	ON_UPDATE_COMMAND_UI(ID_FONT_CLEARFORMAT, &CModeler1View::OnUpdateFontClearFormat)
+	ON_COMMAND(ID_FONT_BOLD, &CModeler1View::OnFontBold)
+	ON_UPDATE_COMMAND_UI(ID_FONT_BOLD, &CModeler1View::OnUpdateFontBold)
+	ON_COMMAND(ID_FONT_ITALIC, &CModeler1View::OnFontItalic)
+	ON_UPDATE_COMMAND_UI(ID_FONT_ITALIC, &CModeler1View::OnUpdateFontItalic)
+	ON_COMMAND(ID_FONT_UNDERLINE, &CModeler1View::OnFontUnderline)
+	ON_UPDATE_COMMAND_UI(ID_FONT_UNDERLINE, &CModeler1View::OnUpdateFontUnderline)
+	ON_COMMAND(ID_FONT_STRIKETHROUGH, &CModeler1View::OnFontStrikeThrough)
+	ON_UPDATE_COMMAND_UI(ID_FONT_STRIKETHROUGH, &CModeler1View::OnUpdateFontStrikeThrough)
+	ON_COMMAND(ID_FONT_SUBSCRIPT, &CModeler1View::OnFontSubscript)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SUBSCRIPT, &CModeler1View::OnUpdateFontSubscript)
+	ON_COMMAND(ID_FONT_SUPERSCRIPT, &CModeler1View::OnFontSuperscript)
+	ON_UPDATE_COMMAND_UI(ID_FONT_SUPERSCRIPT, &CModeler1View::OnUpdateFontSuperscript)
+	ON_COMMAND(ID_FONT_CHANGECASE, &CModeler1View::OnFontChangeCase)
+	ON_UPDATE_COMMAND_UI(ID_FONT_CHANGECASE, &CModeler1View::OnUpdateFontChangeCase)
+	ON_COMMAND(ID_FONT_TEXTHIGHLIGHT, &CModeler1View::OnFontTextHighlight)
+	ON_UPDATE_COMMAND_UI(ID_FONT_TEXTHIGHLIGHT, &CModeler1View::OnUpdateFontTextHighlight)
+	ON_COMMAND(ID_FONT_COLOR, &CModeler1View::OnFontColor)
+	ON_UPDATE_COMMAND_UI(ID_FONT_COLOR, &CModeler1View::OnUpdateFontColor)
+	ON_COMMAND(ID_DESIGN_TEXT, &CModeler1View::OnDesignText)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_TEXT, &CModeler1View::OnUpdateDesignText)
+	ON_COMMAND(ID_DESIGN_CONNECT, &CModeler1View::OnDesignConnect)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_CONNECT, &CModeler1View::OnUpdateDesignConnect)
+	ON_COMMAND(ID_SELECT_ALL, &CModeler1View::OnSelectAll)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ALL, &CModeler1View::OnUpdateSelectAll)
+	ON_COMMAND(ID_SELECT_ONLY_LINES, &CModeler1View::OnSelectOnlyLines)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_LINES, &CModeler1View::OnUpdateSelectOnlyLines)
+	ON_COMMAND(ID_SELECT_ONLY_ITEMS, &CModeler1View::OnSelectOnlyItems)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_ITEMS, &CModeler1View::OnUpdateSelectOnlyItems)
+	ON_COMMAND(ID_SELECT_INTUITIVE, &CModeler1View::OnSelectIntuitive)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_INTUITIVE, &CModeler1View::OnUpdateSelectIntuitive)
+	ON_COMMAND(ID_EDIT_OPEN, &CModeler1View::OnEditOpen)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN, &CModeler1View::OnUpdateEditOpen)
+	ON_COMMAND(ID_ACTION_FOLDERS, &CModeler1View::OnActionLoadFolders)
+	ON_UPDATE_COMMAND_UI(ID_ACTION_FOLDERS, &CModeler1View::OnUpdateActionLoadFolders)
+	ON_COMMAND(ID_ACTION_DIAGRAM, &CModeler1View::OnActionDiagram)
+	ON_UPDATE_COMMAND_UI(ID_ACTION_DIAGRAM, &CModeler1View::OnUpdateActionDiagram)
+	ON_COMMAND(ID_EDIT_OPEN_FOLDER, &CModeler1View::OnEditOpenFolder)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FOLDER, &CModeler1View::OnUpdateEditOpenFolder)
+	ON_COMMAND(ID_EDIT_OPEN_FILE, &CModeler1View::OnEditOpenFile)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE, &CModeler1View::OnUpdateEditOpenFile)
+	ON_COMMAND(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnEditOpenFileContent)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_OPEN_FILE_CONTENT, &CModeler1View::OnUpdateEditOpenFileContent)
+	ON_COMMAND(ID_ACTION_ELEMENTS, &CModeler1View::OnActionElements)
+	ON_UPDATE_COMMAND_UI(ID_ACTION_ELEMENTS, &CModeler1View::OnUpdateActionElements)
+	ON_COMMAND(ID_DESIGN_DECONNECT, &CModeler1View::OnDesignDeconnect)
+	ON_UPDATE_COMMAND_UI(ID_DESIGN_DECONNECT, &CModeler1View::OnUpdateDesignDeconnect)
+	ON_COMMAND(ID_SELECT_ONLY_FIRST_LINE, &CModeler1View::OnSelectOnlyFirstLine)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ONLY_FIRST_LINE, &CModeler1View::OnUpdateSelectOnlyFirstLine)
 END_MESSAGE_MAP()
 
 // CModeler1View construction/destruction
@@ -288,6 +348,7 @@ void CModeler1View::OnInitialUpdate()
 	str.Format(_T("Windows CSize x=%d y=%d"), size.cx, size.cy);
 	LogDebug(str);
 
+	GetManager()->BuildElementsCombo(this); // OnActionElements(this);
 	GetManager()->UpdateClassView();
 	GetManager()->UpdateFileView();
 }
@@ -731,7 +792,7 @@ void CModeler1View::OnModelingTextBox()
 	// TODO: Add your command handler code here
 	GetManager()->m_type = ElementType::type_text;
 	GetManager()->m_shapeType = ShapeType::text;
-	AfxMessageBox(_T("OnModelingTextBox"));
+	//AfxMessageBox(_T("OnModelingTextBox"));
 }
 
 void CModeler1View::OnUpdateModelingTextBox(CCmdUI *pCmdUI)
@@ -940,4 +1001,362 @@ void CModeler1View::OnFileExportPNG()
 void CModeler1View::OnDesignSelectAll()
 {
 	GetManager()->OnSelectAll(this);
+}
+
+void CModeler1View::OnFontGrowFont()
+{
+	GetManager()->OnFontGrowFont(this);
+}
+
+void CModeler1View::OnFontShrink()
+{
+	GetManager()->OnFontShrink(this);
+}
+
+void CModeler1View::OnFontClearFormat()
+{
+	GetManager()->OnFontClearFormat(this);
+}
+
+void CModeler1View::OnFontBold()
+{
+	GetManager()->OnFontBold(this);
+}
+
+void CModeler1View::OnFontItalic()
+{
+	GetManager()->OnFontItalic(this);
+}
+
+void CModeler1View::OnFontUnderline()
+{
+	GetManager()->OnFontUnderline(this);
+}
+
+void CModeler1View::OnFontStrikeThrough()
+{
+	GetManager()->OnFontStrikeThrough(this);
+}
+
+void CModeler1View::OnFontSubscript()
+{
+
+}
+
+void CModeler1View::OnFontSuperscript()
+{
+
+}
+
+void CModeler1View::OnFontChangeCase()
+{
+	GetManager()->OnFontChangeCase(this);
+}
+
+void CModeler1View::OnFontTextHighlight()
+{
+	GetManager()->OnFontTextHighlight(this);
+}
+
+void CModeler1View::OnFontColor()
+{
+	GetManager()->OnFontColor(this);
+}
+
+void CModeler1View::OnUpdateFontGrowFont(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontShrink(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontClearFormat(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontBold(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontItalic(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontUnderline(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontStrikeThrough(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontSubscript(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(false);
+}
+
+void CModeler1View::OnUpdateFontSuperscript(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(false);
+}
+
+void CModeler1View::OnUpdateFontChangeCase(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontTextHighlight(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnUpdateFontColor(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(GetManager()->HasSelection() == true);
+}
+
+void CModeler1View::OnDesignText()
+{
+	GetManager()->m_type = ElementType::type_text;
+	GetManager()->m_shapeType = ShapeType::text;
+}
+
+void CModeler1View::OnUpdateDesignText(CCmdUI* pCmdUI)
+{
+}
+
+void CModeler1View::OnDesignConnect()
+{
+	GetManager()->m_type = ElementType::type_shapes_simple;
+	GetManager()->m_shapeType = ShapeType::line_right;
+}
+
+void CModeler1View::OnUpdateDesignConnect(CCmdUI* pCmdUI)
+{
+}
+
+void CModeler1View::OnSelectAll()
+{
+	GetManager()->m_selectType = SelectType::all;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectAll(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::all);
+}
+
+void CModeler1View::OnSelectOnlyFirstLine()
+{
+	GetManager()->m_selectType = SelectType::only_first_line;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectOnlyFirstLine(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::only_first_line);
+}
+
+void CModeler1View::OnSelectOnlyLines()
+{
+	GetManager()->m_selectType = SelectType::only_lines;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectOnlyLines(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::only_lines);
+}
+
+void CModeler1View::OnSelectOnlyItems()
+{
+	GetManager()->m_selectType = SelectType::only_items;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectOnlyItems(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::only_items);
+}
+
+void CModeler1View::OnSelectIntuitive()
+{
+	GetManager()->m_selectType = SelectType::intuitive;
+	GetManager()->m_type = ElementType::type_selection;
+	GetManager()->m_shapeType = ShapeType::selection;
+}
+
+void CModeler1View::OnUpdateSelectIntuitive(CCmdUI* pCmdUI)
+{
+	pCmdUI->SetRadio(GetManager()->m_selectType == SelectType::intuitive);
+}
+
+void CModeler1View::OnEditOpen()
+{
+	shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+	//AfxMessageBox(pElement->m_document.c_str());
+	AfxGetApp()->OpenDocumentFile(pElement->m_document.c_str());
+}
+
+void CModeler1View::OnUpdateEditOpen(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->m_documentType == DocumentType::document_diagram)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}
+
+void CModeler1View::OnActionLoadFolders()
+{
+	GetManager()->LoadFolders(this);
+}
+
+void CModeler1View::OnUpdateActionLoadFolders(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+}
+
+void CModeler1View::OnActionDiagram()
+{
+	GetManager()->m_type = ElementType::type_file;
+	GetManager()->m_shapeType = ShapeType::diagram;
+}
+
+void CModeler1View::OnUpdateActionDiagram(CCmdUI* pCmdUI)
+{
+}
+
+void CModeler1View::OnEditOpenFolder()
+{
+	GetManager()->OpenFolder(this);
+}
+
+void CModeler1View::OnUpdateEditOpenFolder(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->m_documentType == DocumentType::document_folder)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}
+
+void CModeler1View::OnEditOpenFile()
+{
+	GetManager()->OpenFile(this);
+}
+
+void CModeler1View::OnUpdateEditOpenFile(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->m_documentType == DocumentType::document_file)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}
+
+void CModeler1View::OnEditOpenFileContent()
+{
+	GetManager()->OpenFileContent(this);
+}
+
+void CModeler1View::OnUpdateEditOpenFileContent(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->m_documentType == DocumentType::document_file)
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
+}
+
+void CModeler1View::OnActionElements()
+{
+	// TODO: Add your command handler code here
+	GetManager()->OnActionElements(this);
+}
+
+void CModeler1View::OnUpdateActionElements(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+}
+
+void CModeler1View::OnDesignDeconnect()
+{
+	GetManager()->OnDesignDeconnect(this);
+}
+
+void CModeler1View::OnUpdateDesignDeconnect(CCmdUI* pCmdUI)
+{
+	if (GetManager()->m_selection.GetCount() == 1)
+	{
+		shared_ptr<CElement> pElement = GetManager()->m_selection.GetHead();
+		if (pElement->IsLine() && (pElement->m_pConnector->m_pElement1 != nullptr || pElement->m_pConnector->m_pElement2 != nullptr))
+		{
+			pCmdUI->Enable(TRUE);
+		}
+		else
+		{
+			pCmdUI->Enable(FALSE);
+		}
+	}
+	else
+	{
+		pCmdUI->Enable(FALSE);
+	}
 }

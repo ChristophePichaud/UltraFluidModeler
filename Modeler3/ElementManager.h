@@ -3,6 +3,8 @@
 #include "Element.h"
 #include "ElementFactory.h"
 
+class CCodeFile;
+
 class CElementManager : public CObject
 {
 private:
@@ -24,6 +26,7 @@ public:
 	CElementContainer m_clipboard;
 	// Grouped Objects
 	vector<shared_ptr<CElementGroup>> m_groups;
+	std::wstring m_elementGroup;
 
 	COLORREF m_paperColor;
 	// Page size in logical coordinates
@@ -47,6 +50,7 @@ public:
 	// Current selected shape type from Ribbon
 	ShapeType m_shapeType;
 	bool m_bSavingCode;
+	SelectType m_selectType;
 
 public:
 	// Selection 1st point
@@ -56,6 +60,7 @@ public:
 	CPoint m_clickPoint;
 	bool m_bSelectionHasStarted;
 	shared_ptr<CElement> pSelectionElement;
+	bool m_bSizingALine;
 
 // Methods for Attributes
 public:
@@ -120,7 +125,8 @@ public:
 
 // Managing UI object connections
 public:
-	void FindAConnectionFor(std::shared_ptr<CElement> pElement, CPoint point, CModeler1View* pView);
+	void FindAConnectionFor(std::shared_ptr<CElement> pLineElement, CPoint point, CModeler1View* pView, ConnectorType connector);
+	void SetConnector(std::shared_ptr<CElement> pLineElement, std::shared_ptr<CElement> pElementFound, ConnectorType connector);
 
 // Managing UI dependencies (Ribbon UI, Property Grid, ClassView)
 public:
@@ -150,6 +156,12 @@ public:
 public:
 	void LoadModule(CModeler1View * pView);
 	void OnFileOpenGabarit(CModeler1View* pView);
+	CString SearchDrive(const CString& strFile, const CString& strFilePath, const bool& bRecursive, const bool& bStopWhenFound);
+	std::vector<std::shared_ptr<CCodeFile>> _files;
+	void LoadFolders(CModeler1View* pView);
+	void OpenFolder(CModeler1View* pView);
+	void OpenFile(CModeler1View* pView);
+	void OpenFileContent(CModeler1View* pView);
 
 // Managing Object Selection
 public:
@@ -165,6 +177,12 @@ public:
 public:
 	void OnEditGroup(CModeler1View* pView);
 	void OnEditUngroup(CModeler1View* pView);
+	std::vector<std::wstring> Split(const std::wstring& s, wchar_t delim);
+	void BuildGroups();
+
+// Managing Connecting
+public:
+	void OnDesignDeconnect(CModeler1View* pView);
 
 // Overridables
 public:
@@ -172,6 +190,7 @@ public:
 	virtual void Draw(CModeler1View * pView, CDC * pDC);
 	virtual void DrawEx(CModeler1View * pView, CDC * pDC);
 	virtual void Update(CModeler1View * pView, LPARAM lHint, CObject* pHint);
+	void DrawConnector(Graphics& graphics, std::shared_ptr<CElement> pLineElement, ConnectorType connector);
 
 // UI Handlers
 public:
@@ -184,4 +203,39 @@ public:
 public:
 	void OnFileExportPNG(CModeler1View* pView);
 
+// Font
+public:
+	void OnFontBold(CModeler1View* pView);
+	void OnFontItalic(CModeler1View* pView);
+	void OnFontUnderline(CModeler1View* pView);
+	void OnFontStrikeThrough(CModeler1View* pView);
+	void OnFontGrowFont(CModeler1View* pView);
+	void OnFontShrink(CModeler1View* pView);
+	void OnFontClearFormat(CModeler1View* pView);
+	void OnFontColor(CModeler1View* pView);
+	void OnFontTextHighlight(CModeler1View* pView);
+	void OnFontChangeCase(CModeler1View* pView);
+
+// Elements
+public:
+	void OnActionElements(CModeler1View* pView);
+	void BuildElementsCombo(CModeler1View* pView);
+};
+
+enum FileType : int
+{
+	file,
+	folder
+};
+
+class CCodeFile
+{
+public:
+	CCodeFile() {}
+	virtual ~CCodeFile() {}
+
+public:
+	std::wstring _name;
+	std::wstring _path;
+	FileType _type;
 };

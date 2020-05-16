@@ -258,6 +258,40 @@ void CPropertiesWnd::InitPropList()
 	pLineColorProp->EnableAutomaticButton(_T("Default"), ::GetSysColor(COLOR_WINDOW)); // Window Bakcground Color
 	pGroup3->AddSubItem(pLineColorProp);
 
+	CString strFilter2 = _T("Diagram|*.sch;*.dia;*.dgm|All Files(*.*)|*.*||");
+	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("Document"), TRUE, _T(""), NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		strFilter2, _T("Specifies the file's document"), 0));
+
+	pProp = new CMFCPropertyGridProperty(_T("Document Type"), _T(""), _T("Specifies the type of document"));
+	pProp->AddOption(_T("None"));
+	pProp->AddOption(_T("File"));
+	pProp->AddOption(_T("Folder"));
+	pProp->AddOption(_T("Diagram"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Connector1 Handle"), _T(""), _T("Specifies the connector's handle"));
+	pProp->AddOption(_T(""));
+	pProp->AddOption(_T("TopLeft"));
+	pProp->AddOption(_T("Center"));
+	pProp->AddOption(_T("TopCenter"));
+	pProp->AddOption(_T("BottomCenter"));
+	pProp->AddOption(_T("LeftCenter"));
+	pProp->AddOption(_T("RightCenter"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
+
+	pProp = new CMFCPropertyGridProperty(_T("Connector2 Handle"), _T(""), _T("Specifies the connector's handle"));
+	pProp->AddOption(_T(""));
+	pProp->AddOption(_T("TopLeft"));
+	pProp->AddOption(_T("Center"));
+	pProp->AddOption(_T("TopCenter"));
+	pProp->AddOption(_T("BottomCenter"));
+	pProp->AddOption(_T("LeftCenter"));
+	pProp->AddOption(_T("RightCenter"));
+	pProp->AllowEdit(FALSE);
+	pGroup3->AddSubItem(pProp);
+
 	m_wndPropList.AddProperty(pGroup3);
 
 	/*
@@ -349,6 +383,11 @@ void CPropertiesWnd::UpdateProperties(std::shared_ptr<CElement> pObj)
 	UpdateProperty(prop_Has_Line_Color, vColorLine);
 	COleVariant vFixed((SHORT)(pObj->IsFixed()), VT_BOOL);
 	UpdateProperty(prop_Fixed, vFixed);
+
+	UpdateProperty(prop_Document, pObj->m_document.c_str());
+	UpdateProperty(prop_Document_Type, pObj->ToString(pObj->m_documentType));
+	UpdateProperty(prop_Connector1Handle, pObj->DragHandleToString(pObj->m_connectorDragHandle1));
+	UpdateProperty(prop_Connector2Handle, pObj->DragHandleToString(pObj->m_connectorDragHandle2));
 }
 
 void CPropertiesWnd::UpdateProperty(std::wstring propertyName, COleVariant vNewValue)
@@ -466,6 +505,15 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
 		}
 	}
+	else if (propName == prop_Connector1Handle || propName == prop_Connector2Handle)
+	{
+		if (propValueText == _T("")
+			|| propValueText == _T("TopLeft") || propValueText == _T("Center") || propValueText == _T("TopCenter")
+			|| propValueText == _T("BottomCenter") || propValueText == _T("LeftCenter") || propValueText == _T("RightCenter"))
+		{
+			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
+		}
+	}
 	else if( propName == prop_Font )
 	{
 		/*
@@ -491,6 +539,15 @@ LRESULT CPropertiesWnd::OnPropertyChanged (WPARAM,LPARAM lParam)
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, (long) propValue.bVal);
 	}
+	/*
+	else if (propName == prop_Document_Type)
+	{
+		if (propValueText == _T("None") || propValueText == _T("File") || propValueText == _T("Folder") || propValueText == _T("Diagram"))
+		{
+			GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);
+		}
+	}
+	*/
 	else
 	{
 		GetManager()->UpdateFromPropertyGrid(strObjectId, propName, propValueText);

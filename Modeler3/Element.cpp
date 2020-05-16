@@ -93,9 +93,11 @@ ShapeType CShapeType::ToShapeType(int value)
 // CElement Class
 //
 
-IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 4)
+IMPLEMENT_SERIAL(CElement, CObject, VERSIONABLE_SCHEMA | 11)
 
 int CElement::m_counter = 0;
+std::wstring CElement::m_elementGroupNames = _T("");
+std::wstring CElement::m_elementGroupElements = _T("");
 
 CElement::CElement()
 {
@@ -120,6 +122,23 @@ CElement::CElement()
 	m_bFixed = true;
 	m_fontName = _T("Calibri");
 	m_fontSize = 12;
+	m_bBold = false;
+	m_bItalic = false;
+	m_bUnderline = false;
+	m_bStrikeThrough = false;
+	m_colorText = RGB(0, 0, 0);
+
+	m_pConnector = make_shared<CConnector>();
+	m_pConnector->m_pElement1 = nullptr;
+	m_pConnector->m_pElement2 = nullptr;
+	m_connectorName1 = _T("");
+	m_connectorName2 = _T("");
+	m_connectorDragHandle1 = 0;
+	m_connectorDragHandle2 = 0;
+		
+	m_document = _T("");
+	m_documentType = DocumentType::document_none;
+	m_documentTypeText = _T("None");
 
 	m_bMoving = FALSE;
 
@@ -157,8 +176,6 @@ void CElement::SetName()
 {
 	USES_CONVERSION;
 
-	// Inc counter of created objects
-	CFactory::g_counter++;
 	// element name
 	CTime dt = CTime::GetCurrentTime();
 	CString name; 
@@ -175,6 +192,7 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_caption = this->m_caption;
 		pNewElement->m_text = this->m_text;
 		pNewElement->m_code = this->m_code;
+		pNewElement->m_image = this->m_image;
 		pNewElement->m_lineWidth = this->m_lineWidth;
 		pNewElement->m_pManager = this->m_pManager;
 		pNewElement->m_pView = this->m_pView;
@@ -185,8 +203,25 @@ std::shared_ptr<CElement> CElement::MakeCopy()
 		pNewElement->m_bSolidColorFill = m_bSolidColorFill;
 		pNewElement->m_colorFill = m_colorFill;
 		pNewElement->m_colorLine = m_colorLine;
+		pNewElement->m_textAlign = m_textAlign;
+		pNewElement->m_fontName = m_fontName;
+		pNewElement->m_bFixed = m_bFixed;
+		pNewElement->m_bBold = m_bBold;
+		pNewElement->m_bItalic = m_bItalic;
+		pNewElement->m_bUnderline = m_bUnderline;
+		pNewElement->m_bStrikeThrough = m_bStrikeThrough;
+		pNewElement->m_code = m_code;
+		pNewElement->m_fontSize = m_fontSize;
+		pNewElement->m_colorText = m_colorText;
+		pNewElement->m_document = m_document;
 
 		return pNewElement;
+}
+
+CString CElement::ToString(shared_ptr<CElement> pElement)
+{
+	CString str = pElement == nullptr ? _T("") : W2T((LPTSTR)pElement->m_name.c_str());
+	return str;
 }
 
 void CElement::Serialize(CArchive& ar)
@@ -201,8 +236,64 @@ void CElement::Serialize(CArchive& ar)
 		//str.Format(_T("version=%d"), version);
 		//AfxMessageBox(str);
 
-		ar.SetObjectSchema(4);
+		//
+		// Set version of file format
+		//
+		ar.SetObjectSchema(11);
 
+
+		// The schema v11 contains extra info: connectorDragHandle1 & 2
+		ar << m_connectorDragHandle1;
+		ar << m_connectorDragHandle2;
+
+		// The schema v10 contains extra info: documenttypetext
+		//CString doct = W2T((LPTSTR)m_documentTypeText.c_str());
+		//ar << doct;
+		int doct = m_documentType;
+		ar << doct;
+
+		// The schema v9 contains extra info: names, elements
+		CString n;
+		CString elts;
+		for (shared_ptr<CElementGroup> pElementGroup : this->m_pManager->m_groups)
+		{
+			//elts += CString(_T("|"));
+			n += /*CString(_T("|")) +*/ CString(pElementGroup->m_name.c_str()) + CString(_T("|"));
+			for (shared_ptr<CElement> pElement : pElementGroup->m_Groups)
+			{
+				elts += CString(pElement->m_name.c_str()) + CString(_T(";"));
+			}
+			elts += CString(_T("|"));
+		}
+		CElement::m_elementGroupNames = n;
+		CElement::m_elementGroupElements = elts;
+		
+		CString names = W2T((LPTSTR)CElement::m_elementGroupNames.c_str());
+		ar << names;
+		CString elements = W2T((LPTSTR)CElement::m_elementGroupElements.c_str());
+		ar << elements;
+
+
+		// The schema v8 contains extra info: document
+		CString doc = W2T((LPTSTR)m_document.c_str());
+		ar << doc;
+
+		// The schema v7 contains extra info: connector1 & 2
+		CString cn1 = CElement::ToString(m_pConnector->m_pElement1);
+		ar << cn1;
+		CString cn2 = CElement::ToString(m_pConnector->m_pElement2);
+		ar << cn2;
+
+		// The schema v6 contains extra info: colortext
+		ar << m_colorText;
+
+		// The schema v5 contains extra info: bold, italic, underline, StrikeThrough
+		ar << m_bBold;
+		ar << m_bItalic;
+		ar << m_bUnderline;
+		ar << m_bStrikeThrough;
+
+		// The schema v4 contains extra info: code
 		CString code = W2T((LPTSTR)m_code.c_str());
 		ar << code;
 
@@ -253,6 +344,62 @@ void CElement::Serialize(CArchive& ar)
 		CModeler1Doc * pDocument = (CModeler1Doc*)ar.m_pDocument;
 		m_pManager = pDocument->GetManager();
 
+		if (version >= 11)
+		{
+			ar >> m_connectorDragHandle1;
+			ar >> m_connectorDragHandle2;
+		}
+			
+		if (version >= 10)
+		{
+			//CString doct;
+			//ar >> doct;
+			//this->m_documentTypeText = T2W((LPTSTR)(LPCTSTR)doct);
+			int doct;
+			ar >> doct;
+			m_documentType = (DocumentType)doct;
+		}
+
+		if (version >= 9)
+		{
+			CString names;
+			ar >> names;
+			CElement::m_elementGroupNames = T2W((LPTSTR)(LPCTSTR)names);
+			CString elements;
+			ar >> elements;
+			CElement::m_elementGroupElements = T2W((LPTSTR)(LPCTSTR)elements);
+		}
+
+		if (version >= 8)
+		{
+			CString doc;
+			ar >> doc;
+			this->m_document = T2W((LPTSTR)(LPCTSTR)doc);
+		}
+
+		if (version >= 7)
+		{
+			CString cn1;
+			ar >> cn1;
+			this->m_connectorName1 = T2W((LPTSTR)(LPCTSTR)cn1);
+			CString cn2;
+			ar >> cn2;
+			this->m_connectorName2 = T2W((LPTSTR)(LPCTSTR)cn2);
+		}
+
+		if (version >= 6)
+		{
+			ar >> m_colorText;
+		}
+
+		if (version >= 5)
+		{
+			ar >> m_bBold;
+			ar >> m_bItalic;
+			ar >> m_bUnderline;
+			ar >> m_bStrikeThrough;
+		}
+			
 		if (version >= 4)
 		{
 			CString code;
@@ -314,12 +461,27 @@ void CElement::Serialize(CArchive& ar)
 CString CElement::ToString()
 {
 	CString str;
-	str.Format(_T("Element name=<%s> id={%s} type=<%s> shape=<%s> rect={%d,%d,%d,%d} caption=<%s> text=<%s> image=<%s> colorFill={%03d%03d%03d} colorLine={%03d%03d%03d}"), 
+	str.Format(_T("Element name=<%s> id={%s} type=<%s> shape=<%s> rect={%d,%d,%d,%d} caption=<%s> text=<%s> connector=<%s> handle1=<%d> handle2=<%d> image=<%s> colorFill={%03d%03d%03d} colorLine={%03d%03d%03d}"), 
 		m_name.c_str(), m_objectId.c_str(), ToString(m_type), ToString(m_shapeType),
 		m_rect.left, m_rect.top, m_rect.right, m_rect.bottom,
-		m_caption.c_str(), m_text.c_str(), m_image.c_str(),
+		m_caption.c_str(), m_text.c_str(), 
+		ToString(m_pConnector), 
+		m_connectorDragHandle1, m_connectorDragHandle1,
+		m_image.c_str(),
 		GetRValue(m_colorFill), GetGValue(m_colorFill), GetBValue(m_colorFill),
 		GetRValue(m_colorLine), GetGValue(m_colorLine), GetBValue(m_colorLine));
+	return str;
+}
+
+CString CElement::ToString(shared_ptr<CConnector> pConnector)
+{
+	CString str = _T("");
+
+	shared_ptr<CElement> pElement1 = pConnector->m_pElement1;
+	shared_ptr<CElement> pElement2 = pConnector->m_pElement2;
+
+	str.Format(_T("c1:%s c2:%s"), pElement1 == nullptr ? _T("NULL") : pElement1->m_name.c_str(), 
+								  pElement2 == nullptr ? _T("NULL") : pElement2->m_name.c_str());
 	return str;
 }
 
@@ -533,6 +695,55 @@ CString CElement::ToString(ShapeType type)
 	return str;
 }
 
+CString CElement::ToString(DocumentType type)
+{
+	CString str = _T("");
+	switch (type)
+	{
+	case DocumentType::document_none:
+		str = _T("None");
+		break;
+
+	case DocumentType::document_file:
+		str = _T("File");
+		break;
+
+	case DocumentType::document_folder:
+		str = _T("Folder");
+		break;
+
+	case DocumentType::document_diagram:
+		str = _T("Diagram");
+		break;
+
+	default:
+		break;
+	}
+	return str;
+}
+
+DocumentType CElement::FromString(wstring type)
+{
+	DocumentType doctype = DocumentType::document_none;
+	if (type == _T("None"))
+	{
+		doctype = DocumentType::document_none;
+	}
+	if (type == _T("File"))
+	{
+		doctype = DocumentType::document_file;
+	}
+	if (type == _T("Folder"))
+	{
+		doctype = DocumentType::document_folder;
+	}
+	if (type == _T("Diagram"))
+	{
+		doctype = DocumentType::document_diagram;
+	}
+	return doctype;
+}
+
 /*
 bool CElement::IsDrawable(ElementType type)
 {
@@ -716,6 +927,74 @@ CRect CElement::GetHandleRect(int nHandleID, CModeler1View* pView)
 	return rect;
 }
 
+CString CElement::DragHandleToString(int nHandle)
+{
+	CString str = _T("");
+
+	switch (nHandle)
+	{
+	case 0:
+		str = _T("");
+		break;
+
+	case 2:
+		str = _T("TopCenter");
+		break;
+
+	case 4:
+		str = _T("RightCenter");
+		break;
+
+	case 6:
+		str = _T("BottomCenter");
+		break;
+
+	case 8:
+		str = _T("LeftCenter");
+		break;
+	}
+
+	return str;
+}
+
+int CElement::DragHandleFromString(wstring value)
+{
+
+	int dragHandle = 0;
+
+	if (value == _T(""))
+	{
+		dragHandle = 0;
+	}
+		
+	if (value == _T("Center"))
+	{
+		dragHandle = 9;
+	}
+
+	if (value == _T("TopCenter"))
+	{
+		dragHandle = 2;
+	}
+
+	if (value == _T("RightCenter"))
+	{
+		dragHandle = 4;
+	}
+
+	if (value == _T("BottomCenter"))
+	{
+		dragHandle = 6;
+	}
+
+	if (value == _T("LeftCenter"))
+	{
+		dragHandle = 8;
+	}
+
+	return dragHandle;
+}
+
 // returns logical coords of center of handle
 CPoint CElement::GetHandle(int nHandle)
 {
@@ -732,9 +1011,6 @@ CPoint CElement::GetHandle(int nHandle)
 
 	switch (nHandle)
 	{
-	default:
-		ASSERT(FALSE);
-
 	case 1:
 		x = rect.left;
 		y = rect.top;
@@ -895,6 +1171,14 @@ void CElement::DrawTracker(CDrawingContext & ctxt, TrackerState state)
 		}
 		break;
 	}
+}
+
+void CElement::DrawTracker(CPoint cnx, CDrawingContext& ctxt,  CModeler1View* pView)
+{
+	//Color colorBlack(255, 0, 0, 0);
+	SolidBrush solidBrush(Color::Yellow);
+	CRect rect = m_rect;
+	ctxt.GetGraphics()->FillRectangle(&solidBrush, cnx.x - 5, cnx.y - 5, 10, 10);
 }
 
 std::wstring CElement::GetImageFilePath()

@@ -54,6 +54,7 @@ BOOL CModeler1Doc::OnNewDocument()
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
+	CFactory::g_counter = 0;
 
 	return TRUE;
 }
