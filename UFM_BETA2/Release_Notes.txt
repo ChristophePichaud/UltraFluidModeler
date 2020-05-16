@@ -1,0 +1,53 @@
+	Release Notes v 1.16.05.2020
+		- Select All faster display with selecting only the last element
+	Release Notes v 1.15.05.2020
+		- Paper background and show/hide in Ribbon Options
+	Release Notes v 1.14.05.2020
+		- Text connector 1&2 serialized as properties
+		- Text connectors displayed properly
+		- Splash screen 3s
+		- Connectors facilities is made with DrawTracker now...
+		- Shape text can be multiline and can expand larger than dialog box
+	Release Notes v 1.13.05.2020
+		- Modify text doing a double click on a shape
+	Release Notes v 1.12.05.2020
+		- Add connectors to drag handle and flicking shape to show handles
+		- Add shapes using Saphe Explorer and doing right click Add...
+	Release Notes BETA 2 Initial
+		- Copy, Cut, Paste
+		- Simple, intuitive selection of the first line, only lines, only elements
+		- Adding an image
+		- Addition of a generic shape (rectangle, ellipse, etoire, various arrow, etc)
+		- Adding a text box
+		- Addition of an infrastructure template (AD server, Database server, Web server, desktop, etc.)
+		- Adding a Dev template (class, interface, enum, component, comment, package, etc.)
+		- Adding a Diagram template
+		- Addition of a Planning Task, Month or Text element
+		- Modification of text properties (font, size, size +, size -, bold, italic, underline, strikethrough, fill, color)
+		- Display of Solution, Class, Properties panels
+		- Deletion of an element
+		- Import of C ++ code and drawing of a template by file
+		- Dump objects in the Debug panel
+		- File Explorer module: lists files and directories in the form of templates
+		- Adds a connector (arrow) between two templates
+		- Disconnect a connector
+		- Select an element from a combo (element name)
+		- Increase / Decrease the size of an element by two
+		- Change the fill color
+		- Change the line color
+		- Modify the line width
+		- Change page color
+		- Zoom In / out
+		- Selection of a custom zoom
+		- Text alignment left, centered, right
+		- Alignment of templates left, right, above, below depending on the first selected
+		- Moving in front of top, behind -, in front +, behind at the bottom
+		- Selection of an element to move it
+		- Resizing of an element
+		- Group / Ungroup of elements
+		- Modification of properties in the Property Grid
+		- Load / Save documents
+		- Import / Export of documents in JSON format
+		- Import / Export of documents in XML format
+		- Export diagrams as an image in PNG format
+		

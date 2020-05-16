@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="17">
+<data class_id="0" tracking_level="0" version="1">
+	<px class_id="1" tracking_level="1" version="1" object_id="_0">
+		<m_shapes class_id="2" tracking_level="0" version="0">
+			<count>3</count>
+			<item_version>1</item_version>
+			<item class_id="3" tracking_level="0" version="1">
+				<px class_id="4" tracking_level="1" version="1" object_id="_1">
+					<m_name>Element n_1</m_name>
+					<m_id>guid_1_063234_653_407508171</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>300</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>Class</m_text>
+					<m_x1>427</m_x1>
+					<m_y1>185</m_y1>
+					<m_x2>633</m_x2>
+					<m_y2>324</m_y2>
+					<m_colorFillR>200</m_colorFillR>
+					<m_colorFillG>210</m_colorFillG>
+					<m_colorFillB>233</m_colorFillB>
+					<m_colorLineR>52</m_colorLineR>
+					<m_colorLineG>101</m_colorLineG>
+					<m_colorLineB>164</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_2">
+					<m_name>Element n_2</m_name>
+					<m_id>guid_19_063237_777_407511296</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>300</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>Class</m_text>
+					<m_x1>830</m_x1>
+					<m_y1>358</m_y1>
+					<m_x2>1014</m_x2>
+					<m_y2>466</m_y2>
+					<m_colorFillR>200</m_colorFillR>
+					<m_colorFillG>210</m_colorFillG>
+					<m_colorFillB>233</m_colorFillB>
+					<m_colorLineR>52</m_colorLineR>
+					<m_colorLineG>101</m_colorLineG>
+					<m_colorLineB>164</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_3">
+					<m_name>Element n_3</m_name>
+					<m_id>guid_46_063241_114_407514640</m_id>
+					<m_rect></m_rect>
+					<m_type>2</m_type>
+					<m_shapeType>1</m_shapeType>
+					<m_caption></m_caption>
+					<m_text></m_text>
+					<m_x1>530</m_x1>
+					<m_y1>185</m_y1>
+					<m_x2>922</m_x2>
+					<m_y2>358</m_y2>
+					<m_colorFillR>154</m_colorFillR>
+					<m_colorFillG>200</m_colorFillG>
+					<m_colorFillB>249</m_colorFillB>
+					<m_colorLineR>0</m_colorLineR>
+					<m_colorLineG>0</m_colorLineG>
+					<m_colorLineB>0</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+		</m_shapes>
+	</px>
+</data>
+</boost_serialization>
+

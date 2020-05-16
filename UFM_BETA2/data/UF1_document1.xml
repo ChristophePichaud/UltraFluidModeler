@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="17">
+<data class_id="0" tracking_level="0" version="1">
+	<px class_id="1" tracking_level="1" version="1" object_id="_0">
+		<m_shapes class_id="2" tracking_level="0" version="0">
+			<count>10</count>
+			<item_version>1</item_version>
+			<item class_id="3" tracking_level="0" version="1">
+				<px class_id="4" tracking_level="1" version="1" object_id="_1">
+					<m_name>Element n_1</m_name>
+					<m_id>guid_1_015710_521_218182640</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>300</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>CElement</m_text>
+					<m_x1>188</m_x1>
+					<m_y1>562</m_y1>
+					<m_x2>446</m_x2>
+					<m_y2>745</m_y2>
+					<m_colorFillR>200</m_colorFillR>
+					<m_colorFillG>210</m_colorFillG>
+					<m_colorFillB>233</m_colorFillB>
+					<m_colorLineR>52</m_colorLineR>
+					<m_colorLineG>101</m_colorLineG>
+					<m_colorLineB>164</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_2">
+					<m_name>Element n_2</m_name>
+					<m_id>guid_48_015744_494_218216609</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>300</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>CElementManager</m_text>
+					<m_x1>695</m_x1>
+					<m_y1>742</m_y1>
+					<m_x2>945</m_x2>
+					<m_y2>935</m_y2>
+					<m_colorFillR>200</m_colorFillR>
+					<m_colorFillG>210</m_colorFillG>
+					<m_colorFillB>233</m_colorFillB>
+					<m_colorLineR>52</m_colorLineR>
+					<m_colorLineG>101</m_colorLineG>
+					<m_colorLineB>164</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_3">
+					<m_name>Element n_3</m_name>
+					<m_id>guid_45_020302_282_218534406</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>300</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>CElementContainer</m_text>
+					<m_x1>713</m_x1>
+					<m_y1>461</m_y1>
+					<m_x2>930</m_x2>
+					<m_y2>643</m_y2>
+					<m_colorFillR>200</m_colorFillR>
+					<m_colorFillG>210</m_colorFillG>
+					<m_colorFillB>233</m_colorFillB>
+					<m_colorLineR>52</m_colorLineR>
+					<m_colorLineG>101</m_colorLineG>
+					<m_colorLineB>164</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_4">
+					<m_name>Element n_4</m_name>
+					<m_id>guid_46_020812_460_218844578</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>304</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>Features (voir Panel Comments)</m_text>
+					<m_x1>1173</m_x1>
+					<m_y1>382</m_y1>
+					<m_x2>1355</m_x2>
+					<m_y2>463</m_y2>
+					<m_colorFillR>251</m_colorFillR>
+					<m_colorFillG>247</m_colorFillG>
+					<m_colorFillB>200</m_colorFillB>
+					<m_colorLineR>202</m_colorLineR>
+					<m_colorLineG>178</m_colorLineG>
+					<m_colorLineB>45</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_5">
+					<m_name>Element n_7</m_name>
+					<m_id>guid_1326_020959_411_218951531</m_id>
+					<m_rect></m_rect>
+					<m_type>2</m_type>
+					<m_shapeType>1</m_shapeType>
+					<m_caption></m_caption>
+					<m_text></m_text>
+					<m_x1>446</m_x1>
+					<m_y1>653</m_y1>
+					<m_x2>713</m_x2>
+					<m_y2>552</m_y2>
+					<m_colorFillR>154</m_colorFillR>
+					<m_colorFillG>200</m_colorFillG>
+					<m_colorFillB>249</m_colorFillB>
+					<m_colorLineR>0</m_colorLineR>
+					<m_colorLineG>0</m_colorLineG>
+					<m_colorLineB>0</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_6">
+					<m_name>Element n_8</m_name>
+					<m_id>guid_1487_021035_400_218987515</m_id>
+					<m_rect></m_rect>
+					<m_type>2</m_type>
+					<m_shapeType>1</m_shapeType>
+					<m_caption></m_caption>
+					<m_text></m_text>
+					<m_x1>446</m_x1>
+					<m_y1>653</m_y1>
+					<m_x2>695</m_x2>
+					<m_y2>838</m_y2>
+					<m_colorFillR>154</m_colorFillR>
+					<m_colorFillG>200</m_colorFillG>
+					<m_colorFillB>249</m_colorFillB>
+					<m_colorLineR>0</m_colorLineR>
+					<m_colorLineG>0</m_colorLineG>
+					<m_colorLineB>0</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_7">
+					<m_name>Element n_16</m_name>
+					<m_id>guid_1819_021210_630_219082750</m_id>
+					<m_rect></m_rect>
+					<m_type>3</m_type>
+					<m_shapeType>50</m_shapeType>
+					<m_caption></m_caption>
+					<m_text></m_text>
+					<m_x1>311</m_x1>
+					<m_y1>39</m_y1>
+					<m_x2>1096</m_x2>
+					<m_y2>344</m_y2>
+					<m_colorFillR>154</m_colorFillR>
+					<m_colorFillG>200</m_colorFillG>
+					<m_colorFillB>249</m_colorFillB>
+					<m_colorLineR>0</m_colorLineR>
+					<m_colorLineG>0</m_colorLineG>
+					<m_colorLineB>0</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>0</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_8">
+					<m_name>Element n_18</m_name>
+					<m_id>guid_2801_021417_301_219209421</m_id>
+					<m_rect></m_rect>
+					<m_type>6</m_type>
+					<m_shapeType>300</m_shapeType>
+					<m_caption></m_caption>
+					<m_text>CModeler1View</m_text>
+					<m_x1>1088</m_x1>
+					<m_y1>610</m_y1>
+					<m_x2>1298</m_x2>
+					<m_y2>786</m_y2>
+					<m_colorFillR>200</m_colorFillR>
+					<m_colorFillG>210</m_colorFillG>
+					<m_colorFillB>233</m_colorFillB>
+					<m_colorLineR>52</m_colorLineR>
+					<m_colorLineG>101</m_colorLineG>
+					<m_colorLineB>164</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_9">
+					<m_name>Element n_20</m_name>
+					<m_id>guid_4024_021510_870_219262984</m_id>
+					<m_rect></m_rect>
+					<m_type>2</m_type>
+					<m_shapeType>1</m_shapeType>
+					<m_caption></m_caption>
+					<m_text></m_text>
+					<m_x1>1088</m_x1>
+					<m_y1>698</m_y1>
+					<m_x2>945</m_x2>
+					<m_y2>838</m_y2>
+					<m_colorFillR>154</m_colorFillR>
+					<m_colorFillG>200</m_colorFillG>
+					<m_colorFillB>249</m_colorFillB>
+					<m_colorLineR>0</m_colorLineR>
+					<m_colorLineG>0</m_colorLineG>
+					<m_colorLineB>0</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+			<item>
+				<px class_id_reference="4" object_id="_10">
+					<m_name>Element n_21</m_name>
+					<m_id>guid_4115_021528_643_219280765</m_id>
+					<m_rect></m_rect>
+					<m_type>2</m_type>
+					<m_shapeType>1</m_shapeType>
+					<m_caption></m_caption>
+					<m_text></m_text>
+					<m_x1>820</m_x1>
+					<m_y1>742</m_y1>
+					<m_x2>821</m_x2>
+					<m_y2>643</m_y2>
+					<m_colorFillR>154</m_colorFillR>
+					<m_colorFillG>200</m_colorFillG>
+					<m_colorFillB>249</m_colorFillB>
+					<m_colorLineR>0</m_colorLineR>
+					<m_colorLineG>0</m_colorLineG>
+					<m_colorLineB>0</m_colorLineB>
+					<m_bSolidColorFill>0</m_bSolidColorFill>
+					<m_bColorLine>1</m_bColorLine>
+					<m_bColorFill>1</m_bColorFill>
+				</px>
+			</item>
+		</m_shapes>
+	</px>
+</data>
+</boost_serialization>
+
